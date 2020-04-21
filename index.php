@@ -35,7 +35,7 @@
 					<div class="dropdown-menu">
 						
 						<div class="dropdown-header">На сайте</div>
-						<a class="dropdown-item" href="#">Добавить на сайте</a>
+						<a class="dropdown-item" href="form_add_student.php">Добавить</a>
 						<a class="dropdown-item" href="#">Редактировать</a>
 						<a class="dropdown-item" href="#">Удалить</a>
 						<div class="dropdown-header">Через файл</div>
