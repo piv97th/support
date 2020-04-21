@@ -5,7 +5,16 @@
 
 		<?php require_once("blocks/block_head.php"); ?>
 
-		<title>Стартовая страница</title>
+		<title>Добавить студента</title>
+
+		<script type="text/javascript">
+			$(function() {
+				$("#disabled_link").css({"background-color":"#DDDDDD", "color":"#FFFFFF"});
+				$("#disabled_link").on("click", function() {
+					return false;
+				});
+			});
+		</script>
 		
 	</head>
 	
@@ -15,18 +24,18 @@
 		<?php require_once("blocks/block_header.php"); ?>
 		
 		<nav class="navbar navbar-expand-sm bg-primary navbar-dark">
-			<a class="navbar-brand" href="#">Главная</a>
+			<a class="navbar-brand" href="index.php">Главная</a>
 
 			<ul class="navbar-nav">
 
-				<li class="nav-item dropdown">
+				<li class="nav-item dropdown active">
 					<a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
 						Студенты
 					</a>
 					<div class="dropdown-menu">
 						
 						<div class="dropdown-header">На сайте</div>
-						<a class="dropdown-item" href="form_add_student.php">Добавить</a>
+						<a class="dropdown-item" id="disabled_link" href="#">Добавить</a>
 						<a class="dropdown-item" href="#">Редактировать</a>
 						<a class="dropdown-item" href="#">Удалить</a>
 						<div class="dropdown-header">Через файл</div>
