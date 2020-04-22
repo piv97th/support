@@ -3,7 +3,7 @@
 	
 	<head>
 
-		<?php require_once("blocks/block_head.php"); ?>
+		<?php require_once("blocks/head.php"); ?>
 
 		<title>Стартовая страница</title>
 		
@@ -12,127 +12,12 @@
 	
 	<body>
 		
-		<?php require_once("blocks/block_header.php"); ?>
+		<?php
+			require_once("blocks/header.php");
+			require_once("blocks/navbar.php");
+		?>
 		
-		<nav class="navbar navbar-expand-sm bg-primary navbar-dark">
-			<a class="navbar-brand" href="#">Главная</a>
-
-			<ul class="navbar-nav">
-
-				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-						Студенты
-					</a>
-					<div class="dropdown-menu">
-						
-						<div class="dropdown-header">На сайте</div>
-						<a class="dropdown-item" href="form_add_student.php">Добавить</a>
-						<a class="dropdown-item" href="#">Редактировать</a>
-						<a class="dropdown-item" href="#">Удалить</a>
-						<div class="dropdown-header">Через файл</div>
-						<a class="dropdown-item" href="#">Скачать файл</a>
-						<a class="dropdown-item" href="#">Загрузить бланк</a>
-					</div>
-				</li>
-				
-				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-						Пользователи
-					</a>
-					<div class="dropdown-menu">
-						
-						<!--<div class="dropdown-header">На сайте</div>-->
-						<a class="dropdown-item" href="#">Добавить</a>
-						<a class="dropdown-item" href="#">Редактировать</a>
-						<a class="dropdown-item" href="#">Удалить</a>
-					</div>
-				</li>
-				
-				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-						Комиссии
-					</a>
-					<div class="dropdown-menu">
-						
-						<!--<div class="dropdown-header">На сайте</div>-->
-						<a class="dropdown-item" href="#">Добавить</a>
-						<a class="dropdown-item" href="#">Редактировать</a>
-						<a class="dropdown-item" href="#">Удалить</a>
-					</div>
-				</li>
-				
-				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-						Госэкзамен
-					</a>
-					<div class="dropdown-menu">
-						
-						<!--<div class="dropdown-header">На сайте</div>-->
-						<a class="dropdown-item" href="#">Добавить</a>
-						<a class="dropdown-item" href="#">Редактировать</a>
-						<a class="dropdown-item" href="#">Удалить</a>
-					</div>
-				</li>
-				
-				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-						ВКР
-					</a>
-					<div class="dropdown-menu">
-						
-						<!--<div class="dropdown-header">На сайте</div>-->
-						<a class="dropdown-item" href="#">Добавить</a>
-						<a class="dropdown-item" href="#">Редактировать</a>
-						<a class="dropdown-item" href="#">Удалить</a>
-					</div>
-				</li>
-				
-				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-						Структура вуза
-					</a>
-					<div class="dropdown-menu">
-						
-						<!--<div class="dropdown-header">На сайте</div>-->
-						<a class="dropdown-item" href="#">Добавить</a>
-						<a class="dropdown-item" href="#">Редактировать</a>
-						<a class="dropdown-item" href="#">Удалить</a>
-					</div>
-				</li>
-				
-				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-						Члены ГЭК
-					</a>
-					<div class="dropdown-menu">
-						
-						<!--<div class="dropdown-header">На сайте</div>-->
-						<a class="dropdown-item" href="#">Добавить</a>
-						<a class="dropdown-item" href="#">Редактировать</a>
-						<a class="dropdown-item" href="#">Удалить</a>
-					</div>
-				</li>
-				
-				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-						Рецензия
-					</a>
-					<div class="dropdown-menu">
-						
-						<!--<div class="dropdown-header">На сайте</div>-->
-						<a class="dropdown-item" href="#">Добавить</a>
-						<a class="dropdown-item" href="#">Редактировать</a>
-						<a class="dropdown-item" href="#">Удалить</a>
-					</div>
-				</li>
-				
-				<li class="nav-item">
-					<a class="nav-link" href="#">Инфо</a>
-				</li>
-			</ul>
-		</nav>
-		
-		<div class="container-fluid text-center">    
+		<div class="container-fluid text-center" id="content">    
 			<div class="row content">
 				<div class="col-sm text-left"> 
 					<h1>Welcome</h1>
@@ -144,7 +29,7 @@
 			</div>
 		</div>
 
-		<?php require_once("blocks/block_footer.php"); ?>
+		<?php require_once("blocks/footer.php"); ?>
 		
 	</body>
 </html>

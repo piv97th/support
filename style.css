@@ -33,3 +33,7 @@
 	.jumbotron {
 		margin-bottom: 0;
 	}
+
+	#content {
+		padding: 20px;
+	}
