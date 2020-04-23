@@ -32,6 +32,6 @@
 		margin-bottom: 0;
 	}
 
-	#alert{
+	.hide_alert{
 		display: none;
 	}

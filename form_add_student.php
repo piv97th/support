@@ -19,24 +19,49 @@
 	<script type="text/javascript">
 		$(function(){
 			$(":submit").on('click',function(){
-		        var nrb = $("#nrb").text();
-		        var last_name = $("#last_name").text();
-		        var first_name = $("#first_name").text();
-		        var patronymic = $("#patronymic").text();
-		        var group_1 = $("#group_1").text();
-		        var topic = $("#topic").text();
-		        var type_work = $("#type_work").text();
-		        var anti_plagiarism = $("#anti_plagiarism").text();
-		        var supervisor = $("#supervisor").text();
-		        //$("#alert").show();
+				$(".alert").addClass("hide_alert");
+		        var nrb = $("#nrb").val();
+		        var last_name = $("#last_name").val();
+		        var first_name = $("#first_name").val();
+		        var patronymic = $("#patronymic").val();
+		        var group_1 = $("#group_1").val();
+		        var topic = $("#topic").val();
+		        var type_work = $("#type_work").val();
+		        var anti_plagiarism = $("#anti_plagiarism").val();
+		        var supervisor = $("#supervisor").val();
 		        $.ajax({
 		        	type: 'POST',
-		        	url: 'processing_add_student.php',
+		        	url: 'add_student.php',
 		        	data: {nrb, last_name, first_name, patronymic, group_1, topic, type_work, anti_plagiarism, supervisor},
 		        	async: false,
 		        	success: function(answer)
 		        	{
-			            $("#alert").show();
+		        		alert(answer);
+		        		var flag = true;
+		        		var result = JSON.parse(answer);
+		        		//alert(result);
+		        		for(var i in result)
+		        		{
+		        			if(result[i] != 1)
+		        			{
+		        				$(".alert-danger").removeClass("hide_alert");
+		        				flag = false;
+		        				break;
+		        			}
+		        		}
+		        		if(flag == true)
+		        		{
+		        			$(".alert-success").removeClass("hide_alert");
+		        		}
+/*		        		if (result['status'] == 1) {
+		        			$(".alert-success").removeClass("hide_alert");
+		        		} else {
+		        			$(".alert-danger").removeClass("hide_alert");
+		        		}*/
+		        	},
+		        	error: function(answer)
+		        	{
+		        		$(".alert-danger").removeClass("hide_alert");
 		        	}
 		    	});
 		    	return false;
@@ -54,9 +79,12 @@
 	require_once('blocks/navbar.php');
 	?>
 
-	<div class="alert alert-success alert-dismissible fade show fixed-top" id="alert">
-		<button type="button" class="close" data-dismiss="alert">&times;</button>
+	<div class="alert alert-success fixed-top hide_alert">
 		<strong>Успешно!</strong> Студент был добавлен
+	</div>
+
+	<div class="alert alert-danger fixed-top hide_alert">
+		<strong>Ошибка!</strong> Проверьте данные
 	</div>
 
 	<div class="container" id="content">    
