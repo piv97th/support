@@ -14,6 +14,7 @@
 
 	<title>Добавить студента</title>
 
+	<script type="text/javascript" src="scripts/jquery_cookies.js"></script>
 	<script src="scripts/disabled_link.js" type="text/javascript"></script>
 
 	<script type="text/javascript">
@@ -25,6 +26,7 @@
 		        var first_name = $("#first_name").val();
 		        var patronymic = $("#patronymic").val();
 		        var group_1 = $("#group_1").val();
+		        var cipher_group = $("#cipher_group").val();
 		        var topic = $("#topic").val();
 		        var type_work = $("#type_work").val();
 		        var anti_plagiarism = $("#anti_plagiarism").val();
@@ -36,7 +38,7 @@
 		        	async: false,
 		        	success: function(answer)
 		        	{
-		        		alert(answer);
+		        		//alert(answer);
 		        		var flag = true;
 		        		var result = JSON.parse(answer);
 		        		//alert(result);
@@ -52,6 +54,15 @@
 		        		if(flag == true)
 		        		{
 		        			$(".alert-success").removeClass("hide_alert");
+		        			$("#nrb").val("");
+		        			$("#last_name").val("");
+		        			$("#first_name").val("");
+		        			$("#patronymic").val("");
+		        			$("#group_1").val("");
+		        			$("#topic").val("");
+		        			$("#type_work").val("");
+		        			$("#anti_plagiarism").val("");
+		        			$("#supervisor").val("");
 		        		}
 /*		        		if (result['status'] == 1) {
 		        			$(".alert-success").removeClass("hide_alert");
@@ -66,6 +77,30 @@
 		    	});
 		    	return false;
 		    });
+		});
+
+		window.onbeforeunload = function() {
+			$.cookie('nrb', $("#nrb").val(), { expires: 1 });
+			$.cookie('last_name', $("#last_name").val(), { expires: 1 });
+			$.cookie('first_name', $("#first_name").val(), { expires: 1 });
+			$.cookie('patronymic', $("#patronymic").val(), { expires: 1 });
+			$.cookie('group_1', $("#group_1").val(), { expires: 1 });
+			$.cookie('topic', $("#topic").val(), { expires: 1 });
+			$.cookie('type_work', $("#type_work").val(), { expires: 1 });
+			$.cookie('anti_plagiarism', $("#anti_plagiarism").val(), { expires: 1 });
+			$.cookie('supervisor', $("#supervisor").val(), { expires: 1 });
+		};
+
+		$(window).ready(function() {
+			$("#nrb").val($.cookie("nrb"));
+			$("#last_name").val($.cookie("last_name"));
+			$("#first_name").val($.cookie("first_name"));
+			$("#patronymic").val($.cookie("patronymic"));
+			$("#group_1").val($.cookie("group_1"));
+			$("#topic").val($.cookie("topic"));
+			$("#type_work").val($.cookie("type_work"));
+			$("#anti_plagiarism").val($.cookie("anti_plagiarism"));
+			$("#supervisor").val($.cookie("supervisor"));
 		});
 	</script>
 
