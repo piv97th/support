@@ -13,6 +13,22 @@
 		}
 	}
 
+	function exist_nrb($data)
+	{
+		require('blocks/connect.php');
+		$sql = "SELECT COUNT(number_record_book) as `count` FROM student WHERE number_record_book = '$data'";
+		$result = $conn->query($sql) or die($conn->error);
+		$row = $result->fetch_assoc();
+		if($row['count'] > 0)
+		{
+			return TRUE;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+
 	function check_nrb($data)
 	{
 		$status = check_empty($data);
@@ -30,7 +46,14 @@
 		}
 		else
 		{
-			return 1;
+			if(exist_nrb($data) == TRUE)
+			{
+				return 3;
+			}
+			else
+			{
+				return 1;
+			}
 		}
 	}
 
@@ -41,7 +64,7 @@
 		{
 			return $status;
 		}
-		$pattern_2 = '/^[а-яА-ЯЁё]{2,254}$/u';
+		$pattern_2 = '/^[А-ЯЁ][а-яё]{1,254}$/u';
 		$data = mb_strtoupper(mb_substr($data, 0, 1)) . mb_strtolower(mb_substr($data, 1));
 		if(!preg_match($pattern_2, $data))
 		{
@@ -72,7 +95,7 @@
 		{
 			return 1;
 		}
-		$pattern_1 = '/^[0].[1-9][0-9]{0,16}$/u';
+		$pattern_1 = '/^[0].[0-9]{0,7}$/u';
 		if(!preg_match($pattern_1, $data))
 		{
 			return 2;
@@ -105,12 +128,6 @@
 		return $kw;
 	}
 
-/*	function get_diploma()
-	{
-		$qsd = $conn->query('SELECT id from diploma ORDER BY id DESC LIMIT 1');
-		$
-	}*/
-
 	if(isset($_POST['nrb']))
 	{
 		$result = array('first' => check_nrb($_POST['nrb']), 'second' => check_name($_POST['last_name']), 'third' => check_name($_POST['first_name']), 'fourth' => check_name($_POST['patronymic']), 'fifth' => check_num($_POST['group_1']), 'seventh' => check_empty($_POST['topic']), 'eighth' => check_num($_POST['type_work']), 'ninth' => check_ap($_POST['anti_plagiarism']), 'tenth' => check_num($_POST['supervisor']));
@@ -128,31 +145,15 @@
 		require('classes/class_inanimate.php');
 
 		$student = new student(['last_name' => $_POST['last_name'], 'first_name' => $_POST['first_name'], 'patronymic' => $_POST['patronymic'], 'nrb' => $_POST['nrb'], 'group_1' => $_POST['group_1']]);
-		//$supervisor = new supervisor('id' => $_POST['id']);
+
 		$kind_work = choice_kind_work($_POST['group_1']);
+
 		$diploma = new diploma(['topic' => $_POST['topic'], 'anti_plagiarism' => $_POST['anti_plagiarism'], 'kind_work' => $kind_work, 'supervisor' => $_POST['supervisor'], 'type_work' => $_POST['type_work']]);
 
-/*		if(empty($_POST['anti_plagiarism'])
-		{
-			$diploma->anti_plagiarism = 'NULL';
-		}
-		else
-		{
-			$diploma->anti_plagiarism = $_POST['anti_plagiarism'];
-		}*/
-
-		//$diploma->type_work = $_POST['type_work'];
-
-/*		$qid = $conn->prepare('INSERT INTO diploma (topic, anti_plagiarism, id_kind_work_fk, id_teacher_fk, id_type_work_fk) VALUES(?,?,?,?,?)')*/
-
 		$diploma->add_diploma();
-
 		$student->diploma = $diploma->get_diploma();
-
 		$student->add_student();
 
-		/*$qis = $conn->prepare('INSERT INTO student (number_record_book, last_name, first_name, patronymic, id_group_fk, id_diploma_fk) VALUES(?,?,?,?,?,?)')*/
-		//echo $kind_work;
 		echo json_encode($result);
         exit;
 	}
