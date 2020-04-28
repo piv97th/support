@@ -1,6 +1,33 @@
 <?php
 	require('blocks/connect.php');
 
+/*	function output_groups()
+	{
+		require('blocks/connect.php');
+		$result = $conn->query('SELECT id, cipher_group FROM group_1');
+		while($arr = $result->fetch_assoc())
+		{
+			$arr_group[] = $arr; //array( "id" => $arr['id'], "cipher_group"  => $arr['cipher_group']);
+		}
+		return $arr_group;
+	}*/
+
+	$arr_1 = $_GET['arr_1'];
+	if(empty($arr_1))
+	{
+		if(0 > $arr_1 || $arr_1 > 100000000)
+		{
+			exit;
+		}
+		exit;
+	}
+
+	$qs_student = $conn->query('SELECT * FROM student WHERE id = '.$arr_1);
+	$arr_student = $qs_student->fetch_assoc();
+
+	$qs_diploma = $conn->query('SELECT topic, anti_plagiarism, id_teacher_fk, id_type_work_fk FROM diploma WHERE id = '.$arr_student['id_diploma_fk']);
+	$arr_diploma = $qs_diploma->fetch_assoc();
+
 	$qs_group = $conn->query('SELECT id, cipher_group FROM group_1');
 	$qs_supervisor = $conn->query('SELECT * FROM teacher');
 ?>
@@ -12,7 +39,7 @@
 
 	<?php require_once('blocks/head.php'); ?>
 
-	<title>Добавить студента</title>
+	<title>Обновить данные студента</title>
 
 	<link href="scripts/toastr.css" rel="stylesheet">
 	<script type="text/javascript" src="scripts/jquery_cookies.js"></script>
@@ -23,8 +50,9 @@
 	<script type="text/javascript">
 		$(function(){
 			$("form").on('submit',function(){
-				$mode_1 = 1;
-		        var nrb = $("#nrb").val();
+				var arr_1 = <?php echo $arr_1; ?>;
+				var mode_1 = 2;
+				var nrb = $("#nrb").val();
 		        var last_name = $("#last_name").val();
 		        var first_name = $("#first_name").val();
 		        var patronymic = $("#patronymic").val();
@@ -34,13 +62,15 @@
 		        var type_work = $("#type_work").val();
 		        var anti_plagiarism = $("#anti_plagiarism").val();
 		        var supervisor = $("#supervisor").val();
-		        $.ajax({
+		        alert(supervisor);
+		    	$.ajax({
 		        	type: 'POST',
 		        	url: 'handler_student.php',
-		        	data: {nrb, last_name, first_name, patronymic, group_1, topic, type_work, anti_plagiarism, supervisor, mode_1},
+		        	data: {nrb, last_name, first_name, patronymic, group_1, topic, type_work, anti_plagiarism, supervisor, mode_1, arr_1},
 		        	async: false,
 		        	success: function(response)
 		        	{
+		        		alert(response);
 		        		var flag = true;
 		        		var result = JSON.parse(response);
 		        		for(var i in result)
@@ -49,7 +79,7 @@
 		        			{
 		        				if(result['first'] == 3)
 		        				{
-		        					toastr.error('Такой номер зачетной книжки существует','Ошибка!');
+		        					toastr.error('Такой номер зачетной книжки существует у другого студента','Ошибка!');
 		        					flag = false;
 		        					break;
 		        				}
@@ -60,16 +90,7 @@
 		        		}
 		        		if(flag == true)
 		        		{
-		        			toastr.success('Успешно! Студент добавлен');
-		        			$("#nrb").val("");
-		        			$("#last_name").val("");
-		        			$("#first_name").val("");
-		        			$("#patronymic").val("");
-		        			$("#group_1").val("");
-		        			$("#topic").val("");
-		        			$("#type_work").val("");
-		        			$("#anti_plagiarism").val("");
-		        			$("#supervisor").val("");
+		        			toastr.success('Успешно! Информация обновлена');
 		        		}
 		        	},
 		        	error: function(jqxhr, status, errorMsg)
@@ -81,20 +102,33 @@
 		    });
 		});
 
-		window.onbeforeunload = function() {
-			$.cookie('nrb', $("#nrb").val(), { expires: 1 });
-			$.cookie('last_name', $("#last_name").val(), { expires: 1 });
-			$.cookie('first_name', $("#first_name").val(), { expires: 1 });
-			$.cookie('patronymic', $("#patronymic").val(), { expires: 1 });
-			$.cookie('group_1', $("#group_1").val(), { expires: 1 });
-			$.cookie('topic', $("#topic").val(), { expires: 1 });
-			$.cookie('type_work', $("#type_work").val(), { expires: 1 });
-			$.cookie('anti_plagiarism', $("#anti_plagiarism").val(), { expires: 1 });
-			$.cookie('supervisor', $("#supervisor").val(), { expires: 1 });
-		};
+/*		window.onbeforeunload = function (evt) {
+			var message = "Измененные данные не отправлены";
+			if (typeof evt == "undefined") {
+				evt = window.event;
+			}
+			if (evt) {
+				evt.returnValue = message;
+			}
+			return message;
+		}*/
 
 		$(window).ready(function() {
-			if($.cookie('nrb') != null)
+			//var arr_1_slc = $("#group_1 option:selected").val();
+			$("#group_1 option[value=<?php echo $arr_student['id_group_fk']; ?>]").attr("selected", "selected");
+			$("#type_work option[value=<?php echo $arr_diploma['id_type_work_fk']; ?>]").attr("selected", "selected");
+			$("#supervisor option[value=<?php echo $arr_diploma['id_teacher_fk']; ?>]").attr("selected", "selected");
+/*			$("#group_1 option").each(function(index, element){
+				if($("group_1 option:selected").val() == $(element).eq(index).val())
+				{
+					$("#group_1").text("ss");
+				}
+			});*/
+/*			if($("#group_1").val() == )
+			{
+
+			}*/
+			/*if($.cookie('nrb') != null)
 			{
 				$("#nrb").val($.cookie("nrb"));
 			}
@@ -129,7 +163,7 @@
 			if($.cookie('supervisor') != null)
 			{
 				$("#supervisor").val($.cookie("supervisor"));
-			}
+			}*/
 		});
 	</script>
 
@@ -150,24 +184,24 @@
 					<legend>О студенте</legend>
 					<div class="form-group">
 						<label for="nrb">НЗК:</label>
-						<input type="text" class="form-control" id="nrb" name="nrb" pattern="[0-9]{2}[Б,М,С][0-9]{4}" required title="Пожалуйста, введите номер зачетной книжки студента в формате 16Б0000">
+						<input type="text" class="form-control" id="nrb" name="nrb" pattern="[0-9]{2}[Б,М,С][0-9]{4}" required title="Пожалуйста, введите номер зачетной книжки студента в формате 16Б0000" value="<?php echo $arr_student['number_record_book']; ?>">
 					</div>
 					<div class="form-group">
 						<label for="last_name">Фамилия:</label>
-						<input type="text" class="form-control" id="last_name" name="last_name" pattern="[А-ЯЁ][а-яё]{1,254}" required  title="Пожалуйста, введите фамилию">
+						<input type="text" class="form-control" id="last_name" name="last_name" pattern="[А-ЯЁ][а-яё]{1,254}" required  title="Пожалуйста, введите фамилию" value="<?php echo $arr_student['last_name']; ?>">
 					</div>
 					<div class="form-group">
 						<label for="first_name">Имя:</label>
-						<input type="text" class="form-control" id="first_name" name="first_name" pattern="[А-ЯЁ][а-яё]{1,254}" required title="Пожалуйста, введите имя">
+						<input type="text" class="form-control" id="first_name" name="first_name" pattern="[А-ЯЁ][а-яё]{1,254}" required title="Пожалуйста, введите имя" value="<?php echo $arr_student['first_name']; ?>">
 					</div>
 					<div class="form-group">
 						<label for="patronymic">Отчество:</label>
-						<input type="text" class="form-control" id="patronymic" name="patronymic" pattern="[А-ЯЁ][а-яё]{1,254}" required title="Пожалуйста, введите отчество">
+						<input type="text" class="form-control" id="patronymic" name="patronymic" pattern="[А-ЯЁ][а-яё]{1,254}" required title="Пожалуйста, введите отчество" value="<?php echo $arr_student['patronymic']; ?>">
 					</div>
 					<div class="form-group">
 						<label for="group_1">Группа:</label>
 						<select class="form-control" id="group_1" name="group_1" required>
-							<option value="" disabled selected></option>
+							<option value="" selected></option>
 							<?php
 							while($arr_group = $qs_group->fetch_assoc())
 							{
@@ -178,7 +212,7 @@
 					</div>
 					<div class="form-group">
 						<label for="topic">Тема:</label>
-						<textarea class="form-control" id="topic" name="topic" required></textarea>
+						<textarea class="form-control" id="topic" name="topic" required><?php echo $arr_diploma['topic']; ?></textarea>
 					</div>
 					<div class="form-group">
 						<label for="type_work">Тип работы</label>
@@ -191,7 +225,7 @@
 					</div>
 					<div class="form-group">
 						<label for="anti_plagiarism">Антиплагиат:</label>
-						<input type="text" class="form-control" id="anti_plagiarism" name="anti_plagiarism" pattern="[0].[0-9]{0,6}[1-9]" title="пожалуйста, введите антиплагиат в формате дроби">
+						<input type="text" class="form-control" id="anti_plagiarism" name="anti_plagiarism" pattern="[0].[0-9]{0,6}[1-9]" title="пожалуйста, введите антиплагиат в формате дроби" value="<?php echo $arr_diploma['anti_plagiarism']; ?>">
 					</div>
 					<div class="form-group">
 						<label for="supervisor">Преподаватель:</label>
