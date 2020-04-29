@@ -21,23 +21,17 @@
 			}
 		}
 	}
-	//require_once('classes/class_site.php')
 	$mode = $_GET['mode'];
 	if($mode == 1)
 	{
 		$title = 'Выбор группы';
 		$name_choice = 'Группа';
-		//$sql_choice = 'SELECT cipher_group FROM group_1';
 	}
 	elseif($mode == 2)
 	{
 		$title = 'Выбор группы';
 		$name_choice = 'Группа';
 	}
-
-	//content_select($mode, $sql_choice);
-
-	//$qs_group = $conn->query('SELECT id, cipher_group FROM group_1');
 ?>
 
 <!DOCTYPE html>
@@ -50,6 +44,8 @@
 	<title><?php echo $title; ?></title>
 
 	<link href="scripts/toastr.css" rel="stylesheet">
+	<link href="scripts/toastr.css" rel="stylesheet">
+	<script type="text/javascript" src="scripts/toastr.js"></script>
 	<script type="text/javascript" src="scripts/jquery_cookies.js"></script>
 	<script type="text/javascript" src="scripts/disabled_link.js"></script>
 	<script type="text/javascript" src="scripts/toastr.js"></script>
@@ -65,8 +61,49 @@
 			}
 			else if(mode == 2)
 			{
-				return '(\'<li>\'+(index+1)+\' \'+item.last_name +\' \'+item.first_name+\' \'+item.number_record_book+\' <input type="checkbox"   name="students[]" value="item.arr_1"></li>\')';
+				return '(\'<li><a class="nolink" href=handler_student.php?arr_1=\'+item.arr_1+\'>\'+(index+1)+\' \'+item.last_name +\' \'+item.first_name+\' \'+item.number_record_book+\'</li></a>\')';
 			}
+		}
+
+		function a_dell()
+		{
+			$(".nolink").on("click", function(e){
+				var mode_1 = 3;
+				var link = e.target;
+				link = String(link);
+				var arr_1 = link.substr(50,8);
+				$.ajax({
+					type: 'POST',
+					url: 'handler_student.php',
+					data: {arr_1, mode_1},
+					async: false,
+					success: function(response)
+					{
+						var flag = true;
+		        		var result = JSON.parse(response);
+		        		for(var i in result)
+		        		{
+		        			if(result[i] != 1)
+		        			{
+		        				toastr.error('Ошибка при удалении','Ошибка!');
+		        				flag = false;
+		        				break;
+		        			}
+		        		}
+		        		if(flag == true)
+		        		{
+		        			toastr.success('Успешно! Студент удален');
+		        			$("#btn_choice").trigger("click");
+		        		}
+					},
+					error: function(jqxhr, status, errorMsg)
+		        	{
+		        		toastr.error(errorMsg, status);
+		        	}
+				});
+				return false;
+			});
+
 		}
 
 		$(function(){
@@ -87,59 +124,12 @@
 						});
 						if(mode == 2)
 						{
-							$(".add_content").after('<button class="btn btn-primary" id="btn_send">Выбрать</button>');
+							a_dell();
 						}
 			        }
 			    });
-			    $("#btn_send").on('click',function(){
-					alert(10);
-					$(".add_content").children().remove();
-					var mode_1 = 3;
-					var checked = [];
-					//var select[] = $('input[name="students[]"]').val();
-					$('input:checkbox:checked').each(function() {
-						checked.push($(this).val());
-					});
-					$.ajax({
-						type: 'GET',
-						url: 'handler_choice.php',
-						data: {checked},
-						async: false,
-						success: function(response)
-						{
-							alert(response);
-						}
-					});
-				});
 			});
 		});
-
-/*		$(function(){
-			$("#btn_send").on('click',function(){
-				alert(10);
-				$(".add_content").children().remove();
-				var mode_1 = 3;
-				var select = $('input[name="students[]"]').val();
-				alert(select);
-				$.ajax({
-					type: 'GET',
-					url: 'handler_choice.php',
-					data: {mode, select},
-					async: false,
-					success: function(response)
-					{
-						var obj = JSON.parse(response);
-						$(obj).each(function(index, item) {
-							$('.add_content').append(eval(data(mode, index)));
-						});
-						if(mode == 2)
-						{
-							$(".add_content").after('<button class="btn btn-primary" id="btn_send">Выбрать</button>');
-						}
-					}
-				});
-			});
-		});*/
 
 	</script>
 
@@ -165,10 +155,12 @@
 						?>
 					</select>
 					<button class="btn btn-primary" id="btn_choice">Выбрать</button>
-					<div id="content">
-						<ul class="add_content">
-						</ul>
-					</div>
+					<form name="heh">
+						<div id="content">
+							<ul class="add_content">
+							</ul>
+						</div>
+					</form>
 				</div>
 			</div>
 		</div>

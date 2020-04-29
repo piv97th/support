@@ -121,7 +121,7 @@
 	function check_num($data)
 	{
 		$status = check_empty($data);
-		if(!is_numeric($data) || 1 > mb_strlen($data) || 6 < mb_strlen($data))
+		if(!is_numeric($data) || 1 > mb_strlen($data) || 8 < mb_strlen($data))
 		{
 			return 2;
 		}

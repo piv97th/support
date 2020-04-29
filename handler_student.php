@@ -17,8 +17,8 @@
 			}
 		}
 
-		require_once('classes/class_man.php');
-		require_once('classes/class_inanimate.php');
+		require_once('user_classes/class_man.php');
+		require_once('user_classes/class_inanimate.php');
 
 		$student = new student(['last_name' => $_POST['last_name'], 'first_name' => $_POST['first_name'], 'patronymic' => $_POST['patronymic'], 'nrb' => $_POST['nrb'], 'group_1' => $_POST['group_1']]);
 
@@ -47,8 +47,8 @@
 			}
 		}
 
-		require_once('classes/class_man.php');
-		require_once('classes/class_inanimate.php');
+		require_once('user_classes/class_man.php');
+		require_once('user_classes/class_inanimate.php');
 
 		$student = new student(['last_name' => $_POST['last_name'], 'first_name' => $_POST['first_name'], 'patronymic' => $_POST['patronymic'], 'nrb' => $_POST['nrb'], 'group_1' => $_POST['group_1']]);
 		$student->id = $_POST['arr_1'];
@@ -61,6 +61,28 @@
 		//$student->diploma = $diploma->get_diploma();
 		$diploma->update_diploma();
 		$student->update_student();
+
+		echo json_encode($result);
+        exit;
+	}
+
+	if($mode_1 == 3)
+	{
+		$result = array('first' => check_num($_POST['arr_1']), 'second' => check_num($_POST['mode_1']));
+
+		foreach($result as $val)
+		{
+			if($val != 1)
+			{
+				echo json_encode($result);
+				exit;
+			}
+		}
+		require_once('user_classes/class_man.php');
+		require_once('user_classes/class_inanimate.php');
+
+		$student = new student(['id' => $_POST['arr_1']]);
+		$result = $student->delete_student();
 
 		echo json_encode($result);
         exit;

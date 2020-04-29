@@ -39,6 +39,59 @@
 			$stmt->execute();
 		}
 
+		public function delete_student()
+		{
+			require('blocks/connect.php');
+			$arr = $this->get_info_student();
+			if($arr['id_diploma_fk'] != NULL && $arr['id_se_fk'] == NULL && $arr['id_review_fk'] == NULL)
+			{
+				$result_diploma = $conn->query('DELETE FROM diploma WHERE id = '.$arr["id_diploma_fk"]);
+				if($result_diploma == 1)
+				{
+					$result = array('eleventh' => 1);
+					return $result;
+				}
+				else
+				{
+					$result = array('eleventh' => 0);
+					return $result;
+				}
+			}
+			else
+			{
+				if($arr['id_diploma_fk'] != NULL && $arr['id_se_fk'] != NULL && $arr['id_review_fk'] == NULL)
+				{
+					$result_se = $conn->query('DELETE FROM se WHERE id = '.$arr[id_se_fk]);
+					$result_diploma = $conn->query('DELETE FROM diploma WHERE id = '.$arr[id_diploma_fk]);
+					if($result_diploma == 1 && $result_se == 1 )
+					{
+						$result = array('eleventh' => 1, 'twelfth' => 1);
+						return $result;
+					}
+					else
+					{
+						$result = array('eleventh' => 0, 'twelfth' => 0);
+						return $result;
+					}
+				}
+				else
+				{
+					$result_review = $conn->query('DELETE FROM review WHERE id = '.$arr[id_review_fk]);
+					$result_diploma = $conn->query('DELETE FROM diploma WHERE id = '.$arr[id_diploma_fk]);
+					if($result_diploma == 1 && $result_review == 1 )
+					{
+						$result = array('eleventh' => 1, 'twelfth' => 1);
+						return $result;
+					}
+					else
+					{
+						$result = array('eleventh' => 0, 'twelfth' => 0);
+						return $result;
+					}
+				}
+			}
+		}
+
 		public function get_info_student()
 		{
 			require('blocks/connect.php');
