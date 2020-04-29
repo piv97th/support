@@ -11,7 +11,14 @@
 			{
 				echo'<option value='.$arr["id"].'>'.$arr["cipher_group"].'</option>';
 			}
-
+		}
+		elseif($mode == 2)
+		{
+			$result = $conn->query('SELECT id, cipher_group FROM group_1');
+			while ($arr = $result->fetch_assoc())
+			{
+				echo'<option value='.$arr["id"].'>'.$arr["cipher_group"].'</option>';
+			}
 		}
 	}
 	//require_once('classes/class_site.php')
@@ -21,6 +28,11 @@
 		$title = 'Выбор группы';
 		$name_choice = 'Группа';
 		//$sql_choice = 'SELECT cipher_group FROM group_1';
+	}
+	elseif($mode == 2)
+	{
+		$title = 'Выбор группы';
+		$name_choice = 'Группа';
 	}
 
 	//content_select($mode, $sql_choice);
@@ -51,6 +63,10 @@
 			{
 				return '(\'<li><a href=form_update_student.php?arr_1=\'+item.arr_1+\'>\'+(index+1)+\' \'+item.last_name +\' \'+item.first_name+\' \'+item.number_record_book+\'</li></a>\')';
 			}
+			else if(mode == 2)
+			{
+				return '(\'<li>\'+(index+1)+\' \'+item.last_name +\' \'+item.first_name+\' \'+item.number_record_book+\' <input type="checkbox"   name="students[]" value="item.arr_1"></li>\')';
+			}
 		}
 
 		$(function(){
@@ -69,10 +85,62 @@
 						$(obj).each(function(index, item) {
 							$('.add_content').append(eval(data(mode, index)));
 						});
+						if(mode == 2)
+						{
+							$(".add_content").after('<button class="btn btn-primary" id="btn_send">Выбрать</button>');
+						}
 			        }
 			    });
+			    $("#btn_send").on('click',function(){
+					alert(10);
+					$(".add_content").children().remove();
+					var mode_1 = 3;
+					var checked = [];
+					//var select[] = $('input[name="students[]"]').val();
+					$('input:checkbox:checked').each(function() {
+						checked.push($(this).val());
+					});
+					$.ajax({
+						type: 'GET',
+						url: 'handler_choice.php',
+						data: {checked},
+						async: false,
+						success: function(response)
+						{
+							alert(response);
+						}
+					});
+				});
 			});
 		});
+
+/*		$(function(){
+			$("#btn_send").on('click',function(){
+				alert(10);
+				$(".add_content").children().remove();
+				var mode_1 = 3;
+				var select = $('input[name="students[]"]').val();
+				alert(select);
+				$.ajax({
+					type: 'GET',
+					url: 'handler_choice.php',
+					data: {mode, select},
+					async: false,
+					success: function(response)
+					{
+						var obj = JSON.parse(response);
+						$(obj).each(function(index, item) {
+							$('.add_content').append(eval(data(mode, index)));
+						});
+						if(mode == 2)
+						{
+							$(".add_content").after('<button class="btn btn-primary" id="btn_send">Выбрать</button>');
+						}
+					}
+				});
+			});
+		});*/
+
 	</script>
 
 </head>

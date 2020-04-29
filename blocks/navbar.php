@@ -12,7 +12,7 @@
 				<div class="dropdown-header">На сайте</div>
 				<a class="dropdown-item" href="form_add_student.php">Добавить</a>
 				<a class="dropdown-item" href="choice.php?mode=1">Редактировать</a>
-				<a class="dropdown-item" href="#">Удалить</a>
+				<a class="dropdown-item" href="choice.php?mode=2">Удалить</a>
 				<div class="dropdown-header">Через файл</div>
 				<a class="dropdown-item" href="choice_group_blank.php">Скачать файл</a>
 				<a class="dropdown-item" href="#">Загрузить бланк</a>
