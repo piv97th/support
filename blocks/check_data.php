@@ -169,4 +169,35 @@
 
 		return $kw;
 	}
+
+	function check_group($data)
+	{
+		$status = check_empty($data);
+		if($status == 0)
+		{
+			return 0;
+		}
+		else
+		{
+			$pattern_1 = '/^[А-ЯЁ][А-ЯЁ][Б,М,С][В,З,О]-[0-9]{2}-[0-9]{2}$/u';
+			if(!preg_match($pattern_1, $data))
+			{
+				return 2;
+			}
+			else
+			{
+				require('blocks/connect.php');
+				$result_group = $conn->query('SELECT cipher_group FROM group_1 WHERE cipher_group = '.$data);
+				$arr = $result_group->fetch_assoc();
+				if($arr['cipher_group'] == NULL)
+				{
+					return 3;
+				}
+				else
+				{
+					return 1;
+				}
+			}
+		}
+	}
 ?>
