@@ -1,23 +1,11 @@
 <?php
 	require('blocks/connect.php');
 	require_once('blocks/check_data.php');
-	//echo 1000;
 
 	$mode_1 = $_POST['mode_1'];
 
 	if(isset($_POST['nrb']) && $mode_1 == 1)
 	{
-/*		$result = array('first' => check_nrb($_POST['nrb']), 'second' => check_name($_POST['last_name']), 'third' => check_name($_POST['first_name']), 'fourth' => check_name($_POST['patronymic']), 'fifth' => check_num($_POST['group_1']), 'seventh' => check_empty($_POST['topic']), 'eighth' => check_num($_POST['type_work']), 'ninth' => check_ap($_POST['anti_plagiarism']), 'tenth' => check_num($_POST['supervisor']));
-
-		foreach($result as $val)
-		{
-			if($val != 1)
-			{
-				echo json_encode($result);
-				exit;
-			}
-		}*/
-
 		require_once('user_classes/class_man.php');
 		require_once('user_classes/class_inanimate.php');
 
@@ -31,10 +19,9 @@
 
 		$diploma->kind_work = choice_kind_work($student->group_1);
 
-/*		$diploma->add_diploma();
+		$diploma->add_diploma();
 		$student->diploma = $diploma->get_diploma();
-		$student->add_student();*/
-		//$result = array('ok' => 1);
+		$student->add_student();
 		echo json_encode($result);
         exit;
 	}
@@ -75,14 +62,8 @@
 	{
 		$result = array('first' => check_num($_POST['arr_1']), 'second' => check_num($_POST['mode_1']));
 
-		foreach($result as $val)
-		{
-			if($val != 1)
-			{
-				echo json_encode($result);
-				exit;
-			}
-		}
+		check_result($result);
+
 		require_once('user_classes/class_man.php');
 		require_once('user_classes/class_inanimate.php');
 

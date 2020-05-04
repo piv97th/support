@@ -44,7 +44,7 @@
 		        		if(flag == true)
 		        		{
 		        			toastr.success('Успешно! Студент добавлен');
-		        			$("#nrb").val("");
+/*		        			$("#nrb").val("");
 		        			$("#last_name").val("");
 		        			$("#first_name").val("");
 		        			$("#patronymic").val("");
@@ -52,7 +52,7 @@
 		        			$("#topic").val("");
 		        			$("#type_work").val("");
 		        			$("#anti_plagiarism").val("");
-		        			$("#supervisor").val("");
+		        			$("#supervisor").val("");*/
 		        		}
 		        	},
 		        	error: function(jqxhr, status, errorMsg)
