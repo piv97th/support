@@ -6,6 +6,100 @@
 		public $first_name = 'NULL';
 		public $patronymic = 'NULL';
 
+		public function check_empty($data)
+		{
+			if(empty($data))
+			{
+				return 0;
+			}
+			else
+			{
+				return 1;
+			}
+		}
+
+		public function check_name($data)
+		{
+			$pattern_2 = '/^[А-ЯЁ][а-яё]{1,254}$/u';
+			$data = mb_strtoupper(mb_substr($data, 0, 1)) . mb_strtolower(mb_substr($data, 1));
+			if(!preg_match($pattern_2, $data))
+			{
+				return 2;
+			}
+			else
+			{
+				return 1;
+			}
+		}
+
+		public function check_last_name($data)
+		{
+			$status = $this->check_empty($data);
+			if($status == 0)
+			{
+				return $status;
+			}
+			if($this->check_name($data) == 2)
+			{
+				return 2;
+			}
+			else
+			{
+				$this->last_name = $data;
+				return 1;
+			}
+		}
+
+		public function check_first_name($data)
+		{
+			$status = $this->check_empty($data);
+			if($status == 0)
+			{
+				return $status;
+			}
+			if($this->check_name($data) == 2)
+			{
+				return 2;
+			}
+			else
+			{
+				$this->first_name = $data;
+				return 1;
+			}
+		}
+
+		public function check_patronymic($data)
+		{
+			$status = $this->check_empty($data);
+			if($status == 0)
+			{
+				return $status;
+			}
+			if($this->check_name($data) == 2)
+			{
+				return 2;
+			}
+			else
+			{
+				$this->patronymic = $data;
+				return 1;
+			}
+		}
+
+		public function check_num($data)
+		{
+			$status = $this->check_empty($data);
+			if(!is_numeric($data) || 1 > mb_strlen($data) || 8 < mb_strlen($data))
+			{
+				return 2;
+			}
+			else
+			{
+				$this->last_name = $data;
+				return 1;
+			}
+		}
+
 	}
 
 	class student extends man
@@ -16,12 +110,132 @@
 		public $diploma = 'NULL';
 		public $review = 'NULL';
 
-		public function __construct($fields)
+/*		public function __construct($fields)
 		{
 			foreach($fields as $key => $value) {
 				$this->$key = $value;
 			}
+		}*/
+
+		public function exist_nrb_u($data)
+		{
+			require('blocks/connect.php');
+			$sql = "SELECT COUNT(number_record_book) as `count` FROM student WHERE number_record_book = '$data'";
+			$result = $conn->query($sql) or die($conn->error);
+			$row = $result->fetch_assoc();
+			if($row['count'] > 0)
+			{
+				return TRUE;
+			}
+			else
+			{
+				return FALSE;
+			}
 		}
+
+		public function check_nrb_u($data)
+		{
+			$status = $this->check_empty($data);
+			if($status == 0)
+			{
+				return $status;
+			}
+			$arr_was = array("б", "м", "с");
+			$arr_become = array("Б", "М", "С");
+			$data = str_replace($arr_was, $arr_become, $data);
+			$pattern_1 = '/^[0-9]{2}[Б,М,С][0-9]{4}$/u';
+			if(!preg_match($pattern_1, $data))
+			{
+				return 2;
+			}
+			else
+			{
+				if($this->exist_nrb_u($data) == TRUE)
+				{
+					return 3;
+				}
+				else
+				{
+					return 1;
+				}
+			}
+		}
+
+		public function exist_nrb($data)
+		{
+			require('blocks/connect.php');
+			$sql = "SELECT COUNT(number_record_book) as `count` FROM student WHERE number_record_book = '$data'";
+			$result = $conn->query($sql) or die($conn->error);
+			$row = $result->fetch_assoc();
+			if($row['count'] > 0)
+			{
+				return TRUE;
+			}
+			else
+			{
+				return FALSE;
+			}
+		}
+
+		public function check_nrb($data)
+		{
+			$status = $this->check_empty($data);
+			if($status == 0)
+			{
+				return $status;
+			}
+			$arr_was = array("б", "м", "с");
+			$arr_become = array("Б", "М", "С");
+			$data = str_replace($arr_was, $arr_become, $data);
+			$pattern_1 = '/^[0-9]{2}[Б,М,С][0-9]{4}$/u';
+			if(!preg_match($pattern_1, $data))
+			{
+				return 2;
+			}
+			else
+			{
+				if($this->exist_nrb($data) == TRUE)
+				{
+					return 3;
+				}
+				else
+				{
+					$this->nrb = $data;
+					return 1;
+				}
+			}
+		}
+
+
+		public function check_group($data)
+		{
+			$status = $this->check_empty($data);
+			if($status == 0)
+			{
+				return 0;
+			}
+			else
+			{
+				require('blocks/connect.php');
+				$result_group = $conn->query('SELECT id FROM group_1 WHERE id = '.$data);
+				$arr = $result_group->fetch_assoc();
+				if($arr['id'] == NULL)
+				{
+					return 2;
+				}
+				else
+				{
+					$this->group_1 = $data;
+					return 1;
+				}
+			}
+		}
+
+/*		public function data_student($nrb, $last_name, $first_name, $patronymic, $group_1, $topic, $type_work, $anti_plagiarism, $supervisor, $mode_1, $arr_1)
+		{
+			//require('blocks/connect.php');
+			$this->$
+		}*/
 
 		public function add_student()
 		{
@@ -108,12 +322,12 @@
 		public $rank = 'NULL';
 		public $post = 'NULL';
 
-		public function __construct($fields)
+/*		public function __construct($fields)
 		{
 			foreach($fields as $key => $value) {
 				$this->$key = $value;
 			}
-		}
+		}*/
 
 	}
 
@@ -125,14 +339,12 @@
 		public $role = 'NULL';
 		public $commission = 'NULL';
 
-		public function __construct($fields)
+/*		public function __construct($fields)
 		{
 			foreach($fields as $key => $value) {
 				$this->$key = $value;
 			}
-		}
+		}*/
 
 	}
-
-
 ?>

@@ -23,13 +23,12 @@
 	<script type="text/javascript">
 		$(function(){
 			$("form").on('submit',function(){
-				$mode_1 = 1;
+				var mode_1 = 1;
 		        var nrb = $("#nrb").val();
 		        var last_name = $("#last_name").val();
 		        var first_name = $("#first_name").val();
 		        var patronymic = $("#patronymic").val();
 		        var group_1 = $("#group_1").val();
-		        var cipher_group = $("#cipher_group").val();
 		        var topic = $("#topic").val();
 		        var type_work = $("#type_work").val();
 		        var anti_plagiarism = $("#anti_plagiarism").val();
@@ -41,36 +40,9 @@
 		        	async: false,
 		        	success: function(response)
 		        	{
-		        		var flag = true;
+		        		alert(response);
 		        		var result = JSON.parse(response);
-		        		for(var i in result)
-		        		{
-		        			if(result[i] != 1)
-		        			{
-		        				if(result['first'] == 3)
-		        				{
-		        					toastr.error('Такой номер зачетной книжки существует','Ошибка!');
-		        					flag = false;
-		        					break;
-		        				}
-		        				toastr.error('Проверьте правильность введенных данных','Ошибка!');
-		        				flag = false;
-		        				break;
-		        			}
-		        		}
-		        		if(flag == true)
-		        		{
-		        			toastr.success('Успешно! Студент добавлен');
-		        			$("#nrb").val("");
-		        			$("#last_name").val("");
-		        			$("#first_name").val("");
-		        			$("#patronymic").val("");
-		        			$("#group_1").val("");
-		        			$("#topic").val("");
-		        			$("#type_work").val("");
-		        			$("#anti_plagiarism").val("");
-		        			$("#supervisor").val("");
-		        		}
+		        		out_toast(result);
 		        	},
 		        	error: function(jqxhr, status, errorMsg)
 		        	{
@@ -80,6 +52,149 @@
 		    	return false;
 		    });
 		});
+
+		function out_toast(arr)
+		{
+			var flag = true;
+			var c = 0;
+			for(var i in arr)
+			{
+				if(arr[i] != 1)
+				{
+					if(c == 0)
+					{
+						if(arr['nrb'] == 0)
+						{
+							toastr.error('Введите данные','Ошибка!');
+							flag = false;
+						}
+						if(arr['nrb'] == 2)
+						{
+							toastr.error('Некорректные данные','Ошибка!');
+							flag = false;
+						}
+						if(arr['nrb'] == 3)
+						{
+							toastr.error('Такой номер зачетной книжки существует','Ошибка!');
+							flag = false;
+						}
+					}
+					if(c == 1)
+					{
+						if(arr['last_name'] == 0)
+						{
+							toastr.error('Введите данные','Ошибка!');
+							flag = false;
+						}
+						if(arr['last_name'] == 2)
+						{
+							toastr.error('Некорректные данные','Ошибка!');
+							flag = false;
+						}
+					}
+					if(c == 2)
+					{
+						if(arr['first_name'] == 0)
+						{
+							toastr.error('Введите данные','Ошибка!');
+							flag = false;
+						}
+						if(arr['first_name'] == 2)
+						{
+							toastr.error('Некорректные данные','Ошибка!');
+							flag = false;
+						}
+					}
+					if(c == 3)
+					{
+						if(arr['patronymic'] == 0)
+						{
+							toastr.error('Введите данные','Ошибка!');
+							flag = false;
+						}
+						if(arr['patronymic'] == 2)
+						{
+							toastr.error('Некорректные данные','Ошибка!');
+							flag = false;
+						}
+					}
+					if(c == 4)
+					{
+						if(arr['group_1'] == 0)
+						{
+							toastr.error('Введите данные','Ошибка!');
+							flag = false;
+						}
+						if(arr['group_1'] == 2)
+						{
+							toastr.error('Некорректные данные','Ошибка!');
+							flag = false;
+						}
+					}
+					if(c == 5)
+					{
+						if(arr['topic'] == 0)
+						{
+							toastr.error('Введите данные','Ошибка!');
+							flag = false;
+						}
+						if(result['topic'] == 2)
+						{
+							toastr.error('Некорректные данные','Ошибка!');
+							flag = false;
+						}
+					}
+					if(c == 6)
+					{
+						if(arr['type_work'] == 0)
+						{
+							toastr.error('Введите данные','Ошибка!');
+							flag = false;
+						}
+						if(arr['type_work'] == 2)
+						{
+							toastr.error('Некорректные данные','Ошибка!');
+							flag = false;
+						}
+					}
+					if(c == 7)
+					{
+						if(arr['anti_plagiarism'] == 2)
+						{
+							toastr.error('Некорректные данные','Ошибка!');
+							flag = false;
+						}
+					}
+					if(c == 8)
+					{
+						if(arr['supervisor'] == 0)
+						{
+							toastr.error('Введите данные','Ошибка!');
+							flag = false;
+						}
+						if(arr['supervisor'] == 2)
+						{
+							toastr.error('Некорректные данные','Ошибка!');
+							flag = false;
+						}
+					}
+		        }
+		        c = c+1;
+		    }
+    		if(flag == true)
+    		{
+    			toastr.success('Успешно! Студент добавлен');
+/*		        			$("#nrb").val("");
+    			$("#last_name").val("");
+    			$("#first_name").val("");
+    			$("#patronymic").val("");
+    			$("#group_1").val("");
+    			$("#topic").val("");
+    			$("#type_work").val("");
+    			$("#anti_plagiarism").val("");
+    			$("#supervisor").val("");*/
+    		}
+		}
 
 		window.onbeforeunload = function() {
 			$.cookie('nrb', $("#nrb").val(), { expires: 1 });
@@ -150,23 +265,23 @@
 					<legend>О студенте</legend>
 					<div class="form-group">
 						<label for="nrb">НЗК:</label>
-						<input type="text" class="form-control" id="nrb" name="nrb" pattern="[0-9]{2}[Б,М,С][0-9]{4}" required title="Пожалуйста, введите номер зачетной книжки студента в формате 16Б0000">
+						<input type="text" class="form-control" id="nrb" name="nrb" >
 					</div>
 					<div class="form-group">
 						<label for="last_name">Фамилия:</label>
-						<input type="text" class="form-control" id="last_name" name="last_name" pattern="[А-ЯЁ][а-яё]{1,254}" required  title="Пожалуйста, введите фамилию">
+						<input type="text" class="form-control" id="last_name" name="last_name" >
 					</div>
 					<div class="form-group">
 						<label for="first_name">Имя:</label>
-						<input type="text" class="form-control" id="first_name" name="first_name" pattern="[А-ЯЁ][а-яё]{1,254}" required title="Пожалуйста, введите имя">
+						<input type="text" class="form-control" id="first_name" name="first_name" >
 					</div>
 					<div class="form-group">
 						<label for="patronymic">Отчество:</label>
-						<input type="text" class="form-control" id="patronymic" name="patronymic" pattern="[А-ЯЁ][а-яё]{1,254}" required title="Пожалуйста, введите отчество">
+						<input type="text" class="form-control" id="patronymic" name="patronymic" >
 					</div>
 					<div class="form-group">
 						<label for="group_1">Группа:</label>
-						<select class="form-control" id="group_1" name="group_1" required>
+						<select class="form-control" id="group_1" name="group_1" >
 							<option value="" disabled selected></option>
 							<?php
 							while($arr_group = $qs_group->fetch_assoc())
@@ -178,11 +293,11 @@
 					</div>
 					<div class="form-group">
 						<label for="topic">Тема:</label>
-						<textarea class="form-control" id="topic" name="topic" required></textarea>
+						<textarea class="form-control" id="topic" name="topic" ></textarea>
 					</div>
 					<div class="form-group">
 						<label for="type_work">Тип работы</label>
-						<select class="form-control" id="type_work" name="type_work" required>
+						<select class="form-control" id="type_work" name="type_work" >
 							<option value="" disabled selected></option>
 							<option value="1">Простая</option>
 							<option value="2">Заказная</option>
@@ -191,11 +306,11 @@
 					</div>
 					<div class="form-group">
 						<label for="anti_plagiarism">Антиплагиат:</label>
-						<input type="text" class="form-control" id="anti_plagiarism" name="anti_plagiarism" pattern="[0].[0-9]{0,6}[1-9]" title="пожалуйста, введите антиплагиат в формате дроби">
+						<input type="text" class="form-control" id="anti_plagiarism" name="anti_plagiarism" >
 					</div>
 					<div class="form-group">
 						<label for="supervisor">Преподаватель:</label>
-						<select class="form-control" id="supervisor" name="supervisor" required>
+						<select class="form-control" id="supervisor" name="supervisor" >
 							<option value="" disabled selected></option>
 							<?php
 							while($arr_supervisor = $qs_supervisor->fetch_assoc())

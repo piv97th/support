@@ -1,4 +1,16 @@
 <?php
+
+	function check_result($arr)
+	{
+		foreach($arr as $i)
+		{
+			if($i != 1)
+			{
+				echo json_encode($arr);
+				exit;
+			}
+		}
+	}
 	function check_empty($data)
 	{
 		if(empty($data))
@@ -122,23 +134,6 @@
 	{
 		$status = check_empty($data);
 		if(!is_numeric($data) || 1 > mb_strlen($data) || 8 < mb_strlen($data))
-		{
-			return 2;
-		}
-		else
-		{
-			return 1;
-		}
-	}
-
-	function check_ap($data)
-	{
-		if(empty($data) && isset($data))
-		{
-			return 1;
-		}
-		$pattern_1 = '/^[0].[0-9]{0,7}$/u';
-		if(!preg_match($pattern_1, $data))
 		{
 			return 2;
 		}
