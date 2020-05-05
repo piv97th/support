@@ -19,9 +19,14 @@
 
 		$diploma->kind_work = choice_kind_work($student->group_1);
 
-		$diploma->add_diploma();
+		$result_diploma = $diploma->add_diploma();
+		$result = array('diploma' => $result_diploma);
+		check_result($result);
+
 		$student->diploma = $diploma->get_diploma();
-		$student->add_student();
+		
+		$result_student = $student->add_student();
+		$result += ['student' => $result_student];
 		echo json_encode($result);
         exit;
 	}

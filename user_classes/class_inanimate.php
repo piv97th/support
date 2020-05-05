@@ -18,6 +18,18 @@
 			}
 		}
 
+		public function check_isset($data)
+		{
+			if(!isset($data))
+			{
+				return 0;
+			}
+			else
+			{
+				return 1;
+			}
+		}
+
 		public function check_topic($data)
 		{
 			if($this->check_empty($data) == 0)
@@ -75,10 +87,13 @@
 */
 		public function check_ap($data)
 		{
-			if(empty($data) && isset($data))
+			if(empty($data) && ($this->check_isset($data) == 1))
 			{
-				$this->anti_plagiarism = $data;
 				return 1;
+			}
+			else
+			{
+				return 2;
 			}
 			$pattern_1 = '/^[0].[0-9]{0,7}$/u';
 			if(!preg_match($pattern_1, $data))
@@ -87,6 +102,7 @@
 			}
 			else
 			{
+				$this->anti_plagiarism = $data;
 				return 1;
 			}
 		}
@@ -120,7 +136,14 @@
 			require('blocks/connect.php');
 			$stmt = $conn->prepare('INSERT INTO diploma (topic, anti_plagiarism, id_kind_work_fk, id_teacher_fk, id_type_work_fk) VALUES(?,?,?,?,?)');
 			$stmt->bind_param('sdiii', $this->topic, $this->anti_plagiarism, $this->kind_work, $this->supervisor, $this->type_work);
-			$stmt->execute();
+			if($stmt->execute() != 1)
+			{
+				return 0;
+			}
+			else
+			{
+				return 1;
+			}
 		}
 
 		public function get_diploma()
