@@ -146,6 +146,21 @@
 			}
 		}
 
+		public function update_diploma()
+		{
+			require('blocks/connect.php');
+			$stmt = $conn->prepare('UPDATE diploma SET topic = ?, anti_plagiarism = ?, id_kind_work_fk = ?, id_teacher_fk = ?, id_type_work_fk = ? WHERE id = ?');
+			$stmt->bind_param('sdiiii', $this->topic, $this->anti_plagiarism, $this->kind_work, $this->supervisor, $this->type_work, $this->id);
+			if($stmt->execute() != 1)
+			{
+				return 0;
+			}
+			else
+			{
+				return 1;
+			}
+		}
+
 		public function get_diploma()
 		{
 			require('blocks/connect.php');

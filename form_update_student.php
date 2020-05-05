@@ -62,7 +62,7 @@
 		        var type_work = $("#type_work").val();
 		        var anti_plagiarism = $("#anti_plagiarism").val();
 		        var supervisor = $("#supervisor").val();
-		        alert(supervisor);
+		        //alert(nrb);
 		    	$.ajax({
 		        	type: 'POST',
 		        	url: 'handler_student.php',
@@ -71,27 +71,8 @@
 		        	success: function(response)
 		        	{
 		        		alert(response);
-		        		var flag = true;
 		        		var result = JSON.parse(response);
-		        		for(var i in result)
-		        		{
-		        			if(result[i] != 1)
-		        			{
-		        				if(result['first'] == 3)
-		        				{
-		        					toastr.error('Такой номер зачетной книжки существует у другого студента','Ошибка!');
-		        					flag = false;
-		        					break;
-		        				}
-		        				toastr.error('Проверьте правильность введенных данных','Ошибка!');
-		        				flag = false;
-		        				break;
-		        			}
-		        		}
-		        		if(flag == true)
-		        		{
-		        			toastr.success('Успешно! Информация обновлена');
-		        		}
+						out_toast(result);
 		        	},
 		        	error: function(jqxhr, status, errorMsg)
 		        	{
@@ -101,6 +82,172 @@
 		    	return false;
 		    });
 		});
+
+		function out_toast(arr)
+		{
+			var flag = true;
+			var c = 0;
+			for(var i in arr)
+			{
+				if(arr[i] != 1)
+				{
+					if(c == 0)
+					{
+						if(arr['arr_1'] == 0)
+						{
+							toastr.error('Ошибка','Ошибка!');
+							flag = false;
+						}
+						if(arr['arr_1'] == 2)
+						{
+							toastr.error('Ошибка','Ошибка!');
+							flag = false;
+						}
+						if(arr['diploma'] == 0)
+						{
+							toastr.error('При записи','Ошибка!');
+							flag = false;
+						}
+					}
+					if(c == 1)
+					{
+						if(arr['nrb'] == 0)
+						{
+							toastr.error('Введите данные','Ошибка!');
+							flag = false;
+						}
+						if(arr['nrb'] == 2)
+						{
+							toastr.error('Некорректные данные','Ошибка!');
+							flag = false;
+						}
+						if(arr['nrb'] == 3)
+						{
+							toastr.error('Такой номер зачетной книжки существует','Ошибка!');
+							flag = false;
+						}
+						if(arr['student'] == 0)
+						{
+							toastr.error('При записи','Ошибка!');
+							flag = false;
+						}
+					}
+					if(c == 2)
+					{
+						if(arr['last_name'] == 0)
+						{
+							toastr.error('Введите данные','Ошибка!');
+							flag = false;
+						}
+						if(arr['last_name'] == 2)
+						{
+							toastr.error('Некорректные данные','Ошибка!');
+							flag = false;
+						}
+					}
+					if(c == 3)
+					{
+						if(arr['first_name'] == 0)
+						{
+							toastr.error('Введите данные','Ошибка!');
+							flag = false;
+						}
+						if(arr['first_name'] == 2)
+						{
+							toastr.error('Некорректные данные','Ошибка!');
+							flag = false;
+						}
+					}
+					if(c == 4)
+					{
+						if(arr['patronymic'] == 0)
+						{
+							toastr.error('Введите данные','Ошибка!');
+							flag = false;
+						}
+						if(arr['patronymic'] == 2)
+						{
+							toastr.error('Некорректные данные','Ошибка!');
+							flag = false;
+						}
+					}
+					if(c == 5)
+					{
+						if(arr['group_1'] == 0)
+						{
+							toastr.error('Введите данные','Ошибка!');
+							flag = false;
+						}
+						if(arr['group_1'] == 2)
+						{
+							toastr.error('Некорректные данные','Ошибка!');
+							flag = false;
+						}
+					}
+					if(c == 6)
+					{
+						if(arr['topic'] == 0)
+						{
+							toastr.error('Введите данные','Ошибка!');
+							flag = false;
+						}
+						if(result['topic'] == 2)
+						{
+							toastr.error('Некорректные данные','Ошибка!');
+							flag = false;
+						}
+					}
+					if(c == 7)
+					{
+						if(arr['type_work'] == 0)
+						{
+							toastr.error('Введите данные','Ошибка!');
+							flag = false;
+						}
+						if(arr['type_work'] == 2)
+						{
+							toastr.error('Некорректные данные','Ошибка!');
+							flag = false;
+						}
+					}
+					if(c == 8)
+					{
+						if(arr['anti_plagiarism'] == 2)
+						{
+							toastr.error('Некорректные данные','Ошибка!');
+							flag = false;
+						}
+					}
+					if(c == 9)
+					{
+						if(arr['supervisor'] == 0)
+						{
+							toastr.error('Введите данные','Ошибка!');
+							flag = false;
+						}
+						if(arr['supervisor'] == 2)
+						{
+							toastr.error('Некорректные данные','Ошибка!');
+							flag = false;
+						}
+					}
+		        }
+		        c = c+1;
+		    }
+    		if(flag == true)
+    		{
+    			toastr.success('Успешно! Студент добавлен');
+/*		        			$("#nrb").val("");
+    			$("#last_name").val("");
+    			$("#first_name").val("");
+    			$("#patronymic").val("");
+    			$("#group_1").val("");
+    			$("#topic").val("");
+    			$("#type_work").val("");
+    			$("#anti_plagiarism").val("");
+    			$("#supervisor").val("");*/
+    		}
+		}
 
 /*		window.onbeforeunload = function (evt) {
 			var message = "Измененные данные не отправлены";
@@ -115,6 +262,10 @@
 
 		$(window).ready(function() {
 			//var arr_1_slc = $("#group_1 option:selected").val();
+			if($("#anti_plagiarism").val() == 0)
+			{
+				$("#anti_plagiarism").val("");
+			}
 			$("#group_1 option[value=<?php echo $arr_student['id_group_fk']; ?>]").attr("selected", "selected");
 			$("#type_work option[value=<?php echo $arr_diploma['id_type_work_fk']; ?>]").attr("selected", "selected");
 			$("#supervisor option[value=<?php echo $arr_diploma['id_teacher_fk']; ?>]").attr("selected", "selected");

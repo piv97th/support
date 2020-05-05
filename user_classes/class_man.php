@@ -95,8 +95,28 @@
 			}
 			else
 			{
-				$this->last_name = $data;
 				return 1;
+			}
+		}
+
+		public function check_arr_1($data)
+		{
+			$status = $this->check_empty($data);
+			if($status == 0)
+			{
+				return 0;
+			}
+			else
+			{
+				if($this->check_num($data) == 2)
+				{
+					return 2;
+				}
+				else
+				{
+					$this->id = $data;
+					return 1;
+				}
 			}
 		}
 
@@ -118,7 +138,7 @@
 			}
 		}*/
 
-		public function exist_nrb_u($data)
+/*		public function exist_nrb_u($data)
 		{
 			require('blocks/connect.php');
 			$sql = "SELECT COUNT(number_record_book) as `count` FROM student WHERE number_record_book = '$data'";
@@ -132,6 +152,14 @@
 			{
 				return FALSE;
 			}
+		}*/
+
+		public function get_old_nrb()
+		{
+			require('blocks/connect.php');
+			$result = $conn->query('SELECT number_record_book FROM student WHERE id ='.$this->id) or die($conn->error);
+			$arr = $result->fetch_assoc();
+			return $arr['number_record_book'];
 		}
 
 		public function check_nrb_u($data)
@@ -151,12 +179,13 @@
 			}
 			else
 			{
-				if($this->exist_nrb_u($data) == TRUE)
+				if(($this->exist_nrb($data) == TRUE) && ($data != $this->get_old_nrb()))
 				{
 					return 3;
 				}
 				else
 				{
+					$this->nrb = $data;
 					return 1;
 				}
 			}
@@ -281,9 +310,16 @@
 		public function update_student()
 		{
 			require('blocks/connect.php');
-			$stmt = $conn->prepare('UPDATE student SET number_record_book=?, last_name=?, first_name=?, patronymic=?, id_group_fk=?');
-			$stmt->bind_param('ssssii', $this->nrb, $this->last_name, $this->first_name, $this->patronymic, $this->group_1, $this->diploma);
-			$stmt->execute();
+			$stmt = $conn->prepare('UPDATE student SET number_record_book=?, last_name=?, first_name=?, patronymic=?, id_group_fk=? WHERE id = ?');
+			$stmt->bind_param('ssssii', $this->nrb, $this->last_name, $this->first_name, $this->patronymic, $this->group_1, $this->id);
+			if($stmt->execute() != 1)
+			{
+				return 0;
+			}
+			else
+			{
+				return 1;
+			}
 		}
 
 		public function delete_student()
@@ -345,6 +381,13 @@
 			$result = $conn->query('SELECT * FROM student WHERE id = '.$this->id);
 			$arr = $result->fetch_assoc();
 			return $arr;
+		}
+		public function get_diploma_fk()
+		{
+			require('blocks/connect.php');
+			$result = $conn->query('SELECT id_diploma_fk FROM student WHERE id = '.$this->id);
+			$arr = $result->fetch_assoc();
+			return $arr['id_diploma_fk'];
 		}
 	}
 
