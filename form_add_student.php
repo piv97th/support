@@ -78,6 +78,11 @@
 							toastr.error('Такой номер зачетной книжки существует','Ошибка!');
 							flag = false;
 						}
+						if(arr['diploma'] == 0)
+						{
+							toastr.error('При записи','Ошибка!');
+							flag = false;
+						}
 					}
 					if(c == 1)
 					{
@@ -89,6 +94,11 @@
 						if(arr['last_name'] == 2)
 						{
 							toastr.error('Некорректные данные','Ошибка!');
+							flag = false;
+						}
+						if(arr['student'] == 0)
+						{
+							toastr.error('При записи','Ошибка!');
 							flag = false;
 						}
 					}

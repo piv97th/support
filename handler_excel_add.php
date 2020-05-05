@@ -15,7 +15,14 @@
 		//$qdiploma_id = mysqli_fetch_row(mysqli_query($d, "SELECT id from diploma ORDER BY id DESC LIMIT 1"))[0];
 		//$stmt = $conn->query('');
 			//var_dump($qdiploma_id);
-		return $qdiploma_id['id'];
+		if($qdiploma_id == NULL)
+		{
+			return 1;
+		}
+		else
+		{
+			return $qdiploma_id['id'];
+		}
 		/*else
 		{
 			return 1;
