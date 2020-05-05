@@ -18,42 +18,24 @@
 
 	<script type="text/javascript">
 		$(function(){
-			$("form").on('submit',function(){
+			$("form").on('submit',function(e){
+				e.stopPropagation();
+				e.preventDefault(); 
+				var file_blank = new FormData(this);
+				//alert(1000);
 		        $.ajax({
 		        	type: 'POST',
+					processData: false,
+					contentType: false,
+					cache:false,
 		        	url: 'handler_excel_add.php',
+					data: file_blank,
 		        	success: function(response)
 		        	{
+		        		alert(response);
 		        		var flag = true;
 		        		var result = JSON.parse(response);
-		        		for(var i in result)
-		        		{
-		        			if(result[i] != 1)
-		        			{
-		        				if(result['first'] == 3)
-		        				{
-		        					toastr.error('Такой номер зачетной книжки существует','Ошибка!');
-		        					flag = false;
-		        					break;
-		        				}
-		        				toastr.error('Проверьте правильность введенных данных','Ошибка!');
-		        				flag = false;
-		        				break;
-		        			}
-		        		}
-		        		if(flag == true)
-		        		{
-		        			toastr.success('Успешно! Студент добавлен');
-/*		        			$("#nrb").val("");
-		        			$("#last_name").val("");
-		        			$("#first_name").val("");
-		        			$("#patronymic").val("");
-		        			$("#group_1").val("");
-		        			$("#topic").val("");
-		        			$("#type_work").val("");
-		        			$("#anti_plagiarism").val("");
-		        			$("#supervisor").val("");*/
-		        		}
+		        		out_toast(result);
 		        	},
 		        	error: function(jqxhr, status, errorMsg)
 		        	{
@@ -63,6 +45,125 @@
 		    	return false;
 		    });
 		});
+
+		function out_toast(arr)
+		{
+			var flag = true;
+			var c = 0;
+			for(var i in arr)
+			{
+				if(arr[i] != 1)
+				{
+					if(c == 0)
+					{
+						if(arr['file'] == 0)
+						{
+							toastr.error('Файл не загружен','Ошибка!');
+							flag = false;
+						}
+						if(arr['file'] == 2)
+						{
+							toastr.error('Слишком большой размер файла','Ошибка!');
+							flag = false;
+						}
+						if(arr['file'] == 4)
+						{
+							toastr.error('Тип файла не подходит','Ошибка!');
+							flag = false;
+						}
+						if(arr['file'] == 5)
+						{
+							toastr.error('Ошибка','Ошибка!');
+							flag = false;
+						}
+						if(arr['last_use_row'] == 0)
+						{
+							toastr.error('Строка','Ошибка!');
+							flag = false;
+						}
+						if(arr['сell'] == 0)
+						{
+							toastr.error('Одна из ячеек пуста','Ошибка!');
+							flag = false;
+						}
+						if(arr['сell0'] == 2)
+						{
+							toastr.error('Проверьте столбец НЗК','Ошибка!');
+							flag = false;
+						}
+						if(arr['сell0'] == 3)
+						{
+							toastr.error('Такой НЗК существует','Ошибка!');
+							flag = false;
+						}
+						if(arr['сellname'] == 2)
+						{
+							toastr.error('Проверьте столбец c ФИО','Ошибка!');
+							flag = false;
+						}
+						if(arr['сell5'] == 2)
+						{
+							toastr.error('Проверьте столбец с типом работы','Ошибка!');
+							flag = false;
+						}
+						if(arr['supervisor'] == 6)
+						{
+							toastr.error('Не найден руководитель','Ошибка!');
+							flag = false;
+						}
+						if(arr['diploma'] == 0)
+						{
+							toastr.error('При записи в БД','Ошибка!');
+							flag = false;
+						}
+						if(arr['student'] == 0)
+						{
+							toastr.error('При записи в БД','Ошибка!');
+							flag = false;
+						}
+					}
+					if(c == 1)
+					{
+						if(arr['last_use_column'] == 0)
+						{
+							toastr.error('Столбец','Ошибка!');
+							flag = false;
+						}
+					}
+					if(c == 2)
+					{
+						if(arr['last_use_column_index'] == 0)
+						{
+							toastr.error('Индекс столбца','Ошибка!');
+							flag = false;
+						}
+					}
+					if(c == 3)
+					{
+						if(arr['group_1'] == 0)
+						{
+							toastr.error('Введите группу','Ошибка!');
+							flag = false;
+						}
+						if(arr['group_1'] == 2)
+						{
+							toastr.error('Группа не соответствует шаблону','Ошибка!');
+							flag = false;
+						}
+						if(arr['group_1'] == 3)
+						{
+							toastr.error('Нет такой группы','Ошибка!');
+							flag = false;
+						}
+					}
+		        }
+		        c = c+1;
+		    }
+    		if(flag == true)
+    		{
+    			toastr.success('Успешно! Студент добавлен');
+    		}
+		}
 
 	</script>
 

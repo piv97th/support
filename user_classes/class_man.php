@@ -109,6 +109,7 @@
 		public $se = 'NULL';
 		public $diploma = 'NULL';
 		public $review = 'NULL';
+		public $cipher_group = 'NULL';
 
 /*		public function __construct($fields)
 		{
@@ -218,6 +219,31 @@
 			{
 				require('blocks/connect.php');
 				$result_group = $conn->query('SELECT id FROM group_1 WHERE id = '.$data);
+				$arr = $result_group->fetch_assoc();
+				if($arr['id'] == NULL)
+				{
+					return 2;
+				}
+				else
+				{
+					$this->group_1 = $data;
+					return 1;
+				}
+			}
+		}
+
+		public function check_group_by_cipher()
+		{
+			$data = (string)$this->cipher_group;
+			$status = $this->check_empty($data);
+			if($status == 0)
+			{
+				return 0;
+			}
+			else
+			{
+				require('blocks/connect.php');
+				$result_group = $conn->query("SELECT id FROM group_1 WHERE cipher_group = '$data'") or die($conn->error);
 				$arr = $result_group->fetch_assoc();
 				if($arr['id'] == NULL)
 				{
