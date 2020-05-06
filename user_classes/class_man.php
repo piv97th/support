@@ -389,6 +389,13 @@
 			$arr = $result->fetch_assoc();
 			return $arr['id_diploma_fk'];
 		}
+		public function get_se_fk()
+		{
+			require('blocks/connect.php');
+			$result = $conn->query('SELECT id_se_fk FROM student WHERE id = '.$this->id);
+			$arr = $result->fetch_assoc();
+			return $arr['id_se_fk'];
+		}
 	}
 
 	class supervisor extends man

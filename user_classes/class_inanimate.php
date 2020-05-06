@@ -68,6 +68,66 @@
 				return 1;
 			}
 		}
+
+		public function check_protocol($data)
+		{
+			if($this->check_empty($data) == 0)
+			{
+				return 0;
+			}
+			else
+			{
+				if($this->check_num($data) == 2)
+				{
+					return 2;
+				}
+				else
+				{
+					$this->number_protocol = $data;
+					return 1;
+				}
+			}
+		}
+
+		public function check_meeting($data)
+		{
+			if($this->check_empty($data) == 0)
+			{
+				return 0;
+			}
+			else
+			{
+				if($this->check_num($data) == 2)
+				{
+					return 2;
+				}
+				else
+				{
+					$this->meeting = $data;
+					return 1;
+				}
+			}
+		}
+
+		public function check_mark($data)
+		{
+			if($this->check_empty($data) == 0)
+			{
+				return 0;
+			}
+			else
+			{
+				if($this->check_num($data) == 2)
+				{
+					return 2;
+				}
+				else
+				{
+					$this->mark = $data;
+					return 1;
+				}
+			}
+		}
 	}
 
 	class diploma extends event
@@ -149,15 +209,47 @@
 		public function update_diploma()
 		{
 			require('blocks/connect.php');
-			$stmt = $conn->prepare('UPDATE diploma SET topic = ?, anti_plagiarism = ?, id_kind_work_fk = ?, id_teacher_fk = ?, id_type_work_fk = ? WHERE id = ?');
-			$stmt->bind_param('sdiiii', $this->topic, $this->anti_plagiarism, $this->kind_work, $this->supervisor, $this->type_work, $this->id);
-			if($stmt->execute() != 1)
+			if($this->number_protocol != 'NULL')
 			{
-				return 0;
+				if($this->mark != 'NULL')
+				{
+					$stmt = $conn->prepare('UPDATE diploma SET number_protocol = ?, topic = ?, anti_plagiarism = ?, id_kind_work_fk = ?, id_teacher_fk = ?, id_meeting_fk = ?, id_mark_fk = ?, id_type_work_fk = ? WHERE id = ?');
+					$stmt->bind_param('isdiiiiii', $this->number_protocol, $this->topic, $this->anti_plagiarism, $this->kind_work, $this->supervisor, $this->meeting, $this->mark, $this->type_work, $this->id);
+					if($stmt->execute() != 1)
+					{
+						return 0;
+					}
+					else
+					{
+						return 1;
+					}
+				}
+				else
+				{
+					$stmt = $conn->prepare('UPDATE diploma SET number_protocol = ?, topic = ?, anti_plagiarism = ?, id_kind_work_fk = ?, id_teacher_fk = ?, id_meeting_fk = ?, id_type_work_fk = ? WHERE id = ?');
+					$stmt->bind_param('isdiiiii', $this->number_protocol, $this->topic, $this->anti_plagiarism, $this->kind_work, $this->supervisor, $this->meeting, $this->type_work, $this->id);
+					if($stmt->execute() != 1)
+					{
+						return 0;
+					}
+					else
+					{
+						return 1;
+					}
+				}
 			}
 			else
 			{
-				return 1;
+				$stmt = $conn->prepare('UPDATE diploma SET topic = ?, anti_plagiarism = ?, id_kind_work_fk = ?, id_teacher_fk = ?, id_type_work_fk = ? WHERE id = ?');
+				$stmt->bind_param('sdiiii', $this->topic, $this->anti_plagiarism, $this->kind_work, $this->supervisor, $this->type_work, $this->id);
+				if($stmt->execute() != 1)
+				{
+					return 0;
+				}
+				else
+				{
+					return 1;
+				}
 			}
 		}
 
@@ -179,10 +271,70 @@
 	{
 		public $ticket = 'NULL';
 
-		public function __construct($fields)
+		public function check_ticket($data)
 		{
-			foreach($fields as $key => $value) {
-				$this->$key = $value;
+			if($this->check_empty($data) == 0)
+			{
+				return 0;
+			}
+			else
+			{
+				if($this->check_num($data) == 2)
+				{
+					return 2;
+				}
+				else
+				{
+					$this->ticket = $data;
+					return 1;
+				}
+			}
+		}
+
+		public function update_se()
+		{
+			require('blocks/connect.php');
+			if($this->ticket != 'NULL')
+			{
+				if($this->mark != 'NULL')
+				{
+					$stmt = $conn->prepare('UPDATE se SET number_protocol = ?, id_ticket_fk = ?, id_mark_fk = ?, id_meeting_fk = ? WHERE id = ?');
+					$stmt->bind_param('iiiii', $this->number_protocol, $this->ticket, $this->mark, $this->meeting, $this->id);
+					if($stmt->execute() != 1)
+					{
+						return 0;
+					}
+					else
+					{
+						return 1;
+					}
+				}
+				else
+				{
+					$stmt = $conn->prepare('UPDATE se SET number_protocol = ?, id_ticket_fk = ? id_meeting_fk = ? WHERE id = ?');
+					$stmt->bind_param('iiii', $this->number_protocol, $this->ticket, $this->meeting, $this->id);
+					if($stmt->execute() != 1)
+					{
+						return 0;
+					}
+					else
+					{
+						return 1;
+					}
+				}
+			}
+			else
+			{
+				$stmt = $conn->prepare('UPDATE se SET number_protocol = ?, id_meeting_fk = ? WHERE id = ?');
+				$stmt->bind_param('iii', $this->number_protocol, $this->meeting, $this->id);
+				if($stmt->execute() != 1)
+				{
+					return 0;
+				}
+				else
+				{
+					return 1;
+				}
 			}
 		}
 	}

@@ -111,7 +111,7 @@
 	        	async: false,
 	        	success: function(response)
 	        	{
-	        		alert(response);
+	        		//alert(response);
 	        		var obj = JSON.parse(response);
 					//out_toast(result);
 					//$("#np_se").val(obj.np_se);
@@ -146,7 +146,7 @@
 	        	async: false,
 	        	success: function(response)
 	        	{
-	        		alert(response);
+	        		//alert(response);
 	        		var obj = JSON.parse(response);
 					//out_toast(result);
 					//$("#np_se").val(obj.np_se);
@@ -181,7 +181,7 @@
 	        	async: false,
 	        	success: function(response)
 	        	{
-	        		alert(response);
+	        		//alert(response);
 	        		var obj = JSON.parse(response);
 					$(obj).each(function(index, item) {
 						$('#mark_diploma').append("<option value="+item.arr_1_mark+">"+item.mark+"</option>");
@@ -201,7 +201,6 @@
 			alert(exsist_np);
 			if(exsist_np != 0)
 			{
-				alert(666666666);
 				//$('#se_first').remove();
 				$('#np_diploma').val(<?php echo $arr_diploma['number_protocol']; ?>);
 				//alert(arr_1_se);
@@ -213,7 +212,7 @@
 			        	async: false,
 			        	success: function(response)
 			        	{
-			        		alert(response);
+			        		//alert(response);
 			        		var obj = JSON.parse(response);
 			        		$(obj).each(function(index, item) {
 							$('#m_diploma').append("<option value="+item.arr_1_meeting+">"+item.nm+" "+item.date_diploma+"</option>");
@@ -249,12 +248,10 @@
 
 		function se()
 		{
-			alert(1);
 			var arr_1_se = <?php echo check_var($arr_student['id_se_fk']); ?>;
-			alert(arr_1_se);
 			if(arr_1_se != 0)
 			{
-				alert(arr_1_se);
+				//alert(arr_1_se);
 				var se = 1;
 				$.ajax({
 			        	type: 'POST',
@@ -263,7 +260,7 @@
 			        	async: false,
 			        	success: function(response)
 			        	{
-			        		alert(response);
+			        		//alert(response);
 			        		var obj = JSON.parse(response);
 							//out_toast(result);
 							$("#np_se").val(obj.np_se);
@@ -340,11 +337,24 @@
 		        var type_work = $("#type_work").val();
 		        var anti_plagiarism = $("#anti_plagiarism").val();
 		        var supervisor = $("#supervisor").val();
-		        //alert(nrb);
+
+		        var protocol_se = $("#np_se").val();
+		        var meeting_se = $("#m_se").val();
+
+		        var ticket_se = $("#ticket_se").val();
+
+		        var mark_se = $("#mark_se").val();
+
+		        var protocol_diploma = $("#np_diploma").val();
+		        var meeting_diploma = $("#m_diploma").val();
+
+		        var mark_diploma = $("#mark_diploma").val();
+		        //var mark_diploma = $("#mark_diploma").val();
+		        //alert(1);
 		    	$.ajax({
 		        	type: 'POST',
 		        	url: 'handler_student.php',
-		        	data: {nrb, last_name, first_name, patronymic, group_1, topic, type_work, anti_plagiarism, supervisor, mode_1, arr_1},
+		        	data: {nrb, last_name, first_name, patronymic, group_1, topic, type_work, anti_plagiarism, supervisor, mode_1, arr_1, protocol_se, meeting_se, ticket_se, mark_se, protocol_diploma, meeting_diploma, mark_diploma},
 		        	async: false,
 		        	success: function(response)
 		        	{
@@ -381,7 +391,7 @@
 							toastr.error('Ошибка','Ошибка!');
 							flag = false;
 						}
-						if(arr['diploma'] == 0)
+						if(arr['se'] == 0)
 						{
 							toastr.error('При записи','Ошибка!');
 							flag = false;
@@ -404,7 +414,7 @@
 							toastr.error('Такой номер зачетной книжки существует','Ошибка!');
 							flag = false;
 						}
-						if(arr['student'] == 0)
+						if(arr['diploma'] == 0)
 						{
 							toastr.error('При записи','Ошибка!');
 							flag = false;
@@ -420,6 +430,11 @@
 						if(arr['last_name'] == 2)
 						{
 							toastr.error('Некорректные данные','Ошибка!');
+							flag = false;
+						}
+						if(arr['student'] == 0)
+						{
+							toastr.error('При записи','Ошибка!');
 							flag = false;
 						}
 					}
@@ -504,6 +519,97 @@
 							flag = false;
 						}
 						if(arr['supervisor'] == 2)
+						{
+							toastr.error('Некорректные данные','Ошибка!');
+							flag = false;
+						}
+					}
+					if(c == 10)
+					{
+						if(arr['protocol_diploma'] == 0)
+						{
+							toastr.error('Введите данные','Ошибка!');
+							flag = false;
+						}
+						if(arr['protocol_diploma'] == 2)
+						{
+							toastr.error('Некорректные данные','Ошибка!');
+							flag = false;
+						}
+					}
+					if(c == 11)
+					{
+						if(arr['meeting_diploma'] == 0)
+						{
+							toastr.error('Введите данные','Ошибка!');
+							flag = false;
+						}
+						if(arr['meeting_diploma'] == 2)
+						{
+							toastr.error('Некорректные данные','Ошибка!');
+							flag = false;
+						}
+					}
+					if(c == 12)
+					{
+						if(arr['mark_diploma'] == 0)
+						{
+							toastr.error('Введите данные','Ошибка!');
+							flag = false;
+						}
+						if(arr['mark_diploma'] == 2)
+						{
+							toastr.error('Некорректные данные','Ошибка!');
+							flag = false;
+						}
+					}
+					if(c == 13)
+					{
+						if(arr['protocol_se'] == 0)
+						{
+							toastr.error('Введите данные','Ошибка!');
+							flag = false;
+						}
+						if(arr['protocol_se'] == 2)
+						{
+							toastr.error('Некорректные данные','Ошибка!');
+							flag = false;
+						}
+					}
+					if(c == 14)
+					{
+						if(arr['meeting_se'] == 0)
+						{
+							toastr.error('Введите данные','Ошибка!');
+							flag = false;
+						}
+						if(arr['meeting_se'] == 2)
+						{
+							toastr.error('Некорректные данные','Ошибка!');
+							flag = false;
+						}
+					}
+					if(c == 15)
+					{
+						if(arr['ticket_se'] == 0)
+						{
+							toastr.error('Введите данные','Ошибка!');
+							flag = false;
+						}
+						if(arr['ticket_se'] == 2)
+						{
+							toastr.error('Некорректные данные','Ошибка!');
+							flag = false;
+						}
+					}
+					if(c == 16)
+					{
+						if(arr['mark_se'] == 0)
+						{
+							toastr.error('Введите данные','Ошибка!');
+							flag = false;
+						}
+						if(arr['mark_se'] == 2)
 						{
 							toastr.error('Некорректные данные','Ошибка!');
 							flag = false;
