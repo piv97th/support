@@ -1,6 +1,17 @@
 <?php
 	require('blocks/connect.php');
 
+	function check_var($var)
+	{
+		if(!isset($var))
+		{
+			return 0;
+		}
+		else
+		{
+			return $var;
+		}
+	}
 /*	function output_groups()
 	{
 		require('blocks/connect.php');
@@ -25,6 +36,12 @@
 	$qs_student = $conn->query('SELECT * FROM student WHERE id = '.$arr_1);
 	$arr_student = $qs_student->fetch_assoc();
 
+	if($arr_student[id_se_fk] != NULL)
+	{
+		$qs_se = $conn->query('SELECT * FROM se WHERE id = '.$arr_student['id_se_fk']);
+		$arr_se = $qs_se->fetch_assoc();
+	}
+
 	$qs_diploma = $conn->query('SELECT topic, anti_plagiarism, id_teacher_fk, id_type_work_fk FROM diploma WHERE id = '.$arr_student['id_diploma_fk']);
 	$arr_diploma = $qs_diploma->fetch_assoc();
 
@@ -48,8 +65,193 @@
 
 
 	<script type="text/javascript">
+
+		function get_meeting_se()
+		{
+			var meeting_se = 1;
+			$.ajax({
+	        	type: 'POST',
+	        	url: 'handler_updstudent.php',
+	        	data: {meeting_se},
+	        	async: false,
+	        	success: function(response)
+	        	{
+	        		//alert(response);
+	        		var obj = JSON.parse(response);
+					//out_toast(result);
+					//$("#np_se").val(obj.np_se);
+					//delete(obj.se_1);
+					//alert(obj);
+					//get_meeting();
+					$(obj).each(function(index, item) {
+						//alert(1);
+						$('#m_se').append("<option value="+item.arr_1_meeting+">"+item.nm+" "+item.date_se+"</option>");
+					});
+					//alert(index);
+/*							for(var i=0; i<5; i++)
+					{
+						$('#m_se').append('<option value="' + obj.arr_1_meeting + '">' + obj.nm + '</option>');
+					}*/
+					//$("#m_se option[value=obj.se_1.arr_1_meeting]").attr("selected", "selected");
+	        	},
+	        	error: function(jqxhr, status, errorMsg)
+	        	{
+	        		toastr.error(errorMsg, status);
+	        	}
+		    });
+		}
+
+		function get_ticket_se()
+		{
+			var ticket_se = 1;
+			$.ajax({
+	        	type: 'POST',
+	        	url: 'handler_updstudent.php',
+	        	data: {ticket_se},
+	        	async: false,
+	        	success: function(response)
+	        	{
+	        		alert(response);
+	        		var obj = JSON.parse(response);
+					//out_toast(result);
+					//$("#np_se").val(obj.np_se);
+					//delete(obj.se_1);
+					//alert(obj);
+					//get_meeting();
+					$(obj).each(function(index, item) {
+						//alert(1);
+						$('#ticket_se').append("<option value="+item.arr_1_ticket+">"+item.arr_1_ticket+" "+item.fq+"</option>");
+					});
+					//alert(index);
+/*							for(var i=0; i<5; i++)
+					{
+						$('#m_se').append('<option value="' + obj.arr_1_meeting + '">' + obj.nm + '</option>');
+					}*/
+					//$("#m_se option[value=obj.se_1.arr_1_meeting]").attr("selected", "selected");
+	        	},
+	        	error: function(jqxhr, status, errorMsg)
+	        	{
+	        		toastr.error(errorMsg, status);
+	        	}
+		    });
+		}
+
+		function get_mark_se()
+		{
+			var mark_se = 1;
+			$.ajax({
+	        	type: 'POST',
+	        	url: 'handler_updstudent.php',
+	        	data: {mark_se},
+	        	async: false,
+	        	success: function(response)
+	        	{
+	        		alert(response);
+	        		var obj = JSON.parse(response);
+					//out_toast(result);
+					//$("#np_se").val(obj.np_se);
+					//delete(obj.se_1);
+					//alert(obj);
+					//get_meeting();
+					$(obj).each(function(index, item) {
+						//alert(1);
+						$('#mark_se').append("<option value="+item.arr_1_mark+">"+item.mark+"</option>");
+					});
+					//alert(index);
+/*							for(var i=0; i<5; i++)
+					{
+						$('#m_se').append('<option value="' + obj.arr_1_meeting + '">' + obj.nm + '</option>');
+					}*/
+					//$("#m_se option[value=obj.se_1.arr_1_meeting]").attr("selected", "selected");
+	        	},
+	        	error: function(jqxhr, status, errorMsg)
+	        	{
+	        		toastr.error(errorMsg, status);
+	        	}
+		    });
+		}
+
+		function se()
+		{
+			alert(1);
+			var arr_1_se = <?php echo check_var($arr_student['id_se_fk']); ?>;
+			alert(arr_1_se);
+			if(arr_1_se != 0)
+			{
+				alert(arr_1_se);
+				var se = 1;
+				$.ajax({
+			        	type: 'POST',
+			        	url: 'handler_updstudent.php',
+			        	data: {se, arr_1_se},
+			        	async: false,
+			        	success: function(response)
+			        	{
+			        		alert(response);
+			        		var obj = JSON.parse(response);
+							//out_toast(result);
+							$("#np_se").val(obj.np_se);
+							//delete(obj.se_1);
+							//alert(obj);
+							get_meeting_se();
+							var se_ticket = <?php echo check_var($arr_se['id_ticket_fk']); ?>;
+							//alert(se_ticket);
+							if(se_ticket != 0)
+							{
+								//alert(10001100);
+								get_ticket_se();
+								//$('#ticket_se option:nth-child('+obj.arr_1_ticket+')').attr('selected', 'selected');
+								$('#ticket_se option[value=<?php echo $arr_se["id_ticket_fk"]; ?>]').attr('selected', 'selected');
+							}
+							else
+							{
+								$('#se_second').remove();
+							}
+
+							var se_mark = <?php echo check_var($arr_se['id_mark_fk']); ?>;
+							if(se_mark != 0)
+							{
+								//alert(10001100);
+								get_mark_se();
+								//$('#ticket_se option:nth-child('+obj.arr_1_ticket+')').attr('selected', 'selected');
+								$('#mark_se option[value=<?php echo $arr_se["id_mark_fk"]; ?>]').attr('selected', 'selected');
+							}
+							else
+							{
+								$('#se_third').remove();
+							}
+/*							$(obj).each(function(index, item) {
+								//alert(1);
+								$('#m_se').append("<option value"+item.arr_1_meeting+">"+item.nm+"</option>");
+							});*/
+/*							for(var i=0; i<5; i++)
+							{
+								$('#m_se').append('<option value="' + obj.arr_1_meeting + '">' + obj.nm + '</option>');
+							}*/
+							//alert(obj.arr_1_meeting);
+							//var za = obj.arr_1_meeting;
+							$('#m_se option[value='+obj.arr_1_meeting+']').attr('selected', 'selected');
+							//$('#m_se option[value='+obj.arr_1_meeting+']').prop("selected", "selected");
+							//$('#m_se option:nth-child('+obj.arr_1_meeting+')').attr('selected', 'selected');
+			        	},
+			        	error: function(jqxhr, status, errorMsg)
+			        	{
+			        		toastr.error(errorMsg, status);
+			        	}
+			    });
+			}
+			else
+			{
+				$('#se_first').remove();
+				$('#se_second').remove();
+				$('#se_third').remove();
+
+			}
+		}
+
 		$(function(){
 			$("form").on('submit',function(){
+				//$("#m_se option[value=39]").prop("selected", "selected");
 				var arr_1 = <?php echo $arr_1; ?>;
 				var mode_1 = 2;
 				var nrb = $("#nrb").val();
@@ -269,6 +471,7 @@
 			$("#group_1 option[value=<?php echo $arr_student['id_group_fk']; ?>]").attr("selected", "selected");
 			$("#type_work option[value=<?php echo $arr_diploma['id_type_work_fk']; ?>]").attr("selected", "selected");
 			$("#supervisor option[value=<?php echo $arr_diploma['id_teacher_fk']; ?>]").attr("selected", "selected");
+			se();
 /*			$("#group_1 option").each(function(index, element){
 				if($("group_1 option:selected").val() == $(element).eq(index).val())
 				{
@@ -389,6 +592,37 @@
 							}
 							?>
 						</select>
+					</div>
+					<div id="se_first">
+						<div class="form-group">
+							<label for="np_se">Номер протокола ГЭ:</label>
+							<input type="text" class="form-control" id="np_se" name="np_se" >
+						</div>
+						<div class="form-group">
+							<label for="m_se">Номер встречи ГЭ:</label>
+							<!-- <input type="text" class="form-control" id="m_se" name="m_se" > -->
+							<select name="m_se" id="m_se">
+								<!-- <option value="" disabled selected></option> -->
+							</select>
+						</div>
+					</div>
+					<div id="se_second">
+							<div class="form-group">
+							<label for="ticket_se">Номер билета:</label>
+							<!-- <input type="text" class="form-control" id="m_se" name="m_se" > -->
+							<select name="ticket_se" id="ticket_se">
+								<!-- <option value="" disabled selected></option> -->
+							</select>
+						</div>
+					</div>
+					<div id="se_third">
+							<div class="form-group">
+							<label for="mark_se">Оценка:</label>
+							<!-- <input type="text" class="form-control" id="m_se" name="m_se" > -->
+							<select name="mark_se" id="mark_se">
+								<!-- <option value="" disabled selected></option> -->
+							</select>
+						</div>
 					</div>
 					<button type="submit" class="btn btn-primary">Submit</button>
 				</form>
