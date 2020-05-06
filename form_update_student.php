@@ -42,7 +42,7 @@
 		$arr_se = $qs_se->fetch_assoc();
 	}
 
-	$qs_diploma = $conn->query('SELECT topic, anti_plagiarism, id_teacher_fk, id_type_work_fk FROM diploma WHERE id = '.$arr_student['id_diploma_fk']);
+	$qs_diploma = $conn->query('SELECT * FROM diploma WHERE id = '.$arr_student['id_diploma_fk']);
 	$arr_diploma = $qs_diploma->fetch_assoc();
 
 	$qs_group = $conn->query('SELECT id, cipher_group FROM group_1');
@@ -169,6 +169,82 @@
 	        		toastr.error(errorMsg, status);
 	        	}
 		    });
+		}
+
+		function get_mark_diploma()
+		{
+			var mark_diploma = 1;
+			$.ajax({
+	        	type: 'POST',
+	        	url: 'handler_updstudent.php',
+	        	data: {mark_diploma},
+	        	async: false,
+	        	success: function(response)
+	        	{
+	        		alert(response);
+	        		var obj = JSON.parse(response);
+					$(obj).each(function(index, item) {
+						$('#mark_diploma').append("<option value="+item.arr_1_mark+">"+item.mark+"</option>");
+					});
+	        	},
+	        	error: function(jqxhr, status, errorMsg)
+	        	{
+	        		toastr.error(errorMsg, status);
+	        	}
+		    });
+		}
+
+		function diploma()
+		{
+			//alert(1);
+			var exsist_np = <?php echo check_var($arr_diploma['number_protocol']); ?>;
+			alert(exsist_np);
+			if(exsist_np != 0)
+			{
+				alert(666666666);
+				//$('#se_first').remove();
+				$('#np_diploma').val(<?php echo $arr_diploma['number_protocol']; ?>);
+				//alert(arr_1_se);
+				var meeting_diploma = 1;
+				$.ajax({
+			        	type: 'POST',
+			        	url: 'handler_updstudent.php',
+			        	data: {meeting_diploma},
+			        	async: false,
+			        	success: function(response)
+			        	{
+			        		alert(response);
+			        		var obj = JSON.parse(response);
+			        		$(obj).each(function(index, item) {
+							$('#m_diploma').append("<option value="+item.arr_1_meeting+">"+item.nm+" "+item.date_diploma+"</option>");
+							});
+							$('#m_diploma option[value=<?php echo $arr_diploma["id_meeting_fk"]; ?>]').attr('selected', 'selected');
+							var diploma_mark = <?php echo check_var($arr_diploma['id_mark_fk']); ?>;
+							if(diploma_mark != 0)
+							{
+								//alert(10001100);
+								get_mark_diploma();
+								//$('#ticket_se option:nth-child('+obj.arr_1_ticket+')').attr('selected', 'selected');
+								$('#mark_diploma option[value=<?php echo $arr_diploma["id_mark_fk"]; ?>]').attr('selected', 'selected');
+							}
+							else
+							{
+								$('#diploma_second').remove();
+							}
+				        },
+				        error: function(jqxhr, status, errorMsg)
+			        	{
+			        		toastr.error(errorMsg, status);
+			        	}
+			    });
+			}
+			else
+			{
+				$('#diploma_first').remove();
+				$('#diploma_second').remove();
+				//$('#se_third').remove();
+
+			}
 		}
 
 		function se()
@@ -472,6 +548,7 @@
 			$("#type_work option[value=<?php echo $arr_diploma['id_type_work_fk']; ?>]").attr("selected", "selected");
 			$("#supervisor option[value=<?php echo $arr_diploma['id_teacher_fk']; ?>]").attr("selected", "selected");
 			se();
+			diploma();
 /*			$("#group_1 option").each(function(index, element){
 				if($("group_1 option:selected").val() == $(element).eq(index).val())
 				{
@@ -617,9 +694,31 @@
 					</div>
 					<div id="se_third">
 							<div class="form-group">
-							<label for="mark_se">Оценка:</label>
+							<label for="mark_se">Оценка ГЭ:</label>
 							<!-- <input type="text" class="form-control" id="m_se" name="m_se" > -->
 							<select name="mark_se" id="mark_se">
+								<!-- <option value="" disabled selected></option> -->
+							</select>
+						</div>
+					</div>
+					<div id="diploma_first">
+						<div class="form-group">
+							<label for="np_diploma">Номер протокола ВКР:</label>
+							<input type="text" class="form-control" id="np_diploma" name="np_diploma" >
+						</div>
+						<div class="form-group">
+							<label for="m_diploma">Номер встречи ВКР:</label>
+							<!-- <input type="text" class="form-control" id="m_se" name="m_se" > -->
+							<select name="m_diploma" id="m_diploma">
+								<!-- <option value="" disabled selected></option> -->
+							</select>
+						</div>
+					</div>
+					<div id="diploma_second">
+							<div class="form-group">
+							<label for="mark_diploma">Оценка ВКР:</label>
+							<!-- <input type="text" class="form-control" id="m_se" name="m_se" > -->
+							<select name="mark_diploma" id="mark_diploma">
 								<!-- <option value="" disabled selected></option> -->
 							</select>
 						</div>
