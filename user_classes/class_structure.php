@@ -178,14 +178,6 @@
 					$this->cipher = $data;
 					return 1;
 				}
-/*				{
-					return 3;
-				}
-				else
-				{
-					$this->cipher = $data;
-					return 1;
-				}*/
 			}
 		}
 
@@ -210,6 +202,20 @@
 			$stmt = $conn->prepare('UPDATE direction SET cipher_direction = ?, name = ? WHERE id = ?');
 			$stmt->bind_param('ssi', $this->cipher, $this->name, $this->id);
 			if($stmt->execute() != 1)
+			{
+				return 0;
+			}
+			else
+			{
+				return 1;
+			}
+		}
+
+		public function delete_direction()
+		{
+			require('blocks/connect.php');
+			$res = $conn->query('DELETE FROM direction WHERE id='.$this->id);
+			if($res != 1)
 			{
 				return 0;
 			}
