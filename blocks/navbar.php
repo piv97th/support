@@ -77,7 +77,11 @@
 			</a>
 			<div class="dropdown-menu">
 
-				<!--<div class="dropdown-header">На сайте</div>-->
+				<div class="dropdown-header">Направление</div>
+				<a class="dropdown-item" href="form_add_direction.php">Добавить</a>
+				<a class="dropdown-item" href="#">Редактировать</a>
+				<a class="dropdown-item" href="#">Удалить</a>
+				<div class="dropdown-header">Группы</div>
 				<a class="dropdown-item" href="#">Добавить</a>
 				<a class="dropdown-item" href="#">Редактировать</a>
 				<a class="dropdown-item" href="#">Удалить</a>
