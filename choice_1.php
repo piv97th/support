@@ -1,6 +1,6 @@
 <?php
 	require('blocks/connect.php');
-	require_once('blocks/connect.php');
+	require_once('blocks/check_data.php');
 
 	function content_select($mode)
 	{
