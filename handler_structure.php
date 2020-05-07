@@ -44,6 +44,20 @@
         exit;
 	}
 
+	if($mode_1 == 4)
+	{
+		require_once('user_classes/class_structure.php');
+		$group = new group();
+
+		$result = array('cipher_group' => $group->check_cipher_group($_POST['cipher_group']), 'qualification' => $group->check_qualification($_POST['qualification']), 'cathedra' => $group->check_cathedra($_POST['cathedra']), 'direction' => $group->check_direction($_POST['direction']), 'form_studying' => $group->check_fs($_POST['form_studying']));
+		check_result($result);
+
+		$result_group = $group->add_group();
+		$result = array('group' => $result_group);
+		echo json_encode($result);
+        exit;
+	}
+
 	if($_POST['mode_other'] == 3)
 	{
 		$result_direction = $conn->query('SELECT * FROM direction');

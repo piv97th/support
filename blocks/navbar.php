@@ -25,7 +25,6 @@
 			</a>
 			<div class="dropdown-menu">
 
-				<!--<div class="dropdown-header">На сайте</div>-->
 				<a class="dropdown-item" href="form_add_user.php">Добавить</a>
 				<a class="dropdown-item" href="#">Редактировать</a>
 				<a class="dropdown-item" href="#">Удалить</a>
@@ -38,7 +37,6 @@
 			</a>
 			<div class="dropdown-menu">
 
-				<!--<div class="dropdown-header">На сайте</div>-->
 				<a class="dropdown-item" href="#">Добавить</a>
 				<a class="dropdown-item" href="#">Редактировать</a>
 				<a class="dropdown-item" href="#">Удалить</a>
@@ -51,7 +49,6 @@
 			</a>
 			<div class="dropdown-menu">
 
-				<!--<div class="dropdown-header">На сайте</div>-->
 				<a class="dropdown-item" href="#">Добавить</a>
 				<a class="dropdown-item" href="#">Редактировать</a>
 				<a class="dropdown-item" href="#">Удалить</a>
@@ -64,7 +61,6 @@
 			</a>
 			<div class="dropdown-menu">
 
-				<!--<div class="dropdown-header">На сайте</div>-->
 				<a class="dropdown-item" href="#">Добавить</a>
 				<a class="dropdown-item" href="#">Редактировать</a>
 				<a class="dropdown-item" href="#">Удалить</a>
@@ -82,7 +78,7 @@
 				<a class="dropdown-item" href="choice_1.php?mode=1">Редактировать</a>
 				<a class="dropdown-item" href="choice_1.php?mode=2">Удалить</a>
 				<div class="dropdown-header">Группы</div>
-				<a class="dropdown-item" href="#">Добавить</a>
+				<a class="dropdown-item" href="form_add_group.php">Добавить</a>
 				<a class="dropdown-item" href="#">Редактировать</a>
 				<a class="dropdown-item" href="#">Удалить</a>
 			</div>
@@ -94,7 +90,6 @@
 			</a>
 			<div class="dropdown-menu">
 
-				<!--<div class="dropdown-header">На сайте</div>-->
 				<a class="dropdown-item" href="#">Добавить</a>
 				<a class="dropdown-item" href="#">Редактировать</a>
 				<a class="dropdown-item" href="#">Удалить</a>
@@ -107,7 +102,6 @@
 			</a>
 			<div class="dropdown-menu">
 
-				<!--<div class="dropdown-header">На сайте</div>-->
 				<a class="dropdown-item" href="#">Добавить</a>
 				<a class="dropdown-item" href="#">Редактировать</a>
 				<a class="dropdown-item" href="#">Удалить</a>

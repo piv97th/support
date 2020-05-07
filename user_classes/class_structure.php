@@ -225,4 +225,156 @@
 			}
 		}
 	}
+
+	class group extends structure
+	{
+		public $cipher_group = 'NULL';
+		public $qualification = 'NULL';
+		public $university = 1;
+		public $institute = 1;
+		public $direction = 'NULL';
+		public $form_studying = 'NULL';
+		public $cathedra = 'NULL';
+
+		private function exist_cipher_group($data)
+		{
+			require('blocks/connect.php');
+			$sql = "SELECT COUNT(cipher_group) as `count` FROM group_1 WHERE cipher_group = '$data'";
+			$result = $conn->query($sql) or die($conn->error);
+			$row = $result->fetch_assoc();
+			if($row['count'] > 0)
+			{
+				return 1;
+			}
+			else
+			{
+				return 0;
+			}
+		}
+
+		public function check_cipher_group($data)
+		{
+			if($this->check_empty($data) == 0)
+			{
+				return 0;
+			}
+			else
+			{
+				require('blocks/connect.php');
+				$pattern_group = '/^[А-ЯЁ]{2}[Б,М,С][В,З,О][-][0-9]{2}[-][0-9]{2}$/u';
+				if(!preg_match($pattern_group, $data))
+				{
+					return 2;
+				}
+				else
+				{
+					$data = mb_strtoupper($data);
+					if($this->exist_cipher_group($data) == 1)
+					{
+						return 3;
+					}
+					else
+					{
+						$this->cipher = $data;
+						return 1;
+					}
+				}
+			}
+		}
+
+		public function check_qualification($data)
+		{
+			if($this->check_empty($data) == 0)
+			{
+				return 0;
+			}
+			else
+			{
+				if($data < 1 || 3 < $data)
+				{
+					return 2;
+				}
+				else
+				{
+					$this->qualification = $data;
+					return 1;
+				}
+			}
+		}
+
+		public function check_cathedra($data)
+		{
+			if($this->check_empty($data) == 0)
+			{
+				return 0;
+			}
+			else
+			{
+				if($data < 1 || 99 < $data)
+				{
+					return 2;
+				}
+				else
+				{
+					$this->cathedra = $data;
+					return 1;
+				}
+			}
+		}
+
+		public function check_direction($data)
+		{
+			if($this->check_empty($data) == 0)
+			{
+				return 0;
+			}
+			else
+			{
+				if($data < 1 || 9999 < $data)
+				{
+					return 2;
+				}
+				else
+				{
+					$this->direction = $data;
+					return 1;
+				}
+			}
+		}
+
+		public function check_fs($data)
+		{
+			if($this->check_empty($data) == 0)
+			{
+				return 0;
+			}
+			else
+			{
+				if($data < 1 || 3 < $data)
+				{
+					return 2;
+				}
+				else
+				{
+					$this->form_studying = $data;
+					return 1;
+				}
+			}
+		}
+
+		public function add_group()
+		{
+			require('blocks/connect.php');
+			$stmt = $conn->prepare('INSERT INTO group_1 (cipher_group, id_qualification_fk, id_university_fk, id_institute_fk, id_direction_fk, id_form_studying_fk, id_cathedra_fk) VALUES(?,?,?,?,?,?,?)');
+			$stmt->bind_param('siiiiii', $this->cipher, $this->qualification, $this->university, $this->institute, $this->direction, $this->form_studying, $this->cathedra);
+			if($stmt->execute() != 1)
+			{
+				return 0;
+			}
+			else
+			{
+				return 1;
+			}
+		}
+	}
 ?>
