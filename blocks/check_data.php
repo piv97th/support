@@ -1,5 +1,17 @@
 <?php
 
+	function check_get($get)
+	{
+		if(empty($get))
+	{
+		if(0 > $get || $get > 100000000)
+		{
+			exit;
+		}
+		exit;
+	}
+	}
+
 	function check_result($arr)
 	{
 		foreach($arr as $i)

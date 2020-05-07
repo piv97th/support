@@ -1,7 +1,7 @@
 <?php
 	require_once('blocks/check_data.php');
-
-	if(isset($_POST['mode_1']))
+	$mode_1 = $_POST['mode_1'];
+	if($mode_1 == 1)
 	{
 		require_once('user_classes/class_structure.php');
 		$direction = new direction();
@@ -13,9 +13,20 @@
 		$result = array('direction' => $result_direction);
 		echo json_encode($result);
         exit;
+	}
 
+	if($mode_1 == 2)
+	{
+		require_once('user_classes/class_structure.php');
+		$direction = new direction();
 
+		$result = array('arr_1' => $direction->check_arr_1($_POST['arr_1']), 'cipher_direction' => $direction->check_cipher_u($_POST['cipher_direction']), 'name_cipher' => $direction->check_name($_POST['name_cipher']));
+		check_result($result);
 
+		$result_direction = $direction->update_direction();
+		$result = array('direction' => $result_direction);
+		echo json_encode($result);
+        exit;
 	}
 
 ?>

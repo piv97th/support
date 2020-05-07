@@ -133,11 +133,82 @@
 			}
 		}
 
+		private function is_old_cipher($data)
+		{
+			require('blocks/connect.php');
+			$result = $conn->query('SELECT cipher_direction FROM direction WHERE id = '.$this->id) or die($conn->error);
+			$arr = $result->fetch_assoc();
+			if($arr['cipher_direction'] == $data)
+			{
+				return 1;
+			}
+			else
+			{
+				return 0;
+			}
+		}
+
+		public function check_cipher_u($data)
+		{
+			if($this->check_empty($data) == 0)
+			{
+				return 0;
+			}
+			$pattern_cd = '/^[0-9]{2}[.][0-9]{2}[.][0-9]{2}$/u';
+			if(!preg_match($pattern_cd, $data))
+			{
+				return 2;
+			}
+			else
+			{
+				if(($this->exist_cipher($data) == 1))
+				{
+					if($this->is_old_cipher($data) == 1)
+					{
+						$this->cipher = $data;
+						return 1;
+					}
+					else
+					{
+						return 3;
+					}
+				}
+				else
+				{
+					$this->cipher = $data;
+					return 1;
+				}
+/*				{
+					return 3;
+				}
+				else
+				{
+					$this->cipher = $data;
+					return 1;
+				}*/
+			}
+		}
+
 		public function add_direction()
 		{
 			require('blocks/connect.php');
 			$stmt = $conn->prepare('INSERT INTO direction (cipher_direction, name) VALUES(?,?)');
 			$stmt->bind_param('ss', $this->cipher, $this->name);
+			if($stmt->execute() != 1)
+			{
+				return 0;
+			}
+			else
+			{
+				return 1;
+			}
+		}
+
+		public function update_direction()
+		{
+			require('blocks/connect.php');
+			$stmt = $conn->prepare('UPDATE direction SET cipher_direction = ?, name = ? WHERE id = ?');
+			$stmt->bind_param('ssi', $this->cipher, $this->name, $this->id);
 			if($stmt->execute() != 1)
 			{
 				return 0;
