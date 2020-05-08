@@ -58,6 +58,19 @@
         exit;
 	}
 
+	if($mode_1 == 5)
+	{
+		require_once('user_classes/class_structure.php');
+		$group = new group();
+
+		$result = array('arr_1' => $group->check_arr_1($_POST['arr_1']), 'cipher_group' => $group->check_cipher_group_u($_POST['cipher_group']), 'qualification' => $group->check_qualification($_POST['qualification']), 'cathedra' => $group->check_cathedra($_POST['cathedra']), 'direction' => $group->check_direction($_POST['direction']), 'form_studying' => $group->check_fs($_POST['form_studying']));
+
+		$result_group = $group->update_group();
+		$result = array('group' => $result_group);
+		echo json_encode($result);
+        exit;
+	}
+
 	if($_POST['mode_other'] == 3)
 	{
 		$result_direction = $conn->query('SELECT * FROM direction');

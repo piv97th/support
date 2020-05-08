@@ -275,7 +275,60 @@
 					}
 					else
 					{
-						$this->cipher = $data;
+						$this->cipher_group = $data;
+						return 1;
+					}
+				}
+			}
+		}
+
+		private function is_old_cipher_group($data)
+		{
+			require('blocks/connect.php');
+			$result = $conn->query('SELECT cipher_group FROM group_1 WHERE id = '.$this->id) or die($conn->error);
+			$arr = $result->fetch_assoc();
+			if($arr['cipher_group'] == $data)
+			{
+				return 1;
+			}
+			else
+			{
+				return 0;
+			}
+		}
+
+		public function check_cipher_group_u($data)
+		{
+			if($this->check_empty($data) == 0)
+			{
+				return 0;
+			}
+			else
+			{
+				require('blocks/connect.php');
+				$pattern_group = '/^[А-ЯЁ]{2}[Б,М,С][В,З,О][-][0-9]{2}[-][0-9]{2}$/u';
+				if(!preg_match($pattern_group, $data))
+				{
+					return 2;
+				}
+				else
+				{
+					$data = mb_strtoupper($data);
+					if(($this->exist_cipher_group($data) == 1))
+					{
+						if($this->is_old_cipher_group($data) == 1)
+						{
+							$this->cipher_group = $data;
+							return 1;
+						}
+						else
+						{
+							return 3;
+						}
+					}
+					else
+					{
+						$this->cipher_group = $data;
 						return 1;
 					}
 				}
@@ -367,6 +420,21 @@
 			require('blocks/connect.php');
 			$stmt = $conn->prepare('INSERT INTO group_1 (cipher_group, id_qualification_fk, id_university_fk, id_institute_fk, id_direction_fk, id_form_studying_fk, id_cathedra_fk) VALUES(?,?,?,?,?,?,?)');
 			$stmt->bind_param('siiiiii', $this->cipher, $this->qualification, $this->university, $this->institute, $this->direction, $this->form_studying, $this->cathedra);
+			if($stmt->execute() != 1)
+			{
+				return 0;
+			}
+			else
+			{
+				return 1;
+			}
+		}
+
+		public function update_group()
+		{
+			require('blocks/connect.php');
+			$stmt = $conn->prepare('UPDATE group_1 SET cipher_group = ?, id_qualification_fk = ?, id_university_fk = ?, id_institute_fk = ?, id_direction_fk = ?, id_form_studying_fk = ?, id_cathedra_fk = ? WHERE id = ?');
+			$stmt->bind_param('siiiiiii', $this->cipher_group, $this->qualification, $this->university, $this->institute, $this->direction, $this->form_studying, $this->cathedra, $this->id);
 			if($stmt->execute() != 1)
 			{
 				return 0;
