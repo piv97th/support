@@ -85,6 +85,20 @@
         exit;
 	}
 
+	if($mode_1 == 7)
+	{
+		require_once('user_classes/class_structure.php');
+		$commission = new commission();
+
+		$result = array('order_1' => $commission->check_order_1($_POST['order_1']), 'year' => $commission->check_year($_POST['year']));
+		check_result($result);
+
+		$result_commission = $commission->add_commission();
+		$result = array('commission' => $result_commission);
+		echo json_encode($result);
+        exit;
+	}
+
 	if($_POST['mode_other'] == 1)
 	{
 		$result_direction = $conn->query('SELECT * FROM direction');

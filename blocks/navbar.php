@@ -36,7 +36,12 @@
 				Комиссии
 			</a>
 			<div class="dropdown-menu">
-
+				
+				<div class="dropdown-header">Комиссии</div>
+				<a class="dropdown-item" href="form_add_commission.php">Добавить</a>
+				<a class="dropdown-item" href="#">Редактировать</a>
+				<a class="dropdown-item" href="#">Удалить</a>
+				<div class="dropdown-header">Заседания</div>
 				<a class="dropdown-item" href="#">Добавить</a>
 				<a class="dropdown-item" href="#">Редактировать</a>
 				<a class="dropdown-item" href="#">Удалить</a>

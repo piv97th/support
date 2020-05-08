@@ -459,4 +459,55 @@
 			}
 		}
 	}
+
+	class commission extends structure
+	{
+		public $order_1 = 'NULL';
+		public $year = 'NULL';
+
+		public function check_order_1($data)
+		{
+			if($this->check_empty($data) == 0)
+			{
+				return 0;
+			}
+			if($this->check_string($data) == 2)
+			{
+				return 2;
+			}
+			else
+			{
+				$this->order_1 = $data;
+				return 1;
+			}
+		}
+
+		public function check_year($data)
+		{
+			if($this->check_empty($data) == 0)
+			{
+				return 0;
+			}
+			else
+			{
+				$this->year = $data;
+				return 1;
+			}
+		}
+
+		public function add_commission()
+		{
+			require('blocks/connect.php');
+			$stmt = $conn->prepare('INSERT INTO commission (order_1, year) VALUES(?,?)');
+			$stmt->bind_param('si', $this->order_1, $this->year);
+			if($stmt->execute() != 1)
+			{
+				return 0;
+			}
+			else
+			{
+				return 1;
+			}
+		}
+	}
 ?>
