@@ -30,15 +30,14 @@
 			}
 		}
 
-		public function check_topic($data)
+		protected function check_string($data)
 		{
-			if($this->check_empty($data) == 0)
+			if(1 > mb_strlen($data) || 255 < mb_strlen($data))
 			{
-				return 0;
+				return 2;
 			}
 			else
 			{
-				$this->topic = $data;
 				return 1;
 			}
 		}
@@ -163,6 +162,23 @@
 			else
 			{
 				$this->anti_plagiarism = $data;
+				return 1;
+			}
+		}
+
+		public function check_topic($data)
+		{
+			if($this->check_empty($data) == 0)
+			{
+				return 0;
+			}
+			if($this->check_string($data) == 2)
+			{
+				return 2;
+			}
+			else
+			{
+				$this->topic = $data;
 				return 1;
 			}
 		}
