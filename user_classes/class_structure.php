@@ -509,5 +509,20 @@
 				return 1;
 			}
 		}
+
+		public function update_commission()
+		{
+			require('blocks/connect.php');
+			$stmt = $conn->prepare('UPDATE commission SET order_1 = ?, year = ? WHERE id = ?');
+			$stmt->bind_param('sii', $this->order_1, $this->year, $this->id);
+			if($stmt->execute() != 1)
+			{
+				return 0;
+			}
+			else
+			{
+				return 1;
+			}
+		}
 	}
 ?>

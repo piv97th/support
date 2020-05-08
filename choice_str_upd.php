@@ -25,18 +25,30 @@
 			}
 			echo '</ul>';
 		}
+		if($mode == 3)
+		{
+			$result_commission = $conn->query('SELECT id, order_1 FROM commission');
+			echo '<ul class="add_content">';
+			while ($arr_commission = $result_commission->fetch_assoc())
+			{
+				printf('<li><a href=form_update_commission.php?arr_1=%s>%s</a></li>', $arr_commission['id'], $arr_commission['order_1']);
+			}
+			echo '</ul>';
+		}
 	}
 	$mode = $_GET['mode'];
 	check_get($mode);
 	if($mode == 1)
 	{
 		$title = 'Выбор направления';
-		//$name_choice = 'Направление';
 	}
 	elseif($mode == 2)
 	{
 		$title = 'Выбор группы';
-		//$name_choice = 'Направление';
+	}
+	elseif($mode == 3)
+	{
+		$title = 'Выбор комиссии';
 	}
 ?>
 
