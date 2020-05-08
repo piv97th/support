@@ -145,18 +145,33 @@
 		}
 
 		window.onbeforeunload = function() {
-			$.cookie('cipher_direction', $("#cipher_direction").val(), { expires: 1 });
-			$.cookie('name_cipher', $("#name_cipher").val(), { expires: 1 });
+			$.cookie('cipher_group', $("#cipher_group").val(), { expires: 1 });
+			$.cookie('qualification', $("#qualification").val(), { expires: 1 });
+			$.cookie('cathedra', $("#cathedra").val(), { expires: 1 });
+			$.cookie('direction', $("#direction").val(), { expires: 1 });
+			$.cookie('form_studying', $("#form_studying").val(), { expires: 1 });
 		};
 
 		$(window).ready(function() {
-			if($.cookie('cipher_direction') != null)
+			if($.cookie('cipher_group') != null)
 			{
-				$("#cipher_direction").val($.cookie("cipher_direction"));
+				$("#cipher_group").val($.cookie("cipher_group"));
 			}
-			if($.cookie('name_cipher') != null)
+			if($.cookie('qualification') != null)
 			{
-				$("#name_cipher").val($.cookie("name_cipher"));
+				$("#qualification").val($.cookie("qualification"));
+			}
+			if($.cookie('cathedra') != null)
+			{
+				$("#cathedra").val($.cookie("cathedra"));
+			}
+			if($.cookie('direction') != null)
+			{
+				$("#direction").val($.cookie("direction"));
+			}
+			if($.cookie('form_studying') != null)
+			{
+				$("#form_studying").val($.cookie("form_studying"));
 			}
 		});
 	</script>
