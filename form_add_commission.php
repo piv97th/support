@@ -23,11 +23,18 @@
 			$("form").on('submit',function(){
 				var mode_1 = 7;
 		        var order_1 = $("#order_1").val();
-		        var year = $("#year").val();
+		        var arr = [];
+		        cDate = $(this).find('input[name="date_meeting"]').length;
+		        alert(cDate);
+		        for(var i = 0; i < cDate; i++)
+		        {
+		        	arr[i] = $('input[name="date_meeting"]:eq('+i+')').val();
+		    	}
+		    	alert(arr);
 		        $.ajax({
 		        	type: 'POST',
 		        	url: 'handler_structure.php',
-		        	data: { order_1, year, mode_1},
+		        	data: { order_1, arr, mode_1},
 		        	async: false,
 		        	success: function(response)
 		        	{
@@ -41,6 +48,34 @@
 		        	}
 		    	});
 		    	return false;
+		    });
+		});
+
+		$(function(){
+			$("#btn_plus").on('click',function(){
+				var countMeeting = $('#number_meeting').val();
+				countMeeting++;
+				if(countMeeting < 10)
+				{
+					$('#number_meeting').val(countMeeting);
+					$('.form-group:last').after('<div class="form-group date"><label>Дата:</label><input type="date" class="form-control" name="date_meeting" ></div>');
+				}
+		    });
+		});
+
+		$(function(){
+			$("#btn_minus").on('click',function(){
+				var countMeeting = $('#number_meeting').val();
+				countMeeting--;
+				if(0 <= countMeeting)
+				{
+					$('#number_meeting').val(countMeeting);
+					$('.date:last').remove();
+				}
+				else
+				{
+					$('#number_meeting').val(0);
+				}
 		    });
 		});
 
@@ -126,17 +161,10 @@
 						<textarea class="form-control" id="order_1" name="order_1" ></textarea>
 					</div>
 					<div class="form-group">
-						<label for="year">Год:</label>
-						<select class="form-control" id="year" name="year" >
-							<option value="" disabled selected></option>
-							<?php
-							for($y = 0; $y < 3; $y++)
-							{
-								$current_date = date(Y)-1+$y;
-								echo '<option value='.$current_date.'>'.$current_date.'</option>';
-							}
-							?>
-						</select>
+						<label for="number_meeting">Количество заседаний:</label>
+						<input type="text" id="number_meeting" value="0" disabled>
+						<button type="button" id="btn_minus" class="btn btn-primary">-</button>
+						<button type="button" id="btn_plus" class="btn btn-primary">+</button>
 					</div>
 					<button type="submit" class="btn btn-primary">Submit</button>
 				</form>

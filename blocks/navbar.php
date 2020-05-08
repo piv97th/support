@@ -42,7 +42,7 @@
 				<a class="dropdown-item" href="choice_str_upd.php?mode=3">Редактировать</a>
 				<a class="dropdown-item" href="choice_str_del.php?mode=3">Удалить</a>
 				<div class="dropdown-header">Заседания</div>
-				<a class="dropdown-item" href="#">Добавить</a>
+				<a class="dropdown-item" href="form_add_meeting.php">Добавить</a>
 				<a class="dropdown-item" href="#">Редактировать</a>
 				<a class="dropdown-item" href="#">Удалить</a>
 			</div>
