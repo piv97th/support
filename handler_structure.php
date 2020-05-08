@@ -71,12 +71,37 @@
         exit;
 	}
 
-	if($_POST['mode_other'] == 3)
+	if($mode_1 == 6)
+	{
+		require_once('user_classes/class_structure.php');
+		$group = new group();
+
+		$result = array('arr_1' => $group->check_arr_1($_POST['arr_1']));
+		check_result($result);
+
+		$result_group = $group->delete_group();
+		$result = array('group' => $result_group);
+		echo json_encode($result);
+        exit;
+	}
+
+	if($_POST['mode_other'] == 1)
 	{
 		$result_direction = $conn->query('SELECT * FROM direction');
 		while($arr = $result_direction->fetch_assoc())
 		{
 			$arr_new[] = array('arr_1' => $arr['id'], 'cipher_direction' => $arr['cipher_direction'], 'name' => $arr['name']);
+		}
+		echo json_encode($arr_new);
+        exit;
+	}
+
+	if($_POST['mode_other'] == 2)
+	{
+		$result_group = $conn->query('SELECT id, cipher_group FROM group_1');
+		while($arr = $result_group->fetch_assoc())
+		{
+			$arr_new[] = array('arr_1' => $arr['id'], 'cipher_group' => $arr['cipher_group']);
 		}
 		echo json_encode($arr_new);
         exit;

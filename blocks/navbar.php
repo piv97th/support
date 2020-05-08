@@ -80,7 +80,7 @@
 				<div class="dropdown-header">Группы</div>
 				<a class="dropdown-item" href="form_add_group.php">Добавить</a>
 				<a class="dropdown-item" href="choice_str_upd.php?mode=2">Редактировать</a>
-				<a class="dropdown-item" href="#">Удалить</a>
+				<a class="dropdown-item" href="choice_str_del.php?mode=2">Удалить</a>
 			</div>
 		</li>
 

@@ -444,5 +444,19 @@
 				return 1;
 			}
 		}
+
+		public function delete_group()
+		{
+			require('blocks/connect.php');
+			$res = $conn->query('DELETE FROM group_1 WHERE id='.$this->id);
+			if($res != 1)
+			{
+				return 0;
+			}
+			else
+			{
+				return 1;
+			}
+		}
 	}
 ?>
