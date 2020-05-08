@@ -12,6 +12,10 @@
 	{
 		$title = 'Выбор группы';
 	}
+	elseif($mode == 3)
+	{
+		$title = 'Выбор комиссии';
+	}
 ?>
 
 <!DOCTYPE html>
@@ -48,6 +52,10 @@
 			{
 				var mode_other = 2;
 			}
+			else if(mode == 3)
+			{
+				var mode_other = 3;
+			}
 			$.ajax({
 				type: 'POST',
 				url: 'handler_structure.php',
@@ -71,6 +79,13 @@
 						$('.add_content').append('<li><a class="nolink" href=handler_structure.php?arr_1='+item.arr_1+'>'+item.cipher_group+'</a></li>');
 						});
 						aDellGroup();
+					}
+					if(mode == 3)
+					{
+						$(obj).each(function(index, item) {
+						$('.add_content').append('<li><a class="nolink" href=handler_structure.php?arr_1='+item.arr_1+'>'+item.order_1+' '+item.year+'</a></li>');
+						});
+						aDellCommission();
 					}
 		        }
 		    });
@@ -138,6 +153,36 @@
 			});
 		}
 
+		function aDellCommission()
+		{
+			$(".nolink").on("click", function(e){
+				var mode_1 = 9;
+				var link = e.target;
+				link = String(link);
+				var arr_1 = link.substr(52,8);
+				alert(arr_1);
+				$.ajax({
+					type: 'POST',
+					url: 'handler_structure.php',
+					data: {arr_1, mode_1},
+					async: false,
+					success: function(response)
+					{
+						alert(response);
+						var flag = true;
+		        		var result = JSON.parse(response);
+		        		outToast(result);
+		        		refresh();
+					},
+					error: function(jqxhr, status, errorMsg)
+		        	{
+		        		toastr.error(errorMsg, status);
+		        	}
+				});
+				return false;
+			});
+		}
+
 		function outToast(arr)
 		{
 			var flag = true;
@@ -163,14 +208,14 @@
 							toastr.error('Возможно у этого направления есть группы','Ошибка!');
 							flag = false;
 						}
-						if(arr['direction'] == 0)
-						{
-							toastr.error('Возможно у этого направления есть группы','Ошибка!');
-							flag = false;
-						}
 						if(arr['group'] == 0)
 						{
 							toastr.error('Возможно у этой группы есть студенты','Ошибка!');
+							flag = false;
+						}
+						if(arr['commission'] == 0)
+						{
+							toastr.error('Возможно у этой комиссии есть связанные данные','Ошибка!');
 							flag = false;
 						}
 					}

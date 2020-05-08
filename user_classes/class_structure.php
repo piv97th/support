@@ -524,5 +524,19 @@
 				return 1;
 			}
 		}
+
+		public function delete_commission()
+		{
+			require('blocks/connect.php');
+			$res = $conn->query('DELETE FROM commission WHERE id='.$this->id);
+			if($res != 1)
+			{
+				return 0;
+			}
+			else
+			{
+				return 1;
+			}
+		}
 	}
 ?>

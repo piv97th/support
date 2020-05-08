@@ -113,6 +113,20 @@
         exit;
 	}
 
+	if($mode_1 == 9)
+	{
+		require_once('user_classes/class_structure.php');
+		$commission = new commission();
+
+		$result = array('arr_1' => $commission->check_arr_1($_POST['arr_1']));
+		check_result($result);
+
+		$result_commission = $commission->delete_commission();
+		$result = array('commission' => $result_commission);
+		echo json_encode($result);
+        exit;
+	}
+
 	if($_POST['mode_other'] == 1)
 	{
 		$result_direction = $conn->query('SELECT * FROM direction');
@@ -130,6 +144,17 @@
 		while($arr = $result_group->fetch_assoc())
 		{
 			$arr_new[] = array('arr_1' => $arr['id'], 'cipher_group' => $arr['cipher_group']);
+		}
+		echo json_encode($arr_new);
+        exit;
+	}
+
+	if($_POST['mode_other'] == 3)
+	{
+		$result_commission = $conn->query('SELECT id, order_1, year FROM commission');
+		while($arr = $result_commission->fetch_assoc())
+		{
+			$arr_new[] = array('arr_1' => $arr['id'], 'order_1' => $arr['order_1'], 'year' => $arr['year']);
 		}
 		echo json_encode($arr_new);
         exit;
