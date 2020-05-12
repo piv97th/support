@@ -70,6 +70,23 @@
 			}
 		}
 
+/*		public function check_arrs_1($arr)
+		{
+			foreach($arr as $data)
+			{
+				if($this->check_empty($data) == 0)
+				{
+					return 0;
+				}
+				if($this->check_num($data) == 2)
+				{
+					return 2;
+				}
+			}
+			$this->id = $arr;
+			return 1;
+		}*/
+
 		public function check_name($data)
 		{
 			if($this->check_empty($data) == 0)
@@ -464,7 +481,6 @@
 	{
 		public $order_1 = 'NULL';
 		public $year = 'NULL';
-		public $id2 = 'NULL';
 
 		public function check_order_1($data)
 		{
@@ -498,7 +514,7 @@
 
 		public function get_commission_fk()
 		{
-			return $this->id2;
+			return $this->id;
 		}
 
 		public function add_commission()
@@ -506,7 +522,7 @@
 			require('blocks/connect.php');
 			$result = $conn->query("INSERT INTO commission (order_1) VALUES('$this->order_1')");
 			//TODO norm id
-			$this->id2 = $conn->insert_id;
+			$this->id = $conn->insert_id;
 			if($result != 1)
 			{
 				return 0;
@@ -520,8 +536,8 @@
 		public function update_commission()
 		{
 			require('blocks/connect.php');
-			$stmt = $conn->prepare('UPDATE commission SET order_1 = ?, year = ? WHERE id = ?');
-			$stmt->bind_param('sii', $this->order_1, $this->year, $this->id);
+			$stmt = $conn->prepare('UPDATE commission SET order_1 = ? WHERE id = ?');
+			$stmt->bind_param('si', $this->order_1, $this->id);
 			if($stmt->execute() != 1)
 			{
 				return 0;
@@ -588,6 +604,41 @@
 				$nm++;
 			}
 			return 1;
+		}
+
+		public function update_meeting()
+		{
+			require('blocks/connect.php');
+			$result = $conn->query('DELETE FROM timetable_meeting WHERE id_commission_fk ='.$this->commission_fk) or die($conn->error);
+			if($result != 1)
+			{
+				return 0;
+			}
+
+			$nm = 1;
+			foreach($this->date as $valdate)
+			{
+				//$result = $conn->query('UPDATE timetable_meeting SET ');
+				$result = $conn->query("INSERT INTO timetable_meeting (number_meeting, date, id_commission_fk) VALUES('$nm', '$valdate', '$this->commission_fk')") or die($conn->error);
+				if($result != 1)
+				{
+					return 0;
+				}
+				$nm++;
+			}
+			return 1;
+			/*$nm = 1;
+			foreach($this->date as $valdate)
+			{
+				$result = $conn->query("INSERT INTO timetable_meeting (number_meeting, date, id_commission_fk) VALUES('$nm', '$valdate', '$this->commission_fk')") or die($conn->error);
+				echo $conn->insert_id;
+				if($result != 1)
+				{
+					return 0;
+				}
+				$nm++;
+			}
+			return 1;*/
 		}
 	}
 ?>

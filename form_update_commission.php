@@ -5,8 +5,14 @@
 	$arr_1 = $_GET['arr_1'];
 	check_get($arr_1);
 
+	/*$qs_commission = $conn->query('SELECT commission.id, commission.order_1, timetable_meeting.number_meeting, timetable_meeting.date, timetable_meeting.id_commission_fk FROM commission INNER JOIN timetable_meeting ON timetable_meeting.id_commission_fk = '.$arr_1);*/
 	$qs_commission = $conn->query('SELECT * FROM commission WHERE id = '.$arr_1);
 	$arr_commission = $qs_commission->fetch_assoc();
+/*	var_dump($arr_commission['id']);
+	var_dump($arr_commission['order_1']);*/
+
+	$qs_meeting = $conn->query('SELECT * FROM timetable_meeting WHERE id_commission_fk = '.$arr_commission['id']);
+	//$arr_meeting = $qs_meeting->fetch_assoc();
 ?>
 
 <!DOCTYPE html>
@@ -28,20 +34,28 @@
 
 		$(function(){
 			$("form").on('submit',function(){
-				var arr_1 = <?php echo $arr_commission['id']; ?>;
+				var arr_1_commission = <?php echo $arr_commission['id'];?>;
+				//alert(arr_1_commission);
 				var mode_1 = 8;
-				var order_1 = $("#order_1").val();
-		        var year = $("#year").val();
-		    	$.ajax({
+		        var order_1 = $("#order_1").val();
+		        var arr_date = [];
+		        cDate = $(this).find('input[name="date_meeting"]').length;
+		        alert(cDate);
+		        for(var i = 0; i < cDate; i++)
+		        {
+		        	arr_date[i] = $('input[name="date_meeting"]:eq('+i+')').val();
+		    	}
+		    	alert(arr_1_commission);
+		        $.ajax({
 		        	type: 'POST',
 		        	url: 'handler_structure.php',
-		        	data: {order_1, year, arr_1, mode_1},
+		        	data: {arr_1_commission, order_1, arr_date, mode_1},
 		        	async: false,
 		        	success: function(response)
 		        	{
 		        		alert(response);
 		        		var result = JSON.parse(response);
-						outToast(result);
+		        		outToast(result);
 		        	},
 		        	error: function(jqxhr, status, errorMsg)
 		        	{
@@ -51,6 +65,38 @@
 		    	return false;
 		    });
 		});
+
+		$(function(){
+			$("#btn_plus").on('click',function(){
+				var countMeeting = $('#number_meeting').val();
+				countMeeting++;
+				if(countMeeting < 10)
+				{
+					$('#number_meeting').val(countMeeting);
+					$('.form-group:last').after('<div class="form-group date"><label>Дата:</label><input type="date" class="form-control" name="date_meeting" ></div>');
+				}
+		    });
+		});
+
+		$(function(){
+			$("#btn_minus").on('click',function(){
+				var countMeeting = $('#number_meeting').val();
+				countMeeting--;
+				if(0 <= countMeeting)
+				{
+					$('#number_meeting').val(countMeeting);
+					$('.date:last').remove();
+				}
+				else
+				{
+					$('#number_meeting').val(0);
+				}
+		    });
+		});
+
+/*		$(window).ready(function() {
+			$('#number_meeting').val();
+		}*/
 
 		function outToast(arr)
 		{
@@ -72,7 +118,7 @@
 							toastr.error('Что-то не так','Ошибка!');
 							flag = false;
 						}
-						if(arr['commission'] == 0)
+						if(arr['meeting'] == 0)
 						{
 							toastr.error('При записи','Ошибка!');
 							flag = false;
@@ -90,12 +136,22 @@
 							toastr.error('Слишком много символов','Ошибка!');
 							flag = false;
 						}
+						if(arr['commission'] == 0)
+						{
+							toastr.error('При записи','Ошибка!');
+							flag = false;
+						}
 					}
 					if(c == 2)
 					{
-						if(arr['year'] == 0)
+						if(arr['date'] == 0)
 						{
 							toastr.error('Выберете год','Ошибка!');
+							flag = false;
+						}
+						if(arr['date'] == 2)
+						{
+							toastr.error('Неправильно набран год','Ошибка!');
 							flag = false;
 						}
 					}
@@ -107,6 +163,10 @@
     			toastr.success('Успешно! Информация отредактирована');
     		}
 		}
+
+		$(window).ready(function() {
+			$('#number_meeting').val($(".date").length);
+		});
 
 /*		window.onbeforeunload = function (evt) {
 			var message = "Измененные данные не отправлены";
@@ -141,16 +201,17 @@
 						<textarea class="form-control" id="order_1" name="order_1" required><?php echo $arr_commission['order_1']; ?></textarea>
 					</div>
 					<div class="form-group">
-						<label for="year">Год:</label>
-						<select class="form-control" id="year" name="year" >
-							<?php
-							echo '<option value='.($arr_commission["year"] + 1).'>'.($arr_commission["year"] + 1).'</option>';
-							echo '<option value='.$arr_commission["year"].' selected>'.$arr_commission["year"].'</option>';
-							echo '<option value='.($arr_commission["year"] - 1).'>'.($arr_commission["year"] - 1).'</option>';
-							echo $arr_commission['year'];
-							?>
-						</select>
+						<label for="number_meeting">Количество заседаний:</label>
+						<input type="text" id="number_meeting" value="0" disabled>
+						<button type="button" id="btn_minus" class="btn btn-primary">-</button>
+						<button type="button" id="btn_plus" class="btn btn-primary">+</button>
 					</div>
+					<?php
+					while($arr_meeting = $qs_meeting->fetch_assoc())
+					{
+						echo '<div class="form-group date"><label>Дата:</label><input type="date" class="form-control" name="date_meeting" value='.$arr_meeting["date"].'></div>';
+					}
+					?>
 					<button type="submit" class="btn btn-primary">Submit</button>
 				</form>
 			</div>
