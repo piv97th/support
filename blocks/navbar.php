@@ -91,6 +91,18 @@
 
 		<li class="nav-item dropdown">
 			<a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+				Научные руководители
+			</a>
+			<div class="dropdown-menu">
+
+				<a class="dropdown-item" href="form_add_supervisor.php">Добавить</a>
+				<a class="dropdown-item" href="#">Редактировать</a>
+				<a class="dropdown-item" href="#">Удалить</a>
+			</div>
+		</li>
+
+		<li class="nav-item dropdown">
+			<a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
 				Члены ГЭК
 			</a>
 			<div class="dropdown-menu">
