@@ -135,9 +135,17 @@
 	{
 		require_once('user_classes/class_structure.php');
 		$commission = new commission();
+		$meeting = new meeting();
 
 		$result = array('arr_1' => $commission->check_arr_1($_POST['arr_1']));
 		check_result($result);
+		$meeting->commission_fk = $commission->get_commission_fk();
+		if($meeting->is_commission() == 1)
+		{
+			$result_meeting = $meeting->delete_meeting();
+			$result = array('meeting' => $result_meeting);
+			check_result($result);
+		}
 
 		$result_commission = $commission->delete_commission();
 		$result = array('commission' => $result_commission);
@@ -169,10 +177,10 @@
 
 	if($_POST['mode_other'] == 3)
 	{
-		$result_commission = $conn->query('SELECT id, order_1, year FROM commission');
+		$result_commission = $conn->query('SELECT id, order_1 FROM commission');
 		while($arr = $result_commission->fetch_assoc())
 		{
-			$arr_new[] = array('arr_1' => $arr['id'], 'order_1' => $arr['order_1'], 'year' => $arr['year']);
+			$arr_new[] = array('arr_1' => $arr['id'], 'order_1' => $arr['order_1']);
 		}
 		echo json_encode($arr_new);
         exit;

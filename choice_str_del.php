@@ -83,7 +83,7 @@
 					if(mode == 3)
 					{
 						$(obj).each(function(index, item) {
-						$('.add_content').append('<li><a class="nolink" href=handler_structure.php?arr_1='+item.arr_1+'>'+item.order_1+' '+item.year+'</a></li>');
+						$('.add_content').append('<li><a class="nolink" href=handler_structure.php?arr_1='+item.arr_1+'>'+item.order_1+'</a></li>');
 						});
 						aDellCommission();
 					}
@@ -169,7 +169,7 @@
 					success: function(response)
 					{
 						alert(response);
-						var flag = true;
+						//var flag = true;
 		        		var result = JSON.parse(response);
 		        		outToast(result);
 		        		refresh();
@@ -211,6 +211,11 @@
 						if(arr['group'] == 0)
 						{
 							toastr.error('Возможно у этой группы есть студенты','Ошибка!');
+							flag = false;
+						}
+						if(arr['meeting'] == 0)
+						{
+							toastr.error('Возможно у этой комиссии есть связанные данные','Ошибка!');
 							flag = false;
 						}
 						if(arr['commission'] == 0)

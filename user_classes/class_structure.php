@@ -551,7 +551,7 @@
 		public function delete_commission()
 		{
 			require('blocks/connect.php');
-			$res = $conn->query('DELETE FROM commission WHERE id='.$this->id);
+			$res = $conn->query('DELETE FROM commission WHERE id='.$this->id) or die($conn->error);
 			if($res != 1)
 			{
 				return 0;
@@ -587,6 +587,23 @@
 			sort($data);
 			$this->date = $data;
 			return 1;
+		}
+
+		public function is_commission()
+		{
+			require('blocks/connect.php');
+			$result = $conn->query('SELECT COUNT(id) as `count` FROM timetable_meeting WHERE id_commission_fk='.$this->commission_fk) or die($conn->error);
+			$row = $result->fetch_assoc();
+			if($row['count'] > 0)
+			{
+				echo $row['id'];
+				return 1;
+			}
+			else
+			{
+				return 0;
+			}
+
 		}
 
 		public function add_meeting()
@@ -627,18 +644,22 @@
 				$nm++;
 			}
 			return 1;
-			/*$nm = 1;
-			foreach($this->date as $valdate)
-			{
-				$result = $conn->query("INSERT INTO timetable_meeting (number_meeting, date, id_commission_fk) VALUES('$nm', '$valdate', '$this->commission_fk')") or die($conn->error);
-				echo $conn->insert_id;
-				if($result != 1)
-				{
-					return 0;
-				}
-				$nm++;
-			}
-			return 1;*/
 		}
+
+		public function delete_meeting()
+		{
+			require('blocks/connect.php');
+			$result = $conn->query('DELETE FROM timetable_meeting WHERE id_commission_fk ='.$this->commission_fk);
+			if($result != 1)
+			{
+				return 0;
+			}
+			else
+			{
+				return 1;
+			}
+		}
+
+		
 	}
 ?>
