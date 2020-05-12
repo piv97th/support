@@ -464,6 +464,7 @@
 	{
 		public $order_1 = 'NULL';
 		public $year = 'NULL';
+		public $id2 = 'NULL';
 
 		public function check_order_1($data)
 		{
@@ -495,12 +496,18 @@
 			}
 		}
 
+		public function get_commission_fk()
+		{
+			return $this->id2;
+		}
+
 		public function add_commission()
 		{
 			require('blocks/connect.php');
-			$stmt = $conn->prepare('INSERT INTO commission (order_1, year) VALUES(?,?)');
-			$stmt->bind_param('si', $this->order_1, $this->year);
-			if($stmt->execute() != 1)
+			$result = $conn->query("INSERT INTO commission (order_1) VALUES('$this->order_1')");
+			//TODO norm id
+			$this->id2 = $conn->insert_id;
+			if($result != 1)
 			{
 				return 0;
 			}
@@ -537,6 +544,50 @@
 			{
 				return 1;
 			}
+		}
+	}
+
+	class meeting extends structure
+	{
+		//public $id = 'NULL';
+		public $number_meeting = 'NULL';
+		public $date = 'NULL';
+		public $commission_fk = 'NULL';
+
+		public function check_date($data)
+		{
+			$pattern_date = '/^[0-9,-]{10}$/';
+			foreach($data as $date)
+			{
+				if($this->check_empty($date) == 0)
+				{
+					return 0;
+				}
+				if(!preg_match($pattern_date, $date))
+				{
+					return 2;
+				}
+			}
+			sort($data);
+			$this->date = $data;
+			return 1;
+		}
+
+		public function add_meeting()
+		{
+			require('blocks/connect.php');
+			$nm = 1;
+			foreach($this->date as $valdate)
+			{
+				$result = $conn->query("INSERT INTO timetable_meeting (number_meeting, date, id_commission_fk) VALUES('$nm', '$valdate', '$this->commission_fk')") or die($conn->error);
+				echo $conn->insert_id;
+				if($result != 1)
+				{
+					return 0;
+				}
+				$nm++;
+			}
+			return 1;
 		}
 	}
 ?>

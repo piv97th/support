@@ -23,18 +23,18 @@
 			$("form").on('submit',function(){
 				var mode_1 = 7;
 		        var order_1 = $("#order_1").val();
-		        var arr = [];
+		        var arr_date = [];
 		        cDate = $(this).find('input[name="date_meeting"]').length;
 		        alert(cDate);
 		        for(var i = 0; i < cDate; i++)
 		        {
-		        	arr[i] = $('input[name="date_meeting"]:eq('+i+')').val();
+		        	arr_date[i] = $('input[name="date_meeting"]:eq('+i+')').val();
 		    	}
-		    	alert(arr);
+		    	alert(arr_date);
 		        $.ajax({
 		        	type: 'POST',
 		        	url: 'handler_structure.php',
-		        	data: { order_1, arr, mode_1},
+		        	data: {order_1, arr_date, mode_1},
 		        	async: false,
 		        	success: function(response)
 		        	{
@@ -107,9 +107,19 @@
 					}
 					if(c == 1)
 					{
-						if(arr['year'] == 0)
+						if(arr['date'] == 0)
 						{
 							toastr.error('Выберете год','Ошибка!');
+							flag = false;
+						}
+						if(arr['date'] == 2)
+						{
+							toastr.error('Неправильно набран год','Ошибка!');
+							flag = false;
+						}
+						if(arr['meeting'] == 0)
+						{
+							toastr.error('При записи','Ошибка!');
 							flag = false;
 						}
 					}
@@ -126,7 +136,7 @@
 
 		window.onbeforeunload = function() {
 			$.cookie('order_1', $("#order_1").val(), { expires: 1 });
-			$.cookie('year', $("#year").val(), { expires: 1 });
+			//$.cookie('year', $("#year").val(), { expires: 1 });
 		};
 
 		$(window).ready(function() {
@@ -134,10 +144,11 @@
 			{
 				$("#order_1").val($.cookie("order_1"));
 			}
-			if($.cookie('year') != null)
+			$('#number_meeting').val(0);
+/*			if($.cookie('year') != null)
 			{
 				$("#year").val($.cookie("year"));
-			}
+			}*/
 		});
 	</script>
 

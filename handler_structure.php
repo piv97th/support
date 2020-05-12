@@ -89,12 +89,21 @@
 	{
 		require_once('user_classes/class_structure.php');
 		$commission = new commission();
+		$meeting = new meeting();
 
-		$result = array('order_1' => $commission->check_order_1($_POST['order_1']), 'year' => $commission->check_year($_POST['year']));
+		$result = array('order_1' => $commission->check_order_1($_POST['order_1']));
+
+		$result += ['date' => $meeting->check_date($_POST['arr_date'])];
 		check_result($result);
 
 		$result_commission = $commission->add_commission();
 		$result = array('commission' => $result_commission);
+		check_result($result);
+
+		$meeting->commission_fk = $commission->get_commission_fk();
+		$result_meeting = $meeting->add_meeting();
+		$result += ['meeting' => $result_meeting];
+
 		echo json_encode($result);
         exit;
 	}
