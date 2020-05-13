@@ -140,6 +140,20 @@
 				return 1;
 			}
 		}
+
+		public function delete_ticket()
+		{
+			require('blocks/connect.php');
+			$result = $conn->query('DELETE FROM ticket WHERE id ='.$this->id);
+			if($result != 1)
+			{
+				return 0;
+			}
+			else
+			{
+				return 1;
+			}
+		}
 	}
 
 ?>

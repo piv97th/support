@@ -34,4 +34,30 @@
 		echo json_encode($result);
         exit;
 	}
+
+	if($mode_1 == 3)
+	{
+		require_once('user_classes/class_ticket.php');
+		$ticket = new ticket();
+
+		$result = array('arr_1' => $ticket->check_arr_1($_POST['arr_1']));
+		check_result($result);
+
+		$result_ticket = $ticket->delete_ticket();
+		$result = array('ticket' => $result_ticket);
+		echo json_encode($result);
+        exit;
+	}
+
+	if($_POST['mode_other'] == 1)
+	{
+		require('blocks/connect.php');
+		$result_ticket = $conn->query('SELECT * FROM ticket');
+		while($arr = $result_ticket->fetch_assoc())
+		{
+			$arr_new[] = array('arr_1' => $arr['id'], 'fq' => $arr['first_question'], 'sq' => $arr['second_question'], 'tq' => $arr['third_question']);
+		}
+		echo json_encode($arr_new);
+        exit;
+	}
 ?>
