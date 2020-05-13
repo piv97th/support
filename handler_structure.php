@@ -186,4 +186,15 @@
         exit;
 	}
 
+	if($_POST['mode_other'] == 4)
+	{
+		$result_supervisor = $conn->query('SELECT id, cipher_teacher, last_name, first_name FROM teacher');
+		while($arr = $result_supervisor->fetch_assoc())
+		{
+			$arr_new[] = array('arr_1' => $arr['id'], 'cipher_supervisor' => $arr['cipher_teacher'], 'last_name' => $arr['last_name'], 'first_name' => $arr['first_name']);
+		}
+		echo json_encode($arr_new);
+        exit;
+	}
+
 ?>

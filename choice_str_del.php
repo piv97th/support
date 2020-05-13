@@ -16,6 +16,11 @@
 	{
 		$title = 'Выбор комиссии';
 	}
+	elseif($mode == 4)
+	{
+		$title = 'Выбор нучного руководителя';
+	}
+
 ?>
 
 <!DOCTYPE html>
@@ -56,6 +61,10 @@
 			{
 				var mode_other = 3;
 			}
+			else if(mode == 4)
+			{
+				var mode_other = 4;
+			}
 			$.ajax({
 				type: 'POST',
 				url: 'handler_structure.php',
@@ -86,6 +95,13 @@
 						$('.add_content').append('<li><a class="nolink" href=handler_structure.php?arr_1='+item.arr_1+'>'+item.order_1+'</a></li>');
 						});
 						aDellCommission();
+					}
+					if(mode == 4)
+					{
+						$(obj).each(function(index, item) {
+						$('.add_content').append('<li><a class="nolink" href=handler_supervisor.php?arr_1='+item.arr_1+'>'+item.cipher_supervisor+' '+item.last_name+' '+item.first_name+'</a></li>');
+						});
+						aDellSupervisor();
 					}
 		        }
 		    });
@@ -169,7 +185,35 @@
 					success: function(response)
 					{
 						alert(response);
-						//var flag = true;
+		        		var result = JSON.parse(response);
+		        		outToast(result);
+		        		refresh();
+					},
+					error: function(jqxhr, status, errorMsg)
+		        	{
+		        		toastr.error(errorMsg, status);
+		        	}
+				});
+				return false;
+			});
+		}
+
+		function aDellSupervisor()
+		{
+			$(".nolink").on("click", function(e){
+				var mode_1 = 3;
+				var link = e.target;
+				link = String(link);
+				var arr_1 = link.substr(53,8);
+				alert(arr_1);
+				$.ajax({
+					type: 'POST',
+					url: 'handler_supervisor.php',
+					data: {arr_1, mode_1},
+					async: false,
+					success: function(response)
+					{
+						alert(response);
 		        		var result = JSON.parse(response);
 		        		outToast(result);
 		        		refresh();
@@ -221,6 +265,11 @@
 						if(arr['commission'] == 0)
 						{
 							toastr.error('Возможно у этой комиссии есть связанные данные','Ошибка!');
+							flag = false;
+						}
+						if(arr['supervisor'] == 0)
+						{
+							toastr.error('Возможно у этого преподавателя есть студенты','Ошибка!');
 							flag = false;
 						}
 					}

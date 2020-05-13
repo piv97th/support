@@ -35,18 +35,16 @@
         exit;
 	}
 
-	if($mode_1 == 3)
+	if(isset($_POST['arr_1']) && $mode_1 == 3)
 	{
-		$result = array('first' => check_num($_POST['arr_1']), 'second' => check_num($_POST['mode_1']));
+		require_once('user_classes/class_man.php');
+		$supervisor = new supervisor();
 
+		$result = array('arr_1' => $supervisor->check_arr_1($_POST['arr_1']));
 		check_result($result);
 
-		require_once('user_classes/class_man.php');
-		require_once('user_classes/class_inanimate.php');
-
-		$student = new student(['id' => $_POST['arr_1']]);
-		$result = $student->delete_student();
-
+		$result_supervisor = $supervisor->delete_supervisor();
+		$result = array('supervisor' => $result_supervisor);
 		echo json_encode($result);
         exit;
 	}

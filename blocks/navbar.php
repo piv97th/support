@@ -97,7 +97,7 @@
 
 				<a class="dropdown-item" href="form_add_supervisor.php">Добавить</a>
 				<a class="dropdown-item" href="choice_str_upd.php?mode=4">Редактировать</a>
-				<a class="dropdown-item" href="#">Удалить</a>
+				<a class="dropdown-item" href="choice_str_del.php?mode=4">Удалить</a>
 			</div>
 		</li>
 
