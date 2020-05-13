@@ -53,8 +53,8 @@
 				Госэкзамен
 			</a>
 			<div class="dropdown-menu">
-
-				<a class="dropdown-item" href="#">Добавить</a>
+				<div class="dropdown-header">Вопросы</div>
+				<a class="dropdown-item" href="form_add_ticket.php">Добавить</a>
 				<a class="dropdown-item" href="#">Редактировать</a>
 				<a class="dropdown-item" href="#">Удалить</a>
 			</div>
