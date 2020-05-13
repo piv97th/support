@@ -1,17 +1,3 @@
-<?php
-	/*require('blocks/connect.php');
-	require_once('blocks/check_data.php');*/
-
-	/*$arr_1 = $_GET['arr_1'];
-	check_get($arr_1);
-
-	$qs_group = $conn->query('SELECT * FROM group_1 WHERE id = '.$arr_1);
-	$arr_group = $qs_group->fetch_assoc();
-
-	$result_cathedra = $conn->query('SELECT * FROM cathedra');
-	$result_direction = $conn->query('SELECT * FROM direction');*/
-?>
-
 <!DOCTYPE html>
 <html>
 
