@@ -55,7 +55,7 @@
 			<div class="dropdown-menu">
 				<div class="dropdown-header">Вопросы</div>
 				<a class="dropdown-item" href="form_add_ticket.php">Добавить</a>
-				<a class="dropdown-item" href="#">Редактировать</a>
+				<a class="dropdown-item" href="choice_ticket_upd.php">Редактировать</a>
 				<a class="dropdown-item" href="#">Удалить</a>
 			</div>
 		</li>

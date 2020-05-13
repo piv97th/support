@@ -19,4 +19,19 @@
 		echo json_encode($result);
         exit;
 	}
+
+	if(isset($_POST['fq']) && $mode_1 == 2)
+	{
+		require_once('user_classes/class_ticket.php');
+
+		$ticket = new ticket();
+
+		$result = array('arr_1' => $ticket->check_arr_1($_POST['arr_1']), 'fq' => $ticket->check_question_first($_POST['fq']), 'sq' => $ticket->check_question_second($_POST['sq']), 'tq' => $ticket->check_question_third($_POST['tq']));
+		check_result($result);
+
+		$result_ticket = $ticket->update_ticket();
+		$result = array('ticket' => $result_ticket);
+		echo json_encode($result);
+        exit;
+	}
 ?>
