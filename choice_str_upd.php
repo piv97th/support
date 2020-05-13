@@ -35,6 +35,16 @@
 			}
 			echo '</ul>';
 		}
+		if($mode == 4)
+		{
+			$result_supervisor = $conn->query('SELECT id, cipher_teacher, last_name, first_name FROM teacher');
+			echo '<ul class="add_content">';
+			while ($arr_supervisor = $result_supervisor->fetch_assoc())
+			{
+				printf('<li><a href=form_update_supervisor.php?arr_1=%s>%s %s %s</a></li>', $arr_supervisor['id'], $arr_supervisor['cipher_teacher'], $arr_supervisor['last_name'], $arr_supervisor['first_name']);
+			}
+			echo '</ul>';
+		}
 	}
 	$mode = $_GET['mode'];
 	check_get($mode);
@@ -49,6 +59,10 @@
 	elseif($mode == 3)
 	{
 		$title = 'Выбор комиссии';
+	}
+	elseif($mode == 4)
+	{
+		$title = 'Выбор научного руководителя';
 	}
 ?>
 

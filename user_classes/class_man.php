@@ -99,6 +99,31 @@
 			}
 		}
 
+		public function check_numeral($data)
+		{
+			if(0 > $data || $data > 9)
+			{
+				return 2;
+			}
+			else
+			{
+				return 1;
+			}
+		}
+
+/*		public function check_alpha($data)
+		{
+			$pattern_alpha = '/^[0-9]{2}[Б,М,С][0-9]{4}$/u';
+			if(!is_numeric($data) || 1 > mb_strlen($data) || 8 < mb_strlen($data))
+			{
+				return 2;
+			}
+			else
+			{
+				return 1;
+			}
+		}*/
+
 		public function check_arr_1($data)
 		{
 			$status = $this->check_empty($data);
@@ -119,6 +144,27 @@
 				}
 			}
 		}
+
+		/*public function check_numeral($data)
+		{
+			$status = $this->check_empty($data);
+			if($status == 0)
+			{
+				return 0;
+			}
+			else
+			{
+				if($this->check_num($data) == 2)
+				{
+					return 2;
+				}
+				else
+				{
+					$this->id = $data;
+					return 1;
+				}
+			}
+		}*/
 
 	}
 
@@ -405,12 +451,167 @@
 		public $rank = 'NULL';
 		public $post = 'NULL';
 
-/*		public function __construct($fields)
+		private function is_old_cipher_supervisor($data)
 		{
-			foreach($fields as $key => $value) {
-				$this->$key = $value;
+			require('blocks/connect.php');
+			$result = $conn->query('SELECT cipher_teacher FROM teacher WHERE id = '.$this->id) or die($conn->error);
+			$arr = $result->fetch_assoc();
+			if($arr['cipher_teacher'] == $data)
+			{
+				return 1;
 			}
-		}*/
+			else
+			{
+				return 0;
+			}
+		}
+
+		private function exist_cipher_supervisor($data)
+		{
+			require('blocks/connect.php');
+			$sql = "SELECT COUNT(cipher_teacher) as `count` FROM teacher WHERE cipher_teacher = '$data'";
+			$result = $conn->query($sql) or die($conn->error);
+			$row = $result->fetch_assoc();
+			if($row['count'] > 0)
+			{
+				return 1;
+			}
+			else
+			{
+				return 0;
+			}
+		}
+
+		public function check_cipher_supervisor($data)
+		{
+			if($this->check_empty($data) == 0)
+			{
+				return 0;
+			}
+			$pattern_cs = '/^[0-9]{2,4}$/';
+			if(!preg_match($pattern_cs, $data))
+			{
+				return 2;
+			}
+			else
+			{
+				if($this->exist_cipher_supervisor($data) == 1)
+				{
+					return 3;
+				}
+				else
+				{
+					$this->cipher_supervisor = $data;
+					return 1;
+				}
+			}
+		}
+
+		public function check_cipher_supervisor_u($data)
+		{
+			if($this->check_empty($data) == 0)
+			{
+				return 0;
+			}
+			$pattern_cs = '/^[0-9]{2,4}$/';
+			if(!preg_match($pattern_cs, $data))
+			{
+				return 2;
+			}
+			else
+			{
+				if(($this->exist_cipher_supervisor($data) == 1))
+				{
+					if($this->is_old_cipher_supervisor($data) == 1)
+					{
+						$this->cipher_supervisor = $data;
+						return 1;
+					}
+					else
+					{
+						return 3;
+					}
+				}
+				else
+				{
+					$this->cipher_supervisor = $data;
+					return 1;
+				}
+			}
+		}
+
+		public function check_degree($data)
+		{
+			if($this->check_empty($data) == 0)
+			{
+				return 0;
+			}
+			if($this->check_numeral($data) == 2)
+			{
+				return 2;
+			}
+			else
+			{
+				$this->degree = $data;
+				return 1;
+			}
+		}
+
+		public function check_rank($data)
+		{
+			if($this->check_empty($data) == 0)
+			{
+				return 0;
+			}
+			else
+			{
+				$this->rank = $data;
+				return 1;
+			}
+		}
+
+		public function check_post($data)
+		{
+			if($this->check_empty($data) == 0)
+			{
+				return 0;
+			}
+			else
+			{
+				$this->post = $data;
+				return 1;
+			}
+		}
+
+		public function add_supervisor()
+		{
+			require('blocks/connect.php');
+			$stmt = $conn->prepare('INSERT INTO teacher (cipher_teacher, last_name, first_name, patronymic, degree, rank, post) VALUES(?,?,?,?,?,?,?)');
+			$stmt->bind_param('ssssiss', $this->cipher_supervisor, $this->last_name, $this->first_name, $this->patronymic, $this->degree, $this->rank, $this->post);
+			if($stmt->execute() != 1)
+			{
+				return 0;
+			}
+			else
+			{
+				return 1;
+			}
+		}
+
+		public function update_supervisor()
+		{
+			require('blocks/connect.php');
+			$stmt = $conn->prepare('UPDATE teacher SET cipher_teacher=?, last_name=?, first_name=?, patronymic=?, degree=?, rank=?, post=? WHERE id = ?');
+			$stmt->bind_param('ssssissi', $this->cipher_supervisor, $this->last_name, $this->first_name, $this->patronymic, $this->degree, $this->rank, $this->post, $this->id);
+			if($stmt->execute() != 1)
+			{
+				return 0;
+			}
+			else
+			{
+				return 1;
+			}
+		}		
 
 	}
 
