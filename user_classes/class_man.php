@@ -634,15 +634,157 @@
 		public $degree = 'NULL';
 		public $rank = 'NULL';
 		public $post = 'NULL';
-		public $role = 'NULL';
-		public $commission = 'NULL';
+		//public $role = 'NULL';
+		//public $commission = 'NULL';
 
-/*		public function __construct($fields)
+		private function is_old_cipher_supervisor($data)
 		{
-			foreach($fields as $key => $value) {
-				$this->$key = $value;
+			require('blocks/connect.php');
+			$result = $conn->query('SELECT cipher_teacher FROM teacher WHERE id = '.$this->id) or die($conn->error);
+			$arr = $result->fetch_assoc();
+			if($arr['cipher_teacher'] == $data)
+			{
+				return 1;
 			}
-		}*/
+			else
+			{
+				return 0;
+			}
+		}
+
+		private function exist_cipher_supervisor($data)
+		{
+			require('blocks/connect.php');
+			$sql = "SELECT COUNT(cipher_teacher) as `count` FROM teacher WHERE cipher_teacher = '$data'";
+			$result = $conn->query($sql) or die($conn->error);
+			$row = $result->fetch_assoc();
+			if($row['count'] > 0)
+			{
+				return 1;
+			}
+			else
+			{
+				return 0;
+			}
+		}
+
+		public function check_cipher_supervisor($data)
+		{
+			if($this->check_empty($data) == 0)
+			{
+				return 0;
+			}
+			$pattern_cs = '/^[0-9]{2,4}$/';
+			if(!preg_match($pattern_cs, $data))
+			{
+				return 2;
+			}
+			else
+			{
+				if($this->exist_cipher_supervisor($data) == 1)
+				{
+					return 3;
+				}
+				else
+				{
+					$this->cipher_supervisor = $data;
+					return 1;
+				}
+			}
+		}
+
+		public function check_cipher_supervisor_u($data)
+		{
+			if($this->check_empty($data) == 0)
+			{
+				return 0;
+			}
+			$pattern_cs = '/^[0-9]{2,4}$/';
+			if(!preg_match($pattern_cs, $data))
+			{
+				return 2;
+			}
+			else
+			{
+				if(($this->exist_cipher_supervisor($data) == 1))
+				{
+					if($this->is_old_cipher_supervisor($data) == 1)
+					{
+						$this->cipher_supervisor = $data;
+						return 1;
+					}
+					else
+					{
+						return 3;
+					}
+				}
+				else
+				{
+					$this->cipher_supervisor = $data;
+					return 1;
+				}
+			}
+		}
+
+		public function check_degree($data)
+		{
+			if($this->check_empty($data) == 0)
+			{
+				return 0;
+			}
+			if($this->check_numeral($data) == 2)
+			{
+				return 2;
+			}
+			else
+			{
+				$this->degree = $data;
+				return 1;
+			}
+		}
+
+		public function check_rank($data)
+		{
+			if($this->check_empty($data) == 0)
+			{
+				return 0;
+			}
+			else
+			{
+				$this->rank = $data;
+				return 1;
+			}
+		}
+
+		public function check_post($data)
+		{
+			if($this->check_empty($data) == 0)
+			{
+				return 0;
+			}
+			else
+			{
+				$this->post = $data;
+				return 1;
+			}
+		}
+
+		public function add_member_ssk()
+		{
+			require('blocks/connect.php');
+			$stmt = $conn->prepare('INSERT INTO member_ssk (last_name, first_name, patronymic, post, degree, rank) VALUES(?,?,?,?,?,?)');
+			$stmt->bind_param('ssssis', $this->last_name, $this->first_name, $this->patronymic, $this->post, $this->degree, $this->rank);
+			if($stmt->execute() != 1)
+			{
+				return 0;
+			}
+			else
+			{
+				return 1;
+			}
+		}
+
+
 
 	}
 ?>
