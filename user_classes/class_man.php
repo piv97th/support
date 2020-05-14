@@ -784,6 +784,21 @@
 			}
 		}
 
+		public function update_member_ssk()
+		{
+			require('blocks/connect.php');
+			$stmt = $conn->prepare('UPDATE member_ssk SET last_name=?, first_name=?, patronymic=?, post=?, degree=?, rank=? WHERE id = ?');
+			$stmt->bind_param('ssssisi', $this->last_name, $this->first_name, $this->patronymic, $this->post, $this->degree, $this->rank, $this->id);
+			if($stmt->execute() != 1)
+			{
+				return 0;
+			}
+			else
+			{
+				return 1;
+			}
+		}
+
 
 
 	}

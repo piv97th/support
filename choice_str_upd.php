@@ -45,6 +45,16 @@
 			}
 			echo '</ul>';
 		}
+		if($mode == 5)
+		{
+			$result_member_ssk = $conn->query('SELECT id, last_name, first_name, post FROM member_ssk');
+			echo '<ul class="add_content">';
+			while ($arr_member_ssk = $result_member_ssk->fetch_assoc())
+			{
+				printf('<li><a href=form_update_member_ssk.php?arr_1=%s>%s %s %s</a></li>', $arr_member_ssk['id'], $arr_member_ssk['last_name'], $arr_member_ssk['first_name'], $arr_member_ssk['post']);
+			}
+			echo '</ul>';
+		}
 	}
 	$mode = $_GET['mode'];
 	check_get($mode);
@@ -63,6 +73,10 @@
 	elseif($mode == 4)
 	{
 		$title = 'Выбор научного руководителя';
+	}
+	elseif($mode == 5)
+	{
+		$title = 'Выбор члена ГЭК';
 	}
 ?>
 

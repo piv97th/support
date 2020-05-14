@@ -108,7 +108,7 @@
 			<div class="dropdown-menu">
 
 				<a class="dropdown-item" href="form_add_member_ssk.php">Добавить</a>
-				<a class="dropdown-item" href="#">Редактировать</a>
+				<a class="dropdown-item" href="choice_str_upd.php?mode=5">Редактировать</a>
 				<a class="dropdown-item" href="#">Удалить</a>
 			</div>
 		</li>
