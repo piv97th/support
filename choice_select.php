@@ -20,6 +20,14 @@
 				echo'<option value='.$arr["id"].'>'.$arr["cipher_group"].'</option>';
 			}
 		}
+		elseif($mode == 4)
+		{
+			$result = $conn->query('SELECT id, cipher_group FROM group_1');
+			while ($arr = $result->fetch_assoc())
+			{
+				echo'<option value='.$arr["id"].'>'.$arr["cipher_group"].'</option>';
+			}
+		}
 	}
 	$mode = $_GET['mode'];
 	if($mode == 1)
@@ -28,6 +36,11 @@
 		$name_choice = 'Группа';
 	}
 	elseif($mode == 2)
+	{
+		$title = 'Выбор группы';
+		$name_choice = 'Группа';
+	}
+	elseif($mode == 4)
 	{
 		$title = 'Выбор группы';
 		$name_choice = 'Группа';
@@ -43,13 +56,7 @@
 
 	<title><?php echo $title; ?></title>
 
-	<link href="scripts/toastr.css" rel="stylesheet">
-	<link href="scripts/toastr.css" rel="stylesheet">
-	<script type="text/javascript" src="scripts/toastr.js"></script>
-	<script type="text/javascript" src="scripts/jquery_cookies.js"></script>
 	<script type="text/javascript" src="scripts/disabled_link.js"></script>
-	<script type="text/javascript" src="scripts/toastr.js"></script>
-
 
 	<script type="text/javascript">
 
@@ -62,6 +69,10 @@
 			else if(mode == 2)
 			{
 				return '(\'<li><a class="nolink" href=handler_student.php?arr_1=\'+item.arr_1+\'>\'+(index+1)+\' \'+item.last_name +\' \'+item.first_name+\' \'+item.number_record_book+\'</li></a>\')';
+			}
+			else if(mode == 4)
+			{
+				return '(\'<li><a href=form_diploma.php?arr_1=\'+item.arr_1+\'>\'+(index+1)+\' \'+item.last_name +\' \'+item.first_name+\' \'+item.number_record_book+\'</li></a>\')';
 			}
 		}
 
@@ -126,6 +137,10 @@
 						{
 							a_dell();
 						}
+						/*if(mode == 4)
+						{
+							a();
+						}*/
 			        }
 			    });
 			});

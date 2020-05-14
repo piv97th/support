@@ -65,8 +65,7 @@
 				ВКР
 			</a>
 			<div class="dropdown-menu">
-
-				<a class="dropdown-item" href="#">Добавить</a>
+				<a class="dropdown-item" href="choice_select.php?mode=4">Добавить</a>
 				<a class="dropdown-item" href="#">Редактировать</a>
 				<a class="dropdown-item" href="#">Удалить</a>
 			</div>
