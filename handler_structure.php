@@ -197,4 +197,15 @@
         exit;
 	}
 
+	if($_POST['mode_other'] == 5)
+	{
+		$result_member_ssk = $conn->query('SELECT id, last_name, first_name, post FROM member_ssk');
+		while($arr = $result_member_ssk->fetch_assoc())
+		{
+			$arr_new[] = array('arr_1' => $arr['id'], 'last_name' => $arr['last_name'], 'first_name' => $arr['first_name'], 'post' => $arr['post']);
+		}
+		echo json_encode($arr_new);
+        exit;
+	}
+
 ?>

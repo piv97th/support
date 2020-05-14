@@ -20,6 +20,10 @@
 	{
 		$title = 'Выбор нучного руководителя';
 	}
+	elseif($mode == 5)
+	{
+		$title = 'Выбор члена ГЭК';
+	}
 
 ?>
 
@@ -65,6 +69,10 @@
 			{
 				var mode_other = 4;
 			}
+			else if(mode == 5)
+			{
+				var mode_other = 5;
+			}
 			$.ajax({
 				type: 'POST',
 				url: 'handler_structure.php',
@@ -102,6 +110,13 @@
 						$('.add_content').append('<li><a class="nolink" href=handler_supervisor.php?arr_1='+item.arr_1+'>'+item.cipher_supervisor+' '+item.last_name+' '+item.first_name+'</a></li>');
 						});
 						aDellSupervisor();
+					}
+					if(mode == 5)
+					{
+						$(obj).each(function(index, item) {
+						$('.add_content').append('<li><a class="nolink" href=handler_member_ssk.php?arr_1='+item.arr_1+'>'+item.last_name+' '+item.first_name+' '+item.post+'</a></li>');
+						});
+						aDellMemberSSK();
 					}
 		        }
 		    });
@@ -227,6 +242,35 @@
 			});
 		}
 
+		function aDellMemberSSK()
+		{
+			$(".nolink").on("click", function(e){
+				var mode_1 = 3;
+				var link = e.target;
+				link = String(link);
+				var arr_1 = link.substr(53,8);
+				alert(arr_1);
+				$.ajax({
+					type: 'POST',
+					url: 'handler_member_ssk.php',
+					data: {arr_1, mode_1},
+					async: false,
+					success: function(response)
+					{
+						alert(response);
+		        		var result = JSON.parse(response);
+		        		outToast(result);
+		        		refresh();
+					},
+					error: function(jqxhr, status, errorMsg)
+		        	{
+		        		toastr.error(errorMsg, status);
+		        	}
+				});
+				return false;
+			});
+		}
+
 		function outToast(arr)
 		{
 			var flag = true;
@@ -268,6 +312,11 @@
 							flag = false;
 						}
 						if(arr['supervisor'] == 0)
+						{
+							toastr.error('Возможно у этого преподавателя есть студенты','Ошибка!');
+							flag = false;
+						}
+						if(arr['member_ssk'] == 0)
 						{
 							toastr.error('Возможно у этого преподавателя есть студенты','Ошибка!');
 							flag = false;

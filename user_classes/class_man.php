@@ -799,6 +799,20 @@
 			}
 		}
 
+		public function delete_member_ssk()
+		{
+			require('blocks/connect.php');
+			$res = $conn->query('DELETE FROM member_ssk WHERE id='.$this->id);
+			if($res != 1)
+			{
+				return 0;
+			}
+			else
+			{
+				return 1;
+			}
+		}
+
 
 
 	}

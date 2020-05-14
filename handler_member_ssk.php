@@ -38,12 +38,12 @@
 	if(isset($_POST['arr_1']) && $mode_1 == 3)
 	{
 		require_once('user_classes/class_man.php');
-		$supervisor = new supervisor();
+		$member_ssk = new member_ssk();
 
-		$result = array('arr_1' => $supervisor->check_arr_1($_POST['arr_1']));
+		$result = array('arr_1' => $member_ssk->check_arr_1($_POST['arr_1']));
 		check_result($result);
 
-		$result_supervisor = $supervisor->delete_supervisor();
+		$result_member_ssk = $member_ssk->delete_member_ssk();
 		$result = array('member_ssk' => $result_member_ssk);
 		echo json_encode($result);
         exit;
