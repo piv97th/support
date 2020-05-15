@@ -29,6 +29,7 @@
 
 
 	<script type="text/javascript">
+
 		$(function(){
 			$("form").on('submit',function(){
 				var mode_1 = 7;
@@ -62,11 +63,18 @@
 		});
 
 		$(function(){
-			$(".commission").on('change',function(){
+			$("#commission").on('change',function(){
+				var alerte = $('.main_content').length;
+				alert(alerte);
+				if($('.main_content').length > 0)
+				{
+					$(".main_content").remove();
+				}
 				//$(".add_content").children().remove();
 				//var mode = <?php echo $mode; ?>;
 				var commission = $("#commission").val();
 				var mode_other = 1;
+				alert(commission);
 				$.ajax({
 					type: 'GET',
 					url: 'handler_add_meeting_group.php',
@@ -74,9 +82,11 @@
 					async: false,
 					success: function(response)
 					{
+						alert(response);
 						var obj = JSON.parse(response);
 						$(obj).each(function(index, item) {
-							$('.add_content').append(eval(data(mode, index)));
+							//$('form').append(eval(data(mode, index)));
+							$('form').append('<div class="form-group main_content"><input type hidden class="hidden" value='+item.id+'>'+item.number_meeting+' <input type="date" value='+item.date+'></div>');
 						});
 						if(mode == 2)
 						{
@@ -214,7 +224,7 @@
 					</select>
 				</div> 
 				<form method="POST" action="#">
-					<legend>О комиссии</legend>
+					<!-- <legend>О комиссии</legend>
 					<div class="form-group">
 						<label for="order_1">Приказ:</label>
 						<textarea class="form-control" id="order_1" name="order_1" ></textarea>
@@ -225,7 +235,7 @@
 						<button type="button" id="btn_minus" class="btn btn-primary">-</button>
 						<button type="button" id="btn_plus" class="btn btn-primary">+</button>
 					</div>
-					<button type="submit" class="btn btn-primary">Submit</button>
+					<button type="submit" class="btn btn-primary">Submit</button> -->
 				</form>
 			</div>
 		</div>
