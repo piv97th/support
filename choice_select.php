@@ -20,6 +20,14 @@
 				echo'<option value='.$arr["id"].'>'.$arr["cipher_group"].'</option>';
 			}
 		}
+		elseif($mode == 3)
+		{
+			$result = $conn->query('SELECT id, cipher_group FROM group_1');
+			while ($arr = $result->fetch_assoc())
+			{
+				echo'<option value='.$arr["id"].'>'.$arr["cipher_group"].'</option>';
+			}
+		}
 		elseif($mode == 4)
 		{
 			$result = $conn->query('SELECT id, cipher_group FROM group_1');
@@ -36,6 +44,11 @@
 		$name_choice = 'Группа';
 	}
 	elseif($mode == 2)
+	{
+		$title = 'Выбор группы';
+		$name_choice = 'Группа';
+	}
+	elseif($mode == 3)
 	{
 		$title = 'Выбор группы';
 		$name_choice = 'Группа';
@@ -67,6 +80,10 @@
 				return '(\'<li><a href=form_update_student.php?arr_1=\'+item.arr_1+\'>\'+(index+1)+\' \'+item.last_name +\' \'+item.first_name+\' \'+item.number_record_book+\'</li></a>\')';
 			}
 			else if(mode == 2)
+			{
+				return '(\'<li><a class="nolink" href=handler_student.php?arr_1=\'+item.arr_1+\'>\'+(index+1)+\' \'+item.last_name +\' \'+item.first_name+\' \'+item.number_record_book+\'</li></a>\')';
+			}
+			else if(mode == 3)
 			{
 				return '(\'<li><a class="nolink" href=handler_student.php?arr_1=\'+item.arr_1+\'>\'+(index+1)+\' \'+item.last_name +\' \'+item.first_name+\' \'+item.number_record_book+\'</li></a>\')';
 			}

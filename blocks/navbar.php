@@ -57,6 +57,8 @@
 				<a class="dropdown-item" href="form_add_ticket.php">Добавить</a>
 				<a class="dropdown-item" href="choice_ticket_upd.php">Редактировать</a>
 				<a class="dropdown-item" href="choice_ticket_del.php">Удалить</a>
+				<div class="dropdown-header">Проведение госэкзамена</div>
+				<a class="dropdown-item" href="choice_select.php?mode=3">Госэкзамен</a>
 			</div>
 		</li>
 
