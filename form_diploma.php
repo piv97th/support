@@ -47,10 +47,10 @@
 		        	questions[i] = $('textarea:eq('+i+')').val();
 		        	//alert(members_ssk[i]);
 		    	}
-		    	alert(questions);
+		    	alert(arr_1);
 		        //var members_ssk = $(".member_ssk").serialize();
 		        //var questions = $("form").serialize();
-		        //var mark = $("#mark").val();
+		        var mark = $("#mark").val();
 		        //alert(members_ssk);
 		        $.ajax({
 		        	type: 'POST',
@@ -89,9 +89,9 @@
 			        		alert(response);
 			        		var result = JSON.parse(response);
 			        		$('#btn_minus').before('<div class="form-group appear_content slc_spr"></div>');
-			        		$('.appear_content:last').append('<label>Член комиссии:</label><select class="form-control member_ssk" name="member_ssk"></select>');
+			        		$('.appear_content:last').append('<label>Член комиссии:</label><select class="form-control member_ssk" name="member_ssk"><option value="" disabled selected></option></select>');
 			        		$(result).each(function(index, item) {
-								$('.member_ssk:last').append('<option value="" disabled selected><option value='+item.arr_1+'>'+item.last_name+' '+item.first_name+' '+item.patronymic+' '+item.post+'</option>');
+								$('.member_ssk:last').append('<option value='+item.arr_1+'>'+item.last_name+' '+item.first_name+' '+item.patronymic+' '+item.post+'</option>');
 							});
 							$('.slc_spr:last').after('<div class="form-group txtr_qstn"><label>Вопрос:</label><textarea class="form-control" name="rank[]"></textarea><div>');
 			        	},
@@ -128,22 +128,22 @@
 				{
 					if(c == 0)
 					{
-						if(arr['cipher_group'] == 0)
+						if(arr['arr_1'] == 0)
 						{
-							toastr.error('Введите шифр группы','Ошибка!');
+							toastr.error('Что-то не так','Ошибка!');
 							flag = false;
 						}
-						if(arr['cipher_group'] == 2)
+						if(arr['arr_1'] == 2)
 						{
-							toastr.error('Некорректный шифр группы','Ошибка!');
+							toastr.error('Что-то не так','Ошибка!');
 							flag = false;
 						}
-						if(arr['cipher_group'] == 3)
+						if(arr['diploma'] == 0)
 						{
-							toastr.error('Такой шифр группы уже существует','Ошибка!');
+							toastr.error('При записи','Ошибка!');
 							flag = false;
 						}
-						if(arr['group'] == 0)
+						if(arr['questions'] == 0)
 						{
 							toastr.error('При записи','Ошибка!');
 							flag = false;
@@ -151,53 +151,40 @@
 					}
 					if(c == 1)
 					{
-						if(arr['qualification'] == 0)
+						if(arr['mark'] == 0)
 						{
-							toastr.error('Выберете квалификацию','Ошибка!');
+							toastr.error('Введите оценку','Ошибка!');
 							flag = false;
 						}
-						if(arr['qualification'] == 2)
+						if(arr['mark'] == 2)
 						{
-							toastr.error('Некорректное значение квалификации','Ошибка!');
+							toastr.error('Некорректное значение оценки','Ошибка!');
 							flag = false;
 						}
 					}
 					if(c == 2)
 					{
-						if(arr['cathedra'] == 0)
+						if(arr['member_ssk'] == 0)
 						{
-							toastr.error('Введите квалификацию','Ошибка!');
+							toastr.error('Выберете преподавателя','Ошибка!');
 							flag = false;
 						}
-						if(arr['cathedra'] == 2)
+						if(arr['member_ssk'] == 2)
 						{
-							toastr.error('Введите квалификацию','Ошибка!');
+							toastr.error('Некорректный преподаватель','Ошибка!');
 							flag = false;
 						}
 					}
 					if(c == 3)
 					{
-						if(arr['direction'] == 0)
+						if(arr['questions'] == 0)
 						{
-							toastr.error('Выберете направление','Ошибка!');
+							toastr.error('Заполните поле вопроса','Ошибка!');
 							flag = false;
 						}
-						if(arr['direction'] == 2)
+						if(arr['questions'] == 2)
 						{
-							toastr.error('Некорректное направление','Ошибка!');
-							flag = false;
-						}
-					}
-					if(c == 4)
-					{
-						if(arr['form_studying'] == 0)
-						{
-							toastr.error('Выберете форму обучения','Ошибка!');
-							flag = false;
-						}
-						if(arr['form_studying'] == 2)
-						{
-							toastr.error('Некорректная форма обучения','Ошибка!');
+							toastr.error('Некорректые данные в поле вопроса','Ошибка!');
 							flag = false;
 						}
 					}
@@ -206,42 +193,23 @@
 		    }
     		if(flag == true)
     		{
-    			toastr.success('Успешно! Направление добавлено');
+    			toastr.success('Успешно! Данные сохранены');
 /*		        $("#nrb").val("");
     			$("#last_name").val("");*/
     		}
 		}
 
-		window.onbeforeunload = function() {
-			$.cookie('cipher_group', $("#cipher_group").val(), { expires: 1 });
-			$.cookie('qualification', $("#qualification").val(), { expires: 1 });
-			$.cookie('cathedra', $("#cathedra").val(), { expires: 1 });
-			$.cookie('direction', $("#direction").val(), { expires: 1 });
-			$.cookie('form_studying', $("#form_studying").val(), { expires: 1 });
-		};
+		/*window.onbeforeunload = function (evt) {
+			var message = "Измененные данные не отправлены";
+			if (typeof evt == "undefined") {
+				evt = window.event;
+			}
+			if (evt) {
+				evt.returnValue = message;
+			}
+			return message;
+		}*/
 
-		$(window).ready(function() {
-			if($.cookie('cipher_group') != null)
-			{
-				$("#cipher_group").val($.cookie("cipher_group"));
-			}
-			if($.cookie('qualification') != null)
-			{
-				$("#qualification").val($.cookie("qualification"));
-			}
-			if($.cookie('cathedra') != null)
-			{
-				$("#cathedra").val($.cookie("cathedra"));
-			}
-			if($.cookie('direction') != null)
-			{
-				$("#direction").val($.cookie("direction"));
-			}
-			if($.cookie('form_studying') != null)
-			{
-				$("#form_studying").val($.cookie("form_studying"));
-			}
-		});
 	</script>
 
 </head>

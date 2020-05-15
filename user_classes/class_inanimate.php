@@ -42,6 +42,23 @@
 			}
 		}
 
+		public function check_arr_1($data)
+		{
+			if($this->check_empty($data) == 0)
+			{
+				return 0;
+			}
+			if($this->check_num($data) == 2)
+			{
+				return 2;
+			}
+			else
+			{
+				$this->id = $data;
+				return 1;
+			}
+		}
+
 		public function check_type_work($data)
 		{
 			if($this->check_empty($data) == 0)
@@ -269,6 +286,21 @@
 			}
 		}
 
+		public function make_add_diploma()
+		{
+			require('blocks/connect.php');
+			$stmt = $conn->prepare('UPDATE diploma SET id_mark_fk = ? WHERE id = ?');
+			$stmt->bind_param('ii', $this->mark, $this->id);
+			if($stmt->execute() != 1)
+			{
+				return 0;
+			}
+			else
+			{
+				return 1;
+			}
+		}
+
 		public function get_diploma()
 		{
 			require('blocks/connect.php');
@@ -279,6 +311,11 @@
 				$result = 1;
 			}
 			return $result;
+		}
+
+		public function get_id_diploma()
+		{
+			return $this->id;
 		}
 
 	}
