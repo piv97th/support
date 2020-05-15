@@ -12,19 +12,7 @@
 	$result_diploma = $conn->query('SELECT * FROM diploma WHERE id = '.$arr_student['id_diploma_fk']);
 	$arr_diploma = $result_diploma->fetch_assoc();
 	//$result_member_ssk = $conn->query('SELECT * FROM member_ssk WHERE ');
-	$result_member_ssk = $conn->query('SELECT member_ssk.id as id, member_ssk.last_name as last_name, member_ssk.first_name as first_name, member_ssk.patronymic as patronymic FROM curation_event JOIN commission ON commission.id=curation_event.id_commission_fk JOIN member_ssk ON member_ssk.id=curation_event.id_member_ssk_fk WHERE curation_event.id_commission_fk = (SELECT id_commission_fk FROM timetable_meeting WHERE id = '.$arr_diploma['id_meeting_fk'].')');
-	while($arr_member_ssk = $result_member_ssk->fetch_assoc())
-	{
-		$arr_member[] = $arr_member_ssk;
-	}
-
-	//$result_member_ssk = $conn->query('SELECT curation_event.id, commission.id, commission.order_1, member_ssk.id, member_ssk.last_name, member_ssk.first_name, member_ssk.patronymic FROM curation_event JOIN commission ON commission.id=curation_event.id_commission_fk JOIN member_ssk ON member_ssk.id=curation_event.id_member_ssk_fk WHERE curation_event.id_commission_fk = (SELECT id_commission_fk FROM timetable_meeting WHERE id = '.$arr_diploma['id_meeting_fk'].')');
-
-/*	select t1.value1, t1.value2, t2.valuea, t3.valuexx, t3.valueyy
-from table1 as t1
-join table2 as t2 on t2.id1 = t1.id1
-join table3 as t3 on t3.id1 = t1.id1*/
-
+	$result_member_ssk = $conn->query('SELECT member_ssk.id as id, member_ssk.last_name as last_name, member_ssk.first_name as first_name, member_ssk.patronymic as patronymic, member_ssk.post as post FROM curation_event JOIN commission ON commission.id=curation_event.id_commission_fk JOIN member_ssk ON member_ssk.id=curation_event.id_member_ssk_fk WHERE curation_event.id_commission_fk = (SELECT id_commission_fk FROM timetable_meeting WHERE id = '.$arr_diploma['id_meeting_fk'].')');
 ?>
 
 <!DOCTYPE html>
@@ -45,16 +33,29 @@ join table3 as t3 on t3.id1 = t1.id1*/
 	<script type="text/javascript">
 		$(function(){
 			$("form").on('submit',function(){
-				var mode_1 = 4;
-		        var cipher_group = $("#cipher_group").val();
-		        var qualification = $("#qualification").val();
-		        var cathedra = $("#cathedra").val();
-		        var direction = $("#direction").val();
-		        var form_studying = $("#form_studying").val();
+				var mode_1 = 1;
+		        var arr_1 = <?php echo $arr_diploma['id']; ?>;
+		        var members_ssk = [];
+		        var questions = [];
+		        //cMember = $(this).find('input[name="date_meeting"]').length;
+		        //alert(90);
+		        var cMember = $(this).find('.member_ssk').length;
+		        alert(cMember);
+		        for(var i = 0; i < cMember; i++)
+		        {
+		        	members_ssk[i] = $('select[name="member_ssk"]:eq('+i+')').val();
+		        	questions[i] = $('textarea:eq('+i+')').val();
+		        	//alert(members_ssk[i]);
+		    	}
+		    	alert(questions);
+		        //var members_ssk = $(".member_ssk").serialize();
+		        //var questions = $("form").serialize();
+		        //var mark = $("#mark").val();
+		        //alert(members_ssk);
 		        $.ajax({
 		        	type: 'POST',
-		        	url: 'handler_structure.php',
-		        	data: {cipher_group, qualification, cathedra, direction, form_studying, mode_1},
+		        	url: 'handler_diploma.php',
+		        	data: {arr_1, members_ssk, questions, mark, mode_1},
 		        	async: false,
 		        	success: function(response)
 		        	{
@@ -71,48 +72,48 @@ join table3 as t3 on t3.id1 = t1.id1*/
 		    });
 		});
 
-		function outMember(arr)
-		{
-			alert(arr[3]);
-			/*for(var i in arr)
-			{
-				alert(arr.get('id'));
-			}*/
-		}
-
 		$(function(){
 			$("#btn_plus").on('click',function(){
-				/*var countMeeting = $('#number_meeting').val();
-				countMeeting++;*/
-				alert($('.member_ssk').length);
-				if($('.member_ssk').length < 20)
+				alert($('.slc_spr').length);
+				if($('.slc_spr').length < 20)
 				{
-					var json_1 = <?php echo json_encode($arr_member); ?>;
-					//alert(json);
-					//var student = {name: 'John', age: 30};
-					//json_1 = JSON.stringify(student);
-					var result = JSON.stringify(json_1);
-					outMember(result);
-					//alert(outMember(result));
-					//$('#number_meeting').val(countMeeting); json_encode($arr_member_ssk);
-					//$('.form-group:eq(-2)').after('<div class="form-group"><label>Член комиссии:</label><select class="form-control member_ssk" name="member_ssk[]"><option value="" disabled selected></option><option value='+<?php echo $arr_member_ssk["id"]; ?>+'>'+<?php echo $arr_member_ssk["id"]; ?>+'</option></select></div>');
-					//$('.form-group:eq(-2)').after('<div class="form-group"><label for="mark">Оценка:</label><select class="form-control" id="mark" name="mark" ><option value="" disabled selected></option><option value="1">неудовлетворительно</option><option value="2">удовлетворительно</option><option value="3">хорошо</option><option value="4">отлично</option></select></div>');
+					var mode_other = 1;
+					var arr_1_meeting = $('#arr_1_meeting').val();
+					$.ajax({
+			        	type: 'POST',
+			        	url: 'handler_diploma.php',
+			        	data: {mode_other, arr_1_meeting},
+			        	async: false,
+			        	success: function(response)
+			        	{
+			        		alert(response);
+			        		var result = JSON.parse(response);
+			        		$('#btn_minus').before('<div class="form-group appear_content slc_spr"></div>');
+			        		$('.appear_content:last').append('<label>Член комиссии:</label><select class="form-control member_ssk" name="member_ssk"></select>');
+			        		$(result).each(function(index, item) {
+								$('.member_ssk:last').append('<option value="" disabled selected><option value='+item.arr_1+'>'+item.last_name+' '+item.first_name+' '+item.patronymic+' '+item.post+'</option>');
+							});
+							$('.slc_spr:last').after('<div class="form-group txtr_qstn"><label>Вопрос:</label><textarea class="form-control" name="rank[]"></textarea><div>');
+			        	},
+			        	error: function(jqxhr, status, errorMsg)
+			        	{
+			        		toastr.error(errorMsg, status);
+			        	}
+		    		});
+				}
+				else
+				{
+					alert("Слишком много вопросов");
 				}
 		    });
 		});
 
 		$(function(){
 			$("#btn_minus").on('click',function(){
-				/*var countMeeting = $('#number_meeting').val();
-				countMeeting--;*/
-				if(0 <= countMeeting)
+				if($('.slc_spr').length > 1)
 				{
-					$('#number_meeting').val(countMeeting);
-					$('.date:last').remove();
-				}
-				else
-				{
-					$('#number_meeting').val(0);
+					$('.slc_spr:last').remove();
+					$('.txtr_qstn:last').remove();
 				}
 		    });
 		});
@@ -258,23 +259,23 @@ join table3 as t3 on t3.id1 = t1.id1*/
 			<div class="col-sm text-left"> 
 				<form method="POST" action="#">
 					<legend>ВКР:</legend>
-					<div id="info_student"><h3><?php echo $arr_student["number_record_book"].' '.$arr_student["last_name"].' '.$arr_student["first_name"].' '.$arr_student["patronymic"]; ?></h3></div>
+					<div id="info_student"><h3><?php echo $arr_student["number_record_book"].' '.$arr_student["last_name"].' '.$arr_student["first_name"].' '.$arr_student["patronymic"]; ?></h3><input type="hidden" name="arr_1_meeting" id="arr_1_meeting" value=<?php echo $arr_diploma["id_meeting_fk"] ?>></div>
 					<legend>Вопросы:</legend>
-					<div class="form-group">
+					<div class="form-group slc_spr">
 						<label>Член комиссии:</label>
-						<select class="form-control member_ssk" name="member_ssk[]" >
+						<select class="form-control member_ssk" name="member_ssk">
 							<option value="" disabled selected></option>
 							<?php
-							foreach($arr_member as $valmbr)
+							while($arr_member_ssk = $result_member_ssk->fetch_assoc())
 							{
-								echo '<option value='.$valmbr["id"].'>'.$valmbr["last_name"].' '.$valmbr["first_name"].' '.$valmbr["patronymic"].'</option>';
+								echo '<option value='.$arr_member_ssk["id"].'>'.$arr_member_ssk["last_name"].' '.$arr_member_ssk["first_name"].' '.$arr_member_ssk["patronymic"].' '.$arr_member_ssk["post"].'</option>';
 							}
 							?>
 						</select>
 					</div>
-					<div class="form-group">
+					<div class="form-group txtr_qstn">
 						<label>Вопрос:</label>
-						<textarea class="form-control" name="rank[]" ></textarea>
+						<textarea class="form-control" name="rank[]"></textarea>
 					</div>
 					<button type="button" id="btn_minus" class="btn btn-primary">-</button>
 					<button type="button" id="btn_plus" class="btn btn-primary">+</button>
