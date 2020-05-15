@@ -286,11 +286,27 @@
 			}
 		}
 
+		private function insert_number_protocol()
+		{
+			require('blocks/connect.php');
+			$query = $conn->query('SELECT number_protocol FROM diploma WHERE id IN(SELECT id_diploma_fk FROM student WHERE id_group_fk = (SELECT id_group_fk FROM student WHERE id_diploma_fk = '.$this->id.')) AND number_protocol IS NOT NULL ORDER BY id DESC LIMIT 1 ');
+			$result = $query->fetch_assoc();
+			if($result['number_protocol'] != 0)
+			{
+				$this->number_protocol = $result['number_protocol'] + 1;
+			}
+			else
+			{
+				$this->number_protocol = 1;
+			}
+		}
+
 		public function make_add_diploma()
 		{
 			require('blocks/connect.php');
-			$stmt = $conn->prepare('UPDATE diploma SET id_mark_fk = ? WHERE id = ?');
-			$stmt->bind_param('ii', $this->mark, $this->id);
+			$this->insert_number_protocol();
+			$stmt = $conn->prepare('UPDATE diploma SET number_protocol = ?, id_mark_fk = ? WHERE id = ?');
+			$stmt->bind_param('iii', $this->number_protocol, $this->mark, $this->id);
 			if($stmt->execute() != 1)
 			{
 				return 0;
@@ -304,7 +320,7 @@
 		public function get_diploma()
 		{
 			require('blocks/connect.php');
-			$query = $conn->query('SELECT id from diploma ORDER BY id DESC LIMIT 1');
+			$query = $conn->query('SELECT id FROM diploma ORDER BY id DESC LIMIT 1');
 			$result = $query->fetch_row()[0];
 			if($result == NULL)
 			{
