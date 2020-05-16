@@ -144,6 +144,7 @@
 				}
 			}
 		}
+
 	}
 
 	class diploma extends event
@@ -339,6 +340,32 @@
 	class se extends event
 	{
 		public $ticket = 'NULL';
+		public $group_other = 'NULL';
+
+		public function check_group_other($data)
+		{
+			//echo $data;
+			$status = $this->check_empty($data);
+			if($status == 0)
+			{
+				return 0;
+			}
+			else
+			{
+				require('blocks/connect.php');
+				$result_group = $conn->query('SELECT id FROM group_1 WHERE id = '.$data);
+				$arr = $result_group->fetch_assoc();
+				if($arr['id'] == NULL)
+				{
+					return 2;
+				}
+				else
+				{
+					$this->group_other = $data;
+					return 1;
+				}
+			}
+		}
 
 		public function check_ticket($data)
 		{
@@ -377,9 +404,25 @@
 			return $result;
 		}
 
+		private function insert_number_protocol()
+		{
+			require('blocks/connect.php');
+			$query = $conn->query('SELECT number_protocol FROM se WHERE id IN(SELECT id_se_fk FROM student WHERE id_group_fk = '.$this->group_other.') AND number_protocol IS NOT NULL ORDER BY id DESC LIMIT 1 ') or die($conn->error);
+			$result = $query->fetch_assoc();
+			if($result['number_protocol'] != 0)
+			{
+				$this->number_protocol = $result['number_protocol'] + 1;
+			}
+			else
+			{
+				$this->number_protocol = 1;
+			}
+		}
+
 		public function make_add_se()
 		{
 			require('blocks/connect.php');
+			$this->insert_number_protocol();
 			$stmt = $conn->prepare('INSERT INTO se (number_protocol, id_ticket_fk, id_mark_fk, id_meeting_fk) VALUES(?,?,?,?)');
 			$stmt->bind_param('iiii', $this->number_protocol, $this->ticket, $this->mark, $this->meeting);
 			if($stmt->execute() != 1)
@@ -388,7 +431,7 @@
 			}
 			else
 			{
-				$this->id = get_last_id_se();
+				$this->id = $this->get_last_id_se();
 				return 1;
 			}
 		}

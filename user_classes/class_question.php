@@ -85,7 +85,7 @@
 			//echo $n;
 			for($i = 0; $i < $n; $i++)
 			{
-				echo $this->diploma;
+				//echo $this->diploma;
 				//echo  $this->arr_members[$i];
 				$stmt = $conn->prepare('INSERT INTO question_diploma (question, id_diploma_fk, id_member_fk) VALUES(?,?,?)') or die($conn->error);
 				$stmt->bind_param('sii', $this->arr_questions[$i], $this->diploma, $this->arr_members[$i]);
@@ -105,7 +105,7 @@
 			//echo $n;
 			for($i = 0; $i < $n; $i++)
 			{
-				echo $this->se;
+				//echo $this->se;
 				//echo  $this->arr_members[$i];
 				$stmt = $conn->prepare('INSERT INTO question_se (question, id_se_fk, id_member_fk) VALUES(?,?,?)') or die($conn->error);
 				$stmt->bind_param('sii', $this->arr_questions[$i], $this->se, $this->arr_members[$i]);

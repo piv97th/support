@@ -30,7 +30,7 @@
 	$arr_1 = $_GET['arr_1'];
 	check_get($arr_1);
 
-	$result_student = $conn->query('SELECT id, number_record_book, last_name, first_name, patronymic, id_diploma_fk FROM student WHERE id = '.$arr_1);
+	$result_student = $conn->query('SELECT id, number_record_book, last_name, first_name, patronymic, id_group_fk FROM student WHERE id = '.$arr_1);
 	
 	$arr_student = $result_student->fetch_assoc();
 
@@ -60,12 +60,13 @@
 			$("form").on('submit',function(){
 				var mode_1 = 1;
 				var arr_1_student = <?php echo $arr_student["id"]; ?>;
+				var arr_1_group = <?php echo $arr_student["id_group_fk"]; ?>;
 				var arr_1_meeting = $('#meeting').val();
 				var ticket = $('#ticket').val();
 		        var members_ssk = [];
 		        var questions = [];
 		        var cMember = $(this).find('.member_ssk').length;
-		        alert(cMember);
+		        alert(arr_1_group);
 		        for(var i = 0; i < cMember; i++)
 		        {
 		        	members_ssk[i] = $('select[name="member_ssk"]:eq('+i+')').val();
@@ -78,7 +79,7 @@
 		        $.ajax({
 		        	type: 'POST',
 		        	url: 'handler_se.php',
-		        	data: {arr_1_student, arr_1_meeting, ticket, members_ssk, questions, mark, mode_1},
+		        	data: {arr_1_student, arr_1_group, arr_1_meeting, ticket, members_ssk, questions, mark, mode_1},
 		        	async: false,
 		        	success: function(response)
 		        	{
@@ -234,6 +235,19 @@
 					}
 					if(c == 3)
 					{
+						if(arr['arr_1_group'] == 0)
+						{
+							toastr.error('Что-то не так','Ошибка!');
+							flag = false;
+						}
+						if(arr['arr_1_group'] == 2)
+						{
+							toastr.error('Что-то не так','Ошибка!');
+							flag = false;
+						}
+					}
+					if(c == 4)
+					{
 						if(arr['member_ssk'] == 0)
 						{
 							toastr.error('Выберете преподавателя','Ошибка!');
@@ -245,7 +259,7 @@
 							flag = false;
 						}
 					}
-					if(c == 4)
+					if(c == 5)
 					{
 						if(arr['questions'] == 0)
 						{
@@ -258,7 +272,7 @@
 							flag = false;
 						}
 					}
-					if(c == 4)
+					if(c == 6)
 					{
 						if(arr['arr_1_student'] == 0)
 						{
