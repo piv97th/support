@@ -30,7 +30,14 @@
 
 	<script type="text/javascript">
 
-		$(function(){
+		function pretrain(arrs_1_meeting, arrs_date)
+		{
+			$("form").on('submit',function(){
+				alert(arrs_date);
+			});
+		}
+
+		/*$(function(){
 			$("form").on('submit',function(){
 				var mode_1 = 7;
 		        var order_1 = $("#order_1").val();
@@ -60,7 +67,7 @@
 		    	});
 		    	return false;
 		    });
-		});
+		});*/
 
 		$(function(){
 			$("#commission").on('change',function(){
@@ -84,18 +91,19 @@
 					{
 						alert(response);
 						var obj = JSON.parse(response);
+						var arrs_1_meeting = [];
+		        		var arrs_date = [];
 						$(obj).each(function(index, item) {
 							//$('form').append(eval(data(mode, index)));
-							$('form').append('<div class="form-group main_content"><input type hidden class="hidden" value='+item.id+'>'+item.number_meeting+' <input type="date" value='+item.date+'></div>');
+							$('form').append('<div class="form-group main_content"><input type hidden class="hidden" value='+item.arr_1+'>'+item.number_meeting+' <input type="date" class="date" value='+item.date+'></div>');
+							$('.date:last').after('<select class="groups"><option value="" disabled selected></option></select>');
+							$(item.arr_group).each(function(index, itm) {
+								$('.groups').append('<option value='+itm.id+'>'+itm.cipher_group+'</option>');
+							});
+							//arrs_1_meeting = item.arr_1;
+							//arrs_date = item.date;
 						});
-						if(mode == 2)
-						{
-							a_dell();
-						}
-						/*if(mode == 4)
-						{
-							a();
-						}*/
+						//pretrain(arrs_1_meeting, arrs_date);
 			        }
 			    });
 			});
@@ -217,7 +225,7 @@
 			<div class="col-sm text-left">
 				<div>
 					<select name="commission" id="commission">
-						<option value="0" selected></option>
+						<option value="" selected disabled></option>
 						<?php
 							slc_commision();
 						?>

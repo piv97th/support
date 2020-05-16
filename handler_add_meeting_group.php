@@ -13,9 +13,9 @@
 		//echo $commission;
 
 		$result_group = $conn->query('SELECT id, cipher_group FROM group_1') or die($conn->error);
-		while($arr_group = $result_meeting->fetch_assoc())
+		while($arr_group = $result_group->fetch_assoc())
 		{
-			$arr_new_group[] = array('arr_1' => $arr_group['id'], 'number_meeting' => $arr_group['number_meeting'], 'date' => $arr_group['date']);
+			$arr_new_group[] = array('arr_1' => $arr_group['id'], 'cipher_group' => $arr_group['cipher_group']);
 		}
 
 		$result_meeting = $conn->query('SELECT id, number_meeting, date FROM timetable_meeting WHERE id_commission_fk = '.$commission) or die($conn->error);
