@@ -360,6 +360,39 @@
 			}
 		}
 
+		public function get_id_se()
+		{
+			return $this->id;
+		}
+
+		private function get_last_id_se()
+		{
+			require('blocks/connect.php');
+			$query = $conn->query('SELECT id FROM se ORDER BY id DESC LIMIT 1');
+			$result = $query->fetch_row()[0];
+			if($result == NULL)
+			{
+				$result = 1;
+			}
+			return $result;
+		}
+
+		public function make_add_se()
+		{
+			require('blocks/connect.php');
+			$stmt = $conn->prepare('INSERT INTO se (number_protocol, id_ticket_fk, id_mark_fk, id_meeting_fk) VALUES(?,?,?,?)');
+			$stmt->bind_param('iiii', $this->number_protocol, $this->ticket, $this->mark, $this->meeting);
+			if($stmt->execute() != 1)
+			{
+				return 0;
+			}
+			else
+			{
+				$this->id = get_last_id_se();
+				return 1;
+			}
+		}
+
 		public function update_se()
 		{
 			require('blocks/connect.php');

@@ -85,7 +85,7 @@
 			}
 			else if(mode == 3)
 			{
-				return '(\'<li><a class="nolink" href=handler_student.php?arr_1=\'+item.arr_1+\'>\'+(index+1)+\' \'+item.last_name +\' \'+item.first_name+\' \'+item.number_record_book+\'</li></a>\')';
+				return '(\'<li><a class="nolink" href=form_se.php?arr_1=\'+item.arr_1+\'>\'+(index+1)+\' \'+item.last_name +\' \'+item.first_name+\' \'+item.number_record_book+\'</li></a>\')';
 			}
 			else if(mode == 4)
 			{

@@ -421,6 +421,21 @@
 			}
 		}
 
+		public function insert_se()
+		{
+			require('blocks/connect.php');
+			$stmt = $conn->prepare('UPDATE student SET id_se_fk = ? WHERE id = ?') or die($conn->error);
+			$stmt->bind_param('ii', $this->se, $this->id);
+			if($stmt->execute()!= 1)
+			{
+				return 0;
+			}
+			else
+			{
+				return 1;
+			}
+		}
+
 		public function get_info_student()
 		{
 			require('blocks/connect.php');
