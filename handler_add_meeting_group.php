@@ -41,4 +41,26 @@
 		echo json_encode($arr_new);
 		exit();
 	}
+
+	if($_GET['mode_other'] == 2)
+	{
+		$meeting = $_GET['new_meeting'];
+		check_get($meeting);
+		//echo $meeting;
+
+		/*$result_group = $conn->query('SELECT id, cipher_group FROM group_1') or die($conn->error);
+		while($arr_group = $result_group->fetch_assoc())
+		{
+			$arr_new_group[] = array('arr_1' => $arr_group['id'], 'cipher_group' => $arr_group['cipher_group']);
+		}*/
+
+		$result_group = $conn->query('SELECT id_group_fk FROM student WHERE id_diploma_fk IN(SELECT id FROM diploma WHERE id_meeting_fk = '.$meeting.' )') or die($conn->error);
+		$group = $result_group->fetch_assoc();
+		/*while($arr_meeting = $result_meeting->fetch_assoc())
+		{
+			$arr_new[] = array('arr_1' => $arr_meeting['id'], 'number_meeting' => $arr_meeting['number_meeting'], 'date' => $arr_meeting['date'], 'arr_group' => $arr_new_group);
+		}*/
+		echo $group['id_group_fk'];
+		exit();
+	}
 ?>

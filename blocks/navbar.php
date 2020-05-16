@@ -43,7 +43,7 @@
 				<a class="dropdown-item" href="choice_str_del.php?mode=3">Удалить</a>
 				<div class="dropdown-header">Назначить заседание группе</div>
 				<a class="dropdown-item" href="form_add_meeting_group.php">Назначить</a>
-				<a class="dropdown-item" href="#">Редактировать</a>
+				<a class="dropdown-item" href="form_update_meeting_group.php">Редактировать</a>
 				<a class="dropdown-item" href="#">Удалить</a>
 			</div>
 		</li>
