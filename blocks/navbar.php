@@ -45,6 +45,10 @@
 				<a class="dropdown-item" href="form_add_meeting_group.php">Назначить</a>
 				<a class="dropdown-item" href="form_update_meeting_group.php">Редактировать</a>
 				<a class="dropdown-item" href="form_del_meeting_group.php">Удалить</a>
+				<div class="dropdown-header">Назначить преподавателя на комиссию</div>
+				<a class="dropdown-item" href="form_add_commission_member.php">Назначить</a>
+				<a class="dropdown-item" href="#">Редактировать</a>
+				<a class="dropdown-item" href="#">Удалить</a>
 			</div>
 		</li>
 
