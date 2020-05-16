@@ -19,18 +19,16 @@
         exit;
 	}
 
-	if($_GET['mode_1'] == 2)
+	if($_GET['mode_1'] == 3)
 	{
-		//echo "again ajax";
-		//UPDATE diploma SET id_meeting_fk = 45 WHERE id IN (SELECT id_diploma_fk FROM student WHERE id_group_fk = 10)
 
 		require_once('user_classes/class_curation_events.php');
-		$del = new e_add_meeting_group();
+		$del = new e_commission_member();
 
-		$result = array('arr_1_commission' => $del->check_arr_1($_GET['commission']));
+		$result = array('arr_1_commission' => $del->check_arr_1_com($_GET['commission']));
 		check_result($result);
 
-		$result_del = $del->del_meeting_group();
+		$result_del = $del->del_commission_member();
 		$result = array('del' => $result_del);
 		check_result($result);
 
@@ -47,18 +45,6 @@
 		}
 
 		echo json_encode($arr_new);
-		exit();
-	}
-
-	if($_GET['mode_other'] == 2)
-	{
-		$meeting = $_GET['new_meeting'];
-		check_get($meeting);
-
-		$result_group = $conn->query('SELECT id_group_fk FROM student WHERE id_diploma_fk IN(SELECT id FROM diploma WHERE id_meeting_fk = '.$meeting.' )') or die($conn->error);
-		$group = $result_group->fetch_assoc();
-
-		echo $group['id_group_fk'];
 		exit();
 	}
 ?>

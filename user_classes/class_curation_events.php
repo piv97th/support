@@ -239,6 +239,20 @@
 			}
 			return 1;
 		}
+
+		public function del_commission_member()
+		{
+			require('blocks/connect.php');
+			$result = $conn->query('DELETE FROM curation_event WHERE id_commission_fk = '.$this->id_commission) or die($conn->error);
+			if($result != 1)
+			{
+				return 0;
+			}
+			else
+			{
+				return 1;
+			}
+		}
 	}
 
 ?>
