@@ -33,15 +33,55 @@
 	<script type="text/javascript">
 
 		$(function(){
+			$("form").on('submit',function(){
+				var mode_1 = 1;
+		        //var arr_1 = <?php echo $arr_diploma['id']; ?>;
+		        var members_ssk = [];
+		        var roles = [];
+		        //cMember = $(this).find('input[name="date_meeting"]').length;
+		        //alert(90);
+		        var cMember = $(this).find('.member_ssk').length;
+		        alert(cMember);
+		        for(var i = 0; i < cMember; i++)
+		        {
+		        	members_ssk[i] = $('select[name="member_ssk"]:eq('+i+')').val();
+		        	roles[i] = $('select[name="role"]:eq('+i+')').val();
+		        	//alert(members_ssk[i]);
+		    	}
+		    	//alert(arr_1);
+		        //var members_ssk = $(".member_ssk").serialize();
+		        //var questions = $("form").serialize();
+		        var commission = $("#commission").val();
+		        //alert(members_ssk);
+		        $.ajax({
+		        	type: 'POST',
+		        	url: 'handler_commission_member.php',
+		        	data: {members_ssk, roles, commission, mode_1},
+		        	async: false,
+		        	success: function(response)
+		        	{
+		        		alert(response);
+		        		var result = JSON.parse(response);
+		        		outToast(result);
+		        	},
+		        	error: function(jqxhr, status, errorMsg)
+		        	{
+		        		toastr.error(errorMsg, status);
+		        	}
+		    	});
+		    	return false;
+		    });
+		});
+
+		$(function(){
 			$("#btn_plus").on('click',function(){
 				alert($('.member_ssk').length);
 				if($('member_ssk').length < 8)
 				{
 					var mode_other = 1;
-					//var arr_1_meeting = $('#arr_1_meeting').val();
 					$.ajax({
 			        	type: 'POST',
-			        	url: 'handler_commission_group.php',
+			        	url: 'handler_commission_member.php',
 			        	data: {mode_other},
 			        	async: false,
 			        	success: function(response)
@@ -78,7 +118,7 @@
 		    });
 		});
 
-		function pretrain(arrs_1_meeting, arrs_date)
+		/*function pretrain(arrs_1_meeting, arrs_date)
 		{
 			$("form").on('submit',function(){
 				alert("again 1");
@@ -108,9 +148,9 @@
 		    	});
 		    	return false;
 			});
-		}
+		}*/
 
-		$(function(){
+		/*$(function(){
 			$("#commission").on('change',function(){
 				var alerte = $('.main_content').length;
 				if($('.main_content').length > 0)
@@ -122,7 +162,7 @@
 				alert(commission);
 				$.ajax({
 					type: 'GET',
-					url: 'handler_add_meeting_group.php',
+					url: 'handler_commission_member.php',
 					data: {commission, mode_other},
 					async: false,
 					success: function(response)
@@ -144,7 +184,7 @@
 			        }
 			    });
 			});
-		});
+		});*/
 
 		function outToast(arr)
 		{
@@ -156,14 +196,14 @@
 				{
 					if(c == 0)
 					{
-						if(arr['arrs_1_meeting'] == 0)
+						if(arr['arr_member_ssk'] == 0)
 						{
-							toastr.error('Что-то не так','Ошибка!');
+							toastr.error('Не выбран член ГЭК','Ошибка!');
 							flag = false;
 						}
-						if(arr['arrs_1_meeting'] == 2)
+						if(arr['arr_member_ssk'] == 2)
 						{
-							toastr.error('Что-то не так','Ошибка!');
+							toastr.error('Ошибка формата члена ГЭК','Ошибка!');
 							flag = false;
 						}
 						if(arr['add'] == 0)
@@ -174,32 +214,27 @@
 					}
 					if(c == 1)
 					{
-						if(arr['arrs_date'] == 0)
+						if(arr['arr_role'] == 0)
 						{
-							toastr.error('Что-то не так','Ошибка!');
+							toastr.error('Не выбрана роль','Ошибка!');
 							flag = false;
 						}
-						if(arr['arrs_date'] == 2)
+						if(arr['arr_role'] == 2)
 						{
-							toastr.error('Что-то не так','Ошибка!');
+							toastr.error('Ошибка формата роли','Ошибка!');
 							flag = false;
 						}
 					}
 					if(c == 2)
 					{
-						if(arr['arr_group'] == 0)
+						if(arr['arr_1_commission'] == 0)
 						{
-							toastr.error('Выберете группу','Ошибка!');
+							toastr.error('Выберете коммисию','Ошибка!');
 							flag = false;
 						}
-						if(arr['arr_group'] == 2)
+						if(arr['arr_1_commission'] == 2)
 						{
-							toastr.error('Неправильный формат группы','Ошибка!');
-							flag = false;
-						}
-						if(arr['arr_group'] == 3)
-						{
-							toastr.error('Группы повторяются','Ошибка!');
+							toastr.error('Неправильный формат комиссии','Ошибка!');
 							flag = false;
 						}
 					}
@@ -208,7 +243,7 @@
 		    }
     		if(flag == true)
     		{
-    			toastr.success('Успешно! Событие добавлено');
+    			toastr.success('Успешно! Добавлено');
 /*		        $("#nrb").val("");
     			$("#last_name").val("");*/
     		}

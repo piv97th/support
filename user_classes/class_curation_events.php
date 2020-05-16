@@ -161,4 +161,84 @@
 		}
 	}
 
+	class e_commission_member extends event_main
+	{
+		public $id = 'NULL';
+		public $arr_member_ssk = [];
+		public $arr_role = [];
+		public $id_commission = 'NULL';
+
+		public function check_arr_1_com($data)
+		{
+			$status = $this->check_empty($data);
+			if($status == 0)
+			{
+				return 0;
+			}
+			else
+			{
+				if($this->check_num($data) == 2)
+				{
+					return 2;
+				}
+				else
+				{
+					$this->id_commission = $data;
+					return 1;
+				}
+			}
+		}
+
+		public function check_arr_member($arr)
+		{
+			foreach($arr as $member)
+			{
+				if($this->check_empty($member) == 0)
+				{
+					return 0;
+				}
+				if($this->check_num($member) == 2)
+				{
+					return 2;
+				}
+			}
+			$this->arr_member_ssk = $arr;
+			return 1;
+		}
+
+		public function check_arr_role($arr)
+		{
+			foreach($arr as $role)
+			{
+				if($this->check_empty($role) == 0)
+				{
+					return 0;
+				}
+				if($this->check_num($role) == 2)
+				{
+					return 2;
+				}
+			}
+			$this->arr_role = $arr;
+			return 1;
+		}
+
+		public function add_commission_member()
+		{
+			require('blocks/connect.php');
+			$n = count($this->arr_member_ssk);
+			for($i = 0; $i < $n; $i++)
+			{
+				$stmt = $conn->prepare('INSERT INTO curation_event (id_member_ssk_fk, id_commission_fk, role) VALUES (?,?,?)') or die($conn->error);
+				$stmt->bind_param('iii', $this->arr_member_ssk[$i], $this->id_commission, $this->arr_role[$i]);
+				if($stmt->execute()!= 1)
+				{
+					return 0;
+				}
+				//echo 1;
+			}
+			return 1;
+		}
+	}
+
 ?>
