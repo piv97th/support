@@ -33,26 +33,19 @@
 		function pretrain(arrs_1_meeting, arrs_date)
 		{
 			$("form").on('submit',function(){
-				alert(arrs_date);
-			});
-		}
-
-		/*$(function(){
-			$("form").on('submit',function(){
-				var mode_1 = 7;
-		        var order_1 = $("#order_1").val();
-		        var arr_date = [];
-		        cDate = $(this).find('input[name="date_meeting"]').length;
-		        alert(cDate);
-		        for(var i = 0; i < cDate; i++)
+				alert("again 1");
+				var arr_group = [];
+				var cGroup = $(this).find('.groups').length;
+				for(var i = 0; i < cGroup; i++)
 		        {
-		        	arr_date[i] = $('input[name="date_meeting"]:eq('+i+')').val();
+		        	arr_group[i] = $('select[name="groups"]:eq('+i+')').val();
 		    	}
-		    	alert(arr_date);
-		        $.ajax({
+		    	alert("again 2");
+		    	var mode_1 = 1;
+		    	$.ajax({
 		        	type: 'POST',
-		        	url: 'handler_structure.php',
-		        	data: {order_1, arr_date, mode_1},
+		        	url: 'handler_add_meeting_group.php',
+		        	data: {arrs_1_meeting, arrs_date, arr_group, mode_1},
 		        	async: false,
 		        	success: function(response)
 		        	{
@@ -66,19 +59,16 @@
 		        	}
 		    	});
 		    	return false;
-		    });
-		});*/
+			});
+		}
 
 		$(function(){
 			$("#commission").on('change',function(){
 				var alerte = $('.main_content').length;
-				alert(alerte);
 				if($('.main_content').length > 0)
 				{
 					$(".main_content").remove();
 				}
-				//$(".add_content").children().remove();
-				//var mode = <?php echo $mode; ?>;
 				var commission = $("#commission").val();
 				var mode_other = 1;
 				alert(commission);
@@ -94,48 +84,19 @@
 						var arrs_1_meeting = [];
 		        		var arrs_date = [];
 						$(obj).each(function(index, item) {
-							//$('form').append(eval(data(mode, index)));
 							$('form').append('<div class="form-group main_content"><input type hidden class="hidden" value='+item.arr_1+'>'+item.number_meeting+' <input type="date" class="date" value='+item.date+'></div>');
-							$('.date:last').after('<select class="groups"><option value="" disabled selected></option></select>');
+							$('.date:last').after('<select class="groups" name="groups"><option value="" disabled selected></option></select>');
 							$(item.arr_group).each(function(index, itm) {
-								$('.groups').append('<option value='+itm.id+'>'+itm.cipher_group+'</option>');
+								$('.groups').append('<option value='+itm.arr_1+'>'+itm.cipher_group+'</option>');
 							});
-							//arrs_1_meeting = item.arr_1;
-							//arrs_date = item.date;
+							arrs_1_meeting[index] = item.arr_1;
+							arrs_date[index] = item.date;
 						});
-						//pretrain(arrs_1_meeting, arrs_date);
+						pretrain(arrs_1_meeting, arrs_date);
 			        }
 			    });
 			});
 		});
-
-		/*$(function(){
-			$("#btn_plus").on('click',function(){
-				var countMeeting = $('#number_meeting').val();
-				countMeeting++;
-				if(countMeeting < 10)
-				{
-					$('#number_meeting').val(countMeeting);
-					$('.form-group:last').after('<div class="form-group date"><label>Дата:</label><input type="date" class="form-control" name="date_meeting" ></div>');
-				}
-		    });
-		});
-
-		$(function(){
-			$("#btn_minus").on('click',function(){
-				var countMeeting = $('#number_meeting').val();
-				countMeeting--;
-				if(0 <= countMeeting)
-				{
-					$('#number_meeting').val(countMeeting);
-					$('.date:last').remove();
-				}
-				else
-				{
-					$('#number_meeting').val(0);
-				}
-		    });
-		});*/
 
 		function outToast(arr)
 		{
@@ -147,17 +108,17 @@
 				{
 					if(c == 0)
 					{
-						if(arr['order_1'] == 0)
+						if(arr['arrs_1_meeting'] == 0)
 						{
-							toastr.error('Введите приказ','Ошибка!');
+							toastr.error('Что-то не так','Ошибка!');
 							flag = false;
 						}
-						if(arr['order_1'] == 2)
+						if(arr['arrs_1_meeting'] == 2)
 						{
-							toastr.error('Слишком много символов','Ошибка!');
+							toastr.error('Что-то не так','Ошибка!');
 							flag = false;
 						}
-						if(arr['commission'] == 0)
+						if(arr['add'] == 0)
 						{
 							toastr.error('При записи','Ошибка!');
 							flag = false;
@@ -165,19 +126,32 @@
 					}
 					if(c == 1)
 					{
-						if(arr['date'] == 0)
+						if(arr['arrs_date'] == 0)
 						{
-							toastr.error('Выберете год','Ошибка!');
+							toastr.error('Что-то не так','Ошибка!');
 							flag = false;
 						}
-						if(arr['date'] == 2)
+						if(arr['arrs_date'] == 2)
 						{
-							toastr.error('Неправильно набран год','Ошибка!');
+							toastr.error('Что-то не так','Ошибка!');
 							flag = false;
 						}
-						if(arr['meeting'] == 0)
+					}
+					if(c == 2)
+					{
+						if(arr['arr_group'] == 0)
 						{
-							toastr.error('При записи','Ошибка!');
+							toastr.error('Выберете группу','Ошибка!');
+							flag = false;
+						}
+						if(arr['arr_group'] == 2)
+						{
+							toastr.error('Неправильный формат группы','Ошибка!');
+							flag = false;
+						}
+						if(arr['arr_group'] == 3)
+						{
+							toastr.error('Группы повторяются','Ошибка!');
 							flag = false;
 						}
 					}
@@ -186,13 +160,13 @@
 		    }
     		if(flag == true)
     		{
-    			toastr.success('Успешно! Комиссия добавлена');
+    			toastr.success('Успешно! Событие добавлено');
 /*		        $("#nrb").val("");
     			$("#last_name").val("");*/
     		}
 		}
 
-		window.onbeforeunload = function() {
+		/*window.onbeforeunload = function() {
 			$.cookie('order_1', $("#order_1").val(), { expires: 1 });
 			//$.cookie('year', $("#year").val(), { expires: 1 });
 		};
@@ -207,7 +181,7 @@
 			{
 				$("#year").val($.cookie("year"));
 			}*/
-		});
+		//});
 	</script>
 
 </head>
@@ -232,18 +206,7 @@
 					</select>
 				</div> 
 				<form method="POST" action="#">
-					<!-- <legend>О комиссии</legend>
-					<div class="form-group">
-						<label for="order_1">Приказ:</label>
-						<textarea class="form-control" id="order_1" name="order_1" ></textarea>
-					</div>
-					<div class="form-group">
-						<label for="number_meeting">Количество заседаний:</label>
-						<input type="text" id="number_meeting" value="0" disabled>
-						<button type="button" id="btn_minus" class="btn btn-primary">-</button>
-						<button type="button" id="btn_plus" class="btn btn-primary">+</button>
-					</div>
-					<button type="submit" class="btn btn-primary">Submit</button> -->
+					<button type="submit" class="btn btn-primary">Submit</button>
 				</form>
 			</div>
 		</div>
