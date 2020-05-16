@@ -27,6 +27,15 @@
 			}
 		}
 
+	}
+
+	class e_add_meeting_group extends event_main
+	{
+		public $id = 'NULL';
+		public $arr_meeting = [];
+		public $arr_date = [];
+		public $arr_group = [];
+
 		public function check_arr_1($data)
 		{
 			$status = $this->check_empty($data);
@@ -47,15 +56,6 @@
 				}
 			}
 		}
-
-	}
-
-	class e_add_meeting_group extends event_main
-	{
-
-		public $arr_meeting = [];
-		public $arr_date = [];
-		public $arr_group = [];
 
 		public function check_arr_meeting($arr)
 		{
@@ -109,6 +109,23 @@
 			return 1;
 		}
 
+		/*public function check_commision($arr)
+		{
+			foreach($arr as $group)
+			{
+				if($this->check_empty($group) == 0)
+				{
+					return 0;
+				}
+				if($this->check_num($group) == 2)
+				{
+					return 2;
+				}
+			}
+			$this->arr_group = $arr;
+			return 1;
+		}*/
+
 		public function add_meeting_group()
 		{
 			require('blocks/connect.php');
@@ -124,6 +141,23 @@
 				//echo 1;
 			}
 			return 1;
+		}
+
+		public function del_meeting_group()
+		{
+			//UPDATE diploma SET id_meeting_fk = NULL WHERE id_meeting_fk IN (SELECT id FROM timetable_meeting WHERE id_commission_fk = 111)
+			require('blocks/connect.php');
+			$stmt = $conn->prepare('UPDATE diploma SET id_meeting_fk = NULL WHERE id_meeting_fk IN (SELECT id FROM timetable_meeting WHERE id_commission_fk = ?)') or die($conn->error);
+			$stmt->bind_param('i', $this->id);
+			if($stmt->execute()!= 1)
+			{
+				return 0;
+			}
+			else
+			{
+				return 1;
+			}
+
 		}
 	}
 

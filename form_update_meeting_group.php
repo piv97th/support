@@ -95,15 +95,12 @@
 								$('.groups').append('<option value='+itm.arr_1+'>'+itm.cipher_group+'</option>');
 							});
 							arrs_1_meeting[index] = item.arr_1;
-							//alert(arrs_1_meeting);
 							arrs_date[index] = item.date;
 						});
 						//alert(777);
 						var j = 0;
 						for(var meeting in arrs_1_meeting)
 						{
-							//alert(arrs_1_meeting);
-							//alert(arrs_1_meeting[meeting]);
 							new_meeting = arrs_1_meeting[meeting];
 							var mode_other = 2;
 							$.ajax({
@@ -115,7 +112,11 @@
 								{
 									alert(j);
 									$('.groups:eq('+j+') option[value='+response+']').attr('selected', 'selected');
-						        }
+						        },
+						        error: function(jqxhr, status, errorMsg)
+					        	{
+					        		toastr.error(errorMsg, status);
+					        	}
 						    });
 						    j++;
 						}
@@ -187,7 +188,7 @@
 		    }
     		if(flag == true)
     		{
-    			toastr.success('Успешно! Событие добавлено');
+    			toastr.success('Успешно! Отредактировано');
 /*		        $("#nrb").val("");
     			$("#last_name").val("");*/
     		}

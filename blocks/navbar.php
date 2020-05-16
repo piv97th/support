@@ -44,7 +44,7 @@
 				<div class="dropdown-header">Назначить заседание группе</div>
 				<a class="dropdown-item" href="form_add_meeting_group.php">Назначить</a>
 				<a class="dropdown-item" href="form_update_meeting_group.php">Редактировать</a>
-				<a class="dropdown-item" href="#">Удалить</a>
+				<a class="dropdown-item" href="form_del_meeting_group.php">Удалить</a>
 			</div>
 		</li>
 
