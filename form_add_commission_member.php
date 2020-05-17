@@ -35,17 +35,26 @@
 		$(function(){
 			$("form").on('submit',function(){
 				var mode_1 = 1;
+				var chairman = $('#chairman').val();
+				var secretary = $('#secretary').val();
+				var login = $('#login').val();
+				var password = $('#password').val();
 		        //var arr_1 = <?php echo $arr_diploma['id']; ?>;
 		        var members_ssk = [];
-		        var roles = [];
+		        //var roles = [];
 		        //cMember = $(this).find('input[name="date_meeting"]').length;
 		        //alert(90);
 		        var cMember = $(this).find('.member_ssk').length;
-		        alert(cMember);
+		        if(cMember < 1)
+		        {
+		        	toastr.error('Добавьте членов комиссии','Ошибка!');
+		        	return false;
+		        }
+		        alert(chairman);
 		        for(var i = 0; i < cMember; i++)
 		        {
 		        	members_ssk[i] = $('select[name="member_ssk"]:eq('+i+')').val();
-		        	roles[i] = $('select[name="role"]:eq('+i+')').val();
+		        	//roles[i] = $('select[name="role"]:eq('+i+')').val();
 		        	//alert(members_ssk[i]);
 		    	}
 		    	//alert(arr_1);
@@ -56,7 +65,7 @@
 		        $.ajax({
 		        	type: 'POST',
 		        	url: 'handler_commission_member.php',
-		        	data: {members_ssk, roles, commission, mode_1},
+		        	data: {chairman, secretary, password, login, members_ssk, commission, mode_1},
 		        	async: false,
 		        	success: function(response)
 		        	{
@@ -93,7 +102,7 @@
 			        		$(result).each(function(index, item) {
 								$('.member_ssk:last').append('<option value='+item.arr_1+'>'+item.last_name+' '+item.first_name+' '+item.patronymic+' '+item.post+'</option>');
 							});
-							$('.slc_mbr:last').after('<div class="form-group slc_role"><label>Роль:</label><select class="form-control role" name="role"><option value="1">Председатель</option><option value="2">Член</option><option value="3">Секретарь</option></select><div>');
+							//$('.slc_mbr:last').after('<div class="form-group slc_role"><label>Роль:</label><select class="form-control role" name="role"><option value="1">Председатель</option><option value="2">Член</option><option value="3">Секретарь</option></select><div>');
 			        	},
 			        	error: function(jqxhr, status, errorMsg)
 			        	{
@@ -110,13 +119,39 @@
 
 		$(function(){
 			$("#btn_minus").on('click',function(){
-				if($('.slc_mbr').length > 1)
+				if($('.slc_mbr').length > 0)
 				{
 					$('.slc_mbr:last').remove();
-					$('.slc_role:last').remove();
+					//$('.slc_role:last').remove();
 				}
 		    });
 		});
+
+		$(window).ready(function() {
+			var mode_other = 1;
+					$.ajax({
+			        	type: 'POST',
+			        	url: 'handler_commission_member.php',
+			        	data: {mode_other},
+			        	async: false,
+			        	success: function(response)
+			        	{
+			        		alert(response);
+			        		var result = JSON.parse(response);
+			        		$('#div_chairman').after('<div class="form-group"><label>Секретарь:</label><select class="form-control" id="secretary"><option value="" disabled selected></option></select></div>');
+			        		//$('.appear_content:last').append('<label>Член комиссии:</label><select class="form-control member_ssk" name="member_ssk"><option value="" disabled selected></option></select>');
+			        		$(result).each(function(index, item) {
+								$('#secretary').append('<option value='+item.arr_1+'>'+item.last_name+' '+item.first_name+' '+item.patronymic+' '+item.post+'</option>');
+							});
+							//$('.slc_mbr:last').after('<div class="form-group slc_role"><label>Роль:</label><select class="form-control role" name="role"><option value="1">Председатель</option><option value="2">Член</option><option value="3">Секретарь</option></select><div>');
+			        	},
+			        	error: function(jqxhr, status, errorMsg)
+			        	{
+			        		toastr.error(errorMsg, status);
+			        	}
+		    		});
+		});
+
 
 		/*function pretrain(arrs_1_meeting, arrs_date)
 		{
@@ -196,6 +231,42 @@
 				{
 					if(c == 0)
 					{
+						if(arr['chairman'] == 0)
+						{
+							toastr.error('Не выбран председатель','Ошибка!');
+							flag = false;
+						}
+						if(arr['chairman'] == 2)
+						{
+							toastr.error('Ошибка формата председателя','Ошибка!');
+							flag = false;
+						}
+						if(arr['add'] == 0)
+						{
+							toastr.error('При записи','Ошибка!');
+							flag = false;
+						}
+						if(arr['user'] == 0)
+						{
+							toastr.error('При записи','Ошибка!');
+							flag = false;
+						}
+					}
+					if(c == 1)
+					{
+						if(arr['secretary'] == 0)
+						{
+							toastr.error('Не выбран секретарь','Ошибка!');
+							flag = false;
+						}
+						if(arr['secretary'] == 2)
+						{
+							toastr.error('Ошибка формата секретаря','Ошибка!');
+							flag = false;
+						}
+					}
+					if(c == 2)
+					{
 						if(arr['arr_member_ssk'] == 0)
 						{
 							toastr.error('Не выбран член ГЭК','Ошибка!');
@@ -206,26 +277,8 @@
 							toastr.error('Ошибка формата члена ГЭК','Ошибка!');
 							flag = false;
 						}
-						if(arr['add'] == 0)
-						{
-							toastr.error('При записи','Ошибка!');
-							flag = false;
-						}
 					}
-					if(c == 1)
-					{
-						if(arr['arr_role'] == 0)
-						{
-							toastr.error('Не выбрана роль','Ошибка!');
-							flag = false;
-						}
-						if(arr['arr_role'] == 2)
-						{
-							toastr.error('Ошибка формата роли','Ошибка!');
-							flag = false;
-						}
-					}
-					if(c == 2)
+					if(c == 3)
 					{
 						if(arr['arr_1_commission'] == 0)
 						{
@@ -235,6 +288,37 @@
 						if(arr['arr_1_commission'] == 2)
 						{
 							toastr.error('Неправильный формат комиссии','Ошибка!');
+							flag = false;
+						}
+					}
+					if(c == 4)
+					{
+						if(arr['login'] == 0)
+						{
+							toastr.error('Введите логин','Ошибка!');
+							flag = false;
+						}
+						if(arr['login'] == 2)
+						{
+							toastr.error('Неправильный формат логина','Ошибка!');
+							flag = false;
+						}
+						if(arr['login'] == 3)
+						{
+							toastr.error('Такой логин уже есть','Ошибка!');
+							flag = false;
+						}
+					}
+					if(c == 5)
+					{
+						if(arr['password'] == 0)
+						{
+							toastr.error('Введите пароль','Ошибка!');
+							flag = false;
+						}
+						if(arr['password'] == 1)
+						{
+							toastr.error('Неправильный формат пароля','Ошибка!');
 							flag = false;
 						}
 					}
@@ -281,10 +365,10 @@
 		<div class="row content">
 			<div class="col-sm text-left">
 				<form method="POST" action="#">
-					<legend>Форма:</legend>
-					<div class="form-group slc_mbr">
-						<label>Член комиссии:</label>
-						<select class="form-control member_ssk" name="member_ssk">
+					<legend>О комиссии:</legend>
+					<div class="form-group" id="div_chairman">
+						<label>Председатель:</label>
+						<select class="form-control" id="chairman">
 							<option value="" disabled selected></option>
 							<?php
 							while($arr_member_ssk = $result_member_ssk->fetch_assoc())
@@ -294,18 +378,50 @@
 							?>
 						</select>
 					</div>
-					<div class="form-group slc_role">
+					<!-- <div class="form-group slc_role">
 						<label>Роль:</label>
 						<select class="form-control role" name="role">
 							<option value="1">Председатель</option>
 							<option value="2">Член</option>
 							<option value="3">Секретарь</option>
 						</select>
+					</div> -->
+					<!-- <div class="form-group">
+						<label>Секретарь:</label>
+						<select class="form-control" id="secretary">
+							<option value="" disabled selected></option>
+							<?php
+							while($arr_member_ssk_2 = $result_member_ssk->fetch_assoc())
+							{
+								echo '<option value='.$arr_member_ssk_2["id"].'>'.$arr_member_ssk_2["last_name"].' '.$arr_member_ssk_2["first_name"].' '.$arr_member_ssk_2["patronymic"].' '.$arr_member_ssk_2["post"].'</option>';
+							}
+							foreach($arr_member_ssk as $valmember)
+							{
+								echo '<option value='.$valmember["id"].'>'.$valmember["last_name"].' '.$valmember["first_name"].' '.$valmember["patronymic"].' '.$valmember["post"].'</option>';
+							}
+							?>
+						</select>
+					</div> -->
+					<div class="form-group">
+						<label for="login">Логин:</label>
+						<input type="text" class="form-control" id="login" name="login" >
 					</div>
+					<div class="form-group">
+						<label for="login">Пароль:</label>
+						<input type="password" class="form-control" id="password" name="password" >
+					</div>
+					<!-- <div class="form-group slc_role">
+						<label>Роль:</label>
+						<select class="form-control role" name="role">
+							<option value="1">Председатель</option>
+							<option value="2">Член</option>
+							<option value="3">Секретарь</option>
+						</select>
+					</div> -->
 					<button type="button" id="btn_minus" class="btn btn-primary">-</button>
 						<button type="button" id="btn_plus" class="btn btn-primary">+</button>
 					<div class="form-group">
-						<select name="commission" id="commission">
+						<select class="form-control" name="commission" id="commission">
 							<option value="" selected disabled></option>
 							<?php
 								slc_commision();

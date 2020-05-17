@@ -6,14 +6,24 @@
 	{
 
 		require_once('user_classes/class_curation_events.php');
+		require_once('user_classes/class_user.php');
 		$add = new e_commission_member();
+		$user = new user();
 
-		$result = array('arr_member_ssk' => $add->check_arr_member($_POST['members_ssk']), 'arr_role' => $add->check_arr_role($_POST['roles']), 'arr_1_commission' => $add->check_arr_1_com($_POST['commission']));
+		echo $_POST['chairmain'];
+		$result = array('chairmain' => $add->check_arr_chairman($_POST['chairman']), 'secretary' => $add->check_arr_secr($_POST['secretary']), 'arr_member_ssk' => $add->check_arr_member($_POST['members_ssk']), 'arr_1_commission' => $add->check_arr_1_com($_POST['commission']));
+
+		$result += ['login' => $user->check_login($_POST['login']), 'password' => $user->check_password($_POST['password'])];
 		check_result($result);
 
 		$result_add = $add->add_commission_member();
 		$result = array('add' => $result_add);
 		check_result($result);
+
+		$user->curevent = $add->get_last_secr_curevent();
+
+		$result_user = $user->add_user();
+		$result = array('user' => $result_user);
 
 		echo json_encode($result);
         exit;

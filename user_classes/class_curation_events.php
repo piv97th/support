@@ -164,9 +164,11 @@
 	class e_commission_member extends event_main
 	{
 		public $id = 'NULL';
+		public $chairman = 'NULL';
+		public $secretary = 'NULL';
 		public $arr_member_ssk = [];
-		public $arr_role = [];
 		public $id_commission = 'NULL';
+		public $id_secr_curevent = 'NULL';
 
 		public function check_arr_1_com($data)
 		{
@@ -189,6 +191,48 @@
 			}
 		}
 
+		public function check_arr_chairman($data)
+		{
+			$status = $this->check_empty($data);
+			if($status == 0)
+			{
+				return 0;
+			}
+			else
+			{
+				if($this->check_num($data) == 2)
+				{
+					return 2;
+				}
+				else
+				{
+					$this->chairman = $data;
+					return 1;
+				}
+			}
+		}
+
+		public function check_arr_secr($data)
+		{
+			$status = $this->check_empty($data);
+			if($status == 0)
+			{
+				return 0;
+			}
+			else
+			{
+				if($this->check_num($data) == 2)
+				{
+					return 2;
+				}
+				else
+				{
+					$this->secretary = $data;
+					return 1;
+				}
+			}
+		}
+
 		public function check_arr_member($arr)
 		{
 			foreach($arr as $member)
@@ -206,7 +250,7 @@
 			return 1;
 		}
 
-		public function check_arr_role($arr)
+		/*public function check_arr_role($arr)
 		{
 			foreach($arr as $role)
 			{
@@ -221,16 +265,51 @@
 			}
 			$this->arr_role = $arr;
 			return 1;
+		}*/
+
+		private function get_last_id_secr_curevent()
+		{
+			require('blocks/connect.php');
+			$query = $conn->query('SELECT id FROM curation_event WHERE role = 3 ORDER BY id DESC LIMIT 1');
+			$result = $query->fetch_row()[0];
+			if($result == NULL)
+			{
+				$result = 1;
+			}
+			$this->id_secr_curevent = $result;
+		}
+
+		public function get_last_secr_curevent()
+		{
+			return $this->id_secr_curevent;
 		}
 
 		public function add_commission_member()
 		{
 			require('blocks/connect.php');
+			$role = 1;
+			$stmt_cm = $conn->prepare('INSERT INTO curation_event (id_member_ssk_fk, id_commission_fk, role) VALUES (?,?,?)') or die($conn->error);
+			$stmt_cm->bind_param('iii', $this->chairman, $this->id_commission, $role);
+			if($stmt_cm->execute()!= 1)
+			{
+				return 0;
+			}
+
+			$role = 3;
+			$stmt_sct = $conn->prepare('INSERT INTO curation_event (id_member_ssk_fk, id_commission_fk, role) VALUES (?,?,?)') or die($conn->error);
+			$stmt_sct->bind_param('iii', $this->secretary, $this->id_commission, $role);
+			if($stmt_sct->execute()!= 1)
+			{
+				return 0;
+			}
+			$this->get_last_id_secr_curevent();
+
 			$n = count($this->arr_member_ssk);
+			$role = 2;
 			for($i = 0; $i < $n; $i++)
 			{
 				$stmt = $conn->prepare('INSERT INTO curation_event (id_member_ssk_fk, id_commission_fk, role) VALUES (?,?,?)') or die($conn->error);
-				$stmt->bind_param('iii', $this->arr_member_ssk[$i], $this->id_commission, $this->arr_role[$i]);
+				$stmt->bind_param('iii', $this->arr_member_ssk[$i], $this->id_commission, $role);
 				if($stmt->execute()!= 1)
 				{
 					return 0;
