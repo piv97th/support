@@ -49,7 +49,7 @@
 
 	<script type="text/javascript">
 
-		function data(mode, index)
+		/*function data(mode, index)
 		{
 			if(mode == 1)
 			{
@@ -67,7 +67,7 @@
 			{
 				return '(\'<li><a href=form_diploma.php?arr_1=\'+item.arr_1+\'>\'+(index+1)+\' \'+item.last_name +\' \'+item.first_name+\' \'+item.number_record_book+\'</li></a>\')';
 			}
-		}
+		}*/
 
 		/*$(function(){
 			$(".nolink").on("click", function(e){
