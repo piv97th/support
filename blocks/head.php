@@ -7,3 +7,4 @@
 
 <script src="jquery-3.5.0.js"></script>
 <script src="bootstrap.js"></script>
+<script type="text/javascript" src="scripts/logout.js"></script>

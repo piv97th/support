@@ -36,7 +36,7 @@
 		        		}
 		        		else if(result['user'] == 4)
 		        		{
-		        			$('form').attr('action', 'form_add_commission.php');
+		        			$('form').attr('action', 'operator.php');
 		        			return true;
 		        		}
 		        	},

@@ -11,7 +11,7 @@
 
 		$uid = $_COOKIE['uid'];
 		$hash = $_COOKIE['hash'];
-		$result_uid = $conn->prepare('SELECT uid, hash FROM user WHERE uid = ? AND hash = ?');
+		$result_uid = $conn->prepare('SELECT id, uid, hash FROM user WHERE uid = ? AND hash = ?');
 		$result_uid->bind_param('is', $uid, $hash);
 		$result_uid->execute();
 		$res_uid = $result_uid->get_result();

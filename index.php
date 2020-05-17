@@ -7,34 +7,6 @@
 		<?php require_once("blocks/head.php"); ?>
 
 		<title>Стартовая страница</title>
-
-		<script type="text/javascript">
-			
-			function deleteCookie(name) {
-				var date = new Date(); // Берём текущую дату
-				date.setTime(date.getTime() - 1); // Возвращаемся в "прошлое"
-				document.cookie = name += "=; expires=" + date.toGMTString(); // Устанавливаем cookie пустое значение и срок действия до прошедшего уже времени
-			}
-
-			$(function(){
-				$("#logout").on('click',function(){
-					//alert(1);
-					deleteCookie("uid");
-					deleteCookie("hash");
-					location.reload();
-					//alert(document.cookie);
-					//setCookie("uid", "", {'max-age': -1});
-					//setCookie("hash", "", {'max-age': -1});
-					/*var cookie_date = new Date ( );  // Текущая дата и время
-					cookie_date.setTime ( cookie_date.getTime() - 1 );
-					document.cookie = "uid" += "=; expires=" + cookie_date.toGMTString();
-					document.cookie = "hash" += "=; expires=" + cookie_date.toGMTString();
-					alert(2);*/
-					//location.reload();
-				});
-			});
-
-		</script>
 		
 	</head>
 	
