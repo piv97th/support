@@ -143,9 +143,20 @@
 			{
 				if($arr_acc['login']==$this->login && $arr_acc['password'] == hash('sha512', $this->password))
 				{
-					$hash =  hash('sha512', $this->generate_code(16));
-					$flag1=TRUE;
-					break;
+					if($arr_acc['login']=="admin" && $arr_acc['password'] == hash('sha512', $this->password))
+					{
+						$hash =  hash('sha512', $this->generate_code(16));
+						$flag1=TRUE;
+						$flag_admin = TRUE;
+						break;
+					}
+					else
+					{
+						$hash =  hash('sha512', $this->generate_code(16));
+						$flag1=TRUE;
+						$flag_admin = FALSE;
+						break;
+					}
 				}
 			}
 
@@ -159,7 +170,14 @@
 				$result_hash = $conn->query("UPDATE user SET uid = '$uid', hash = '$hash' WHERE login = '$this->login'") or die($conn->error);
 				setcookie("uid", $uid, time()+60*60);
 		        setcookie("hash", $hash, time()+60*60);
-				return 1;
+		        if($flag_admin == TRUE)
+		        {
+		        	return 1;
+		        }
+		        else
+		        {
+		        	return 4;
+		        }
 			}
 		}
 	}

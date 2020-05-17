@@ -8,8 +8,6 @@
 	<title>Вход</title>
 
 	<link href="scripts/toastr.css" rel="stylesheet">
-	<!-- <script type="text/javascript" src="scripts/jquery_cookies.js"></script> -->
-	<!-- <script type="text/javascript" src="scripts/disabled_link.js"></script> -->
 	<script type="text/javascript" src="scripts/toastr.js"></script>
 
 
@@ -30,13 +28,24 @@
 		        		alert(response);
 		        		var result = JSON.parse(response);
 		        		out_toast(result);
+		        		if(result['user'] == 1)
+		        		{
+		        			alert(222);
+		        			$('form').attr('action', 'index.php');
+		        			return true;
+		        		}
+		        		else if(result['user'] == 4)
+		        		{
+		        			$('form').attr('action', 'form_add_commission.php');
+		        			return true;
+		        		}
 		        	},
 		        	error: function(jqxhr, status, errorMsg)
 		        	{
 		        		toastr.error(errorMsg, status);
 		        	}
 		    	});
-		    	return false;
+		    	//return false;
 		    });
 		});
 
@@ -85,33 +94,8 @@
     		if(flag == true)
     		{
     			toastr.success('Успешно!');
-/*		        			$("#nrb").val("");
-    			$("#last_name").val("");
-    			$("#first_name").val("");
-    			$("#patronymic").val("");
-    			$("#group_1").val("");
-    			$("#topic").val("");
-    			$("#type_work").val("");
-    			$("#anti_plagiarism").val("");
-    			$("#supervisor").val("");*/
     		}
 		}
-
-		/*window.onbeforeunload = function() {
-			$.cookie('nrb', $("#nrb").val(), { expires: 1 });
-			$.cookie('last_name', $("#last_name").val(), { expires: 1 });
-		};*/
-
-		/*$(window).ready(function() {
-			if($.cookie('nrb') != null)
-			{
-				$("#nrb").val($.cookie("nrb"));
-			}
-			if($.cookie('last_name') != null)
-			{
-				$("#last_name").val($.cookie("last_name"));
-			}
-		});*/
 	</script>
 
 </head>

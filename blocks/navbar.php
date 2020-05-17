@@ -131,7 +131,7 @@
 		</li>
 
 		<li class="nav-item">
-			<a class="nav-link" href="#">Инфо</a>
+			<button class="btn btn-light" type="button" id="logout">Выход</button>
 		</li>
 	</ul>
 </nav>
