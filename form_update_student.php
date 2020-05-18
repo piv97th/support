@@ -633,39 +633,39 @@
 						</div>
 						<div class="form-group">
 							<label for="m_se">Номер встречи ГЭ:</label>
-							<select name="m_se" id="m_se">
+							<select class="form-control" name="m_se" id="m_se">
 							</select>
 						</div>
 					</div>
 					<div id="se_second">
 							<div class="form-group">
 							<label for="ticket_se">Номер билета:</label>
-							<select name="ticket_se" id="ticket_se">
+							<select class="form-control" name="ticket_se" id="ticket_se">
 							</select>
 						</div>
 					</div>
 					<div id="se_third">
 							<div class="form-group">
 							<label for="mark_se">Оценка ГЭ:</label>
-							<select name="mark_se" id="mark_se">
+							<select class="form-control" name="mark_se" id="mark_se">
 							</select>
 						</div>
 					</div>
 					<div id="diploma_first">
 						<div class="form-group">
 							<label for="np_diploma">Номер протокола ВКР:</label>
-							<input type="text" class="form-control" id="np_diploma" name="np_diploma" >
+							<input class="form-control" type="text" class="form-control" id="np_diploma" name="np_diploma" >
 						</div>
 						<div class="form-group">
 							<label for="m_diploma">Номер встречи ВКР:</label>
-							<select name="m_diploma" id="m_diploma">
+							<select class="form-control" name="m_diploma" id="m_diploma">
 							</select>
 						</div>
 					</div>
 					<div id="diploma_second">
 							<div class="form-group">
 							<label for="mark_diploma">Оценка ВКР:</label>
-							<select name="mark_diploma" id="mark_diploma">
+							<select class="form-control" name="mark_diploma" id="mark_diploma">
 							</select>
 						</div>
 					</div>

@@ -282,6 +282,7 @@
 					<button type="button" id="btn_minus" class="btn btn-primary">-</button>
 						<button type="button" id="btn_plus" class="btn btn-primary">+</button>
 					<div class="form-group">
+						<label>Комиссия:</label>
 						<select class="form-control" name="commission" id="commission">
 							<option value="" selected disabled></option>
 							<?php

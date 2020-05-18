@@ -23,67 +23,35 @@
 
 	<title>Выбор</title>
 
-	<script type="text/javascript" src="scripts/disabled_link.js"></script>
+	<style>
+	html, body {
+    	height: 100%;
+  	}
+		.left{
+			float: left;
+			height: 100%;
+			width: 50%;
+			text-align: center;
+			padding: 400px 0;
 
-	<script type="text/javascript">
+		}
+		.right{
+			float: right;
+			height: 100%;
+			width: 50%;
+			text-align: center;
+			padding: 400px 0;
 
-		$(function(){
-			$("#btn_choice").on('click',function(){
-				$(".add_content").children().remove();
-				var mode_other = 1;
-				var select = $("#slc").val();
-				$.ajax({
-					type: 'GET',
-					url: 'handler_operator.php',
-					data: {mode_other, select},
-					async: false,
-					success: function(response)
-					{
-						var obj = JSON.parse(response);
-						$(obj).each(function(index, item) {
-							$('.add_content').append('<li><a href=form_diploma.php?arr_1='+item.arr_1+'>'+(index+1)+' '+item.last_name +' '+item.first_name+' '+item.number_record_book+'</li></a>');
-						});
-			        }
-			    });
-			});
-		});
-
-	</script>
+		}
+	</style>
 
 </head>
 
 
 <body>
 
-	<?php
-	require_once('blocks/header.php');
-	require_once('blocks/navbar.php');
-	?>
-
-	<div class="container" id="content">    
-		<div class="row content">
-			<div class="col-sm text-left"> 
-				<div>
-					<?php echo $name_choice; ?>
-					<select id="slc" name="slc">
-						<option value="" disabled selected></option>
-						<?php
-							content_select($row_uid["id"]);
-						?>
-					</select>
-					<button class="btn btn-primary" id="btn_choice">Выбрать</button>
-					<form name="heh">
-						<div id="content">
-							<ul class="add_content">
-							</ul>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<?php require_once('blocks/footer.php'); ?>
+	<div class="left"><a href="choice_diploma.php">ВКР</a></div>
+	<div class="right"><a href="choice_se.php">Госэкзамен</a></div>	
 
 </body>
 </html>
