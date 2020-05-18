@@ -1,3 +1,4 @@
+<?php require('check_login.php'); ?>
 <?php
 	require('blocks/connect.php');
 	require_once('blocks/check_data.php');

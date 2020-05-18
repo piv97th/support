@@ -1,3 +1,4 @@
+<?php require('check_login.php'); ?>
 <?php
 
 	if(!empty($_GET['cipher_group']))

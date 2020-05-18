@@ -1,3 +1,4 @@
+<?php require('check_login.php'); ?>
 <?php
 	require('blocks/connect.php');
 
@@ -37,7 +38,6 @@
 		        	async: false,
 		        	success: function(response)
 		        	{
-		        		alert(response);
 		        		var result = JSON.parse(response);
 		        		outToast(result);
 		        	},
@@ -139,8 +139,6 @@
     		if(flag == true)
     		{
     			toastr.success('Успешно! Направление добавлено');
-/*		        $("#nrb").val("");
-    			$("#last_name").val("");*/
     		}
 		}
 

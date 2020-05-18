@@ -1,3 +1,4 @@
+<?php require('check_login_general.php'); ?>
 <?php
 	require('blocks/connect.php');
 
@@ -33,11 +34,7 @@
 	$result_student = $conn->query('SELECT id, number_record_book, last_name, first_name, patronymic, id_group_fk FROM student WHERE id = '.$arr_1);
 	
 	$arr_student = $result_student->fetch_assoc();
-
-	//$result_diploma = $conn->query('SELECT * FROM diploma WHERE id = '.$arr_student['id_diploma_fk']);
-	//$arr_diploma = $result_diploma->fetch_assoc();
 	$result_member_ssk = $conn->query('SELECT * FROM member_ssk');
-	//$result_member_ssk = $conn->query('SELECT member_ssk.id as id, member_ssk.last_name as last_name, member_ssk.first_name as first_name, member_ssk.patronymic as patronymic, member_ssk.post as post FROM curation_event JOIN commission ON commission.id=curation_event.id_commission_fk JOIN member_ssk ON member_ssk.id=curation_event.id_member_ssk_fk WHERE curation_event.id_commission_fk = (SELECT id_commission_fk FROM timetable_meeting WHERE id = '.$arr_diploma['id_meeting_fk'].')');
 ?>
 
 <!DOCTYPE html>
@@ -71,11 +68,8 @@
 		        {
 		        	members_ssk[i] = $('select[name="member_ssk"]:eq('+i+')').val();
 		        	questions[i] = $('textarea:eq('+i+')').val();
-		        	//alert(members_ssk[i]);
 		    	}
-		    	//alert(arr_1);
 		        var mark = $("#mark").val();
-		        //alert(members_ssk);
 		        $.ajax({
 		        	type: 'POST',
 		        	url: 'handler_se.php',
@@ -83,7 +77,6 @@
 		        	async: false,
 		        	success: function(response)
 		        	{
-		        		alert(response);
 		        		var result = JSON.parse(response);
 		        		outToast(result);
 		        	},
@@ -98,7 +91,6 @@
 
 		$(function(){
 			$("#meeting").on('change',function(){
-				alert(111);
 				var arr_1_meeting = $('#meeting').val();
 				var mode_other = 1;
 				alert(arr_1_meeting);
@@ -109,7 +101,6 @@
 		        	async: false,
 		        	success: function(response)
 		        	{
-		        		alert(response);
 		        		var result = JSON.parse(response);
 		        		$('.member_ssk').find('option').remove();
 		        		$(result).each(function(index, item) {
@@ -127,11 +118,10 @@
 
 		$(function(){
 			$("#btn_plus").on('click',function(){
-				alert($('.slc_spr').length);
 				if($('.slc_spr').length < 20)
 				{
 					var mode_other = 2;
-					var arr_1_meeting = $('#meeting').val();//$('#arr_1_meeting').val();
+					var arr_1_meeting = $('#meeting').val();
 					$.ajax({
 			        	type: 'POST',
 			        	url: 'handler_se.php',
@@ -139,7 +129,6 @@
 			        	async: false,
 			        	success: function(response)
 			        	{
-			        		alert(response);
 			        		var result = JSON.parse(response);
 			        		$('#btn_minus').before('<div class="form-group appear_content slc_spr"></div>');
 			        		$('.appear_content:last').append('<label>Член комиссии:</label><select class="form-control member_ssk" name="member_ssk"><option value="" disabled selected></option></select>');
@@ -291,21 +280,8 @@
     		if(flag == true)
     		{
     			toastr.success('Успешно! Данные сохранены');
-/*		        $("#nrb").val("");
-    			$("#last_name").val("");*/
     		}
 		}
-
-		/*window.onbeforeunload = function (evt) {
-			var message = "Измененные данные не отправлены";
-			if (typeof evt == "undefined") {
-				evt = window.event;
-			}
-			if (evt) {
-				evt.returnValue = message;
-			}
-			return message;
-		}*/
 
 	</script>
 
@@ -328,7 +304,6 @@
 					<div class="form-group">
 						<label>Заседание:</label>
 						<select name="meeting" id="meeting">
-							<!-- <option value="" selected disabled></option> -->
 							<?php
 								slc_meeting();
 							?>

@@ -1,3 +1,4 @@
+<?php require('check_login.php'); ?>
 <?php
 	require('blocks/connect.php');
 
@@ -33,14 +34,12 @@
 		function pretrain(arrs_1_meeting, arrs_date)
 		{
 			$("form").on('submit',function(){
-				alert("again 1");
 				var arr_group = [];
 				var cGroup = $(this).find('.groups').length;
 				for(var i = 0; i < cGroup; i++)
 		        {
 		        	arr_group[i] = $('select[name="groups"]:eq('+i+')').val();
 		    	}
-		    	alert("again 2");
 		    	var mode_1 = 1;
 		    	$.ajax({
 		        	type: 'POST',
@@ -49,7 +48,6 @@
 		        	async: false,
 		        	success: function(response)
 		        	{
-		        		alert(response);
 		        		var result = JSON.parse(response);
 		        		outToast(result);
 		        	},
@@ -79,7 +77,6 @@
 					async: false,
 					success: function(response)
 					{
-						alert(response);
 						var obj = JSON.parse(response);
 						var arrs_1_meeting = [];
 		        		var arrs_date = [];
@@ -161,27 +158,8 @@
     		if(flag == true)
     		{
     			toastr.success('Успешно! Событие добавлено');
-/*		        $("#nrb").val("");
-    			$("#last_name").val("");*/
     		}
 		}
-
-		/*window.onbeforeunload = function() {
-			$.cookie('order_1', $("#order_1").val(), { expires: 1 });
-			//$.cookie('year', $("#year").val(), { expires: 1 });
-		};
-
-		$(window).ready(function() {
-			if($.cookie('order_1') != null)
-			{
-				$("#order_1").val($.cookie("order_1"));
-			}
-			$('#number_meeting').val(0);
-/*			if($.cookie('year') != null)
-			{
-				$("#year").val($.cookie("year"));
-			}*/
-		//});
 	</script>
 
 </head>

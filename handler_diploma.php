@@ -1,3 +1,4 @@
+<?php require('check_login_general.php'); ?>
 <?php
 	require('blocks/connect.php');
 	require_once('blocks/check_data.php');
@@ -17,7 +18,6 @@
 
 		$result += ['members_ssk' => $q->check_arr_members($_POST['members_ssk']), 'questions' => $q->check_arr_questions($_POST['questions'])];
 		check_result($result);
-		//print_r($q);
 		$q->diploma = $diploma->get_id_diploma();
 
 		$result_diploma = $diploma->make_add_diploma();

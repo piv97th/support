@@ -1,3 +1,4 @@
+<?php require('check_login.php'); ?>
 <!DOCTYPE html>
 <html>
 
@@ -60,7 +61,6 @@
 		        var rank = $("#rank").val();
 		        var post = $("#post").val();
 		        var mode_1 = 1;
-		        alert(rank);
 		    	$.ajax({
 		        	type: 'POST',
 		        	url: 'handler_member_ssk.php',
@@ -68,7 +68,6 @@
 		        	async: false,
 		        	success: function(response)
 		        	{
-		        		alert(response);
 		        		var result = JSON.parse(response);
 						outToast(result);
 		        	},
@@ -180,17 +179,6 @@
     			toastr.success('Успешно! Информация добавлена');
     		}
 		}
-
-/*		window.onbeforeunload = function (evt) {
-			var message = "Измененные данные не отправлены";
-			if (typeof evt == "undefined") {
-				evt = window.event;
-			}
-			if (evt) {
-				evt.returnValue = message;
-			}
-			return message;
-		}*/
 
 	</script>
 

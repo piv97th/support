@@ -1,3 +1,4 @@
+<?php require('check_login.php'); ?>
 <?php
 	require('blocks/connect.php');
 	require_once('blocks/check_data.php');
@@ -9,8 +10,6 @@
 		require_once('user_classes/class_user.php');
 		$add = new e_commission_member();
 		$user = new user();
-
-		echo $_POST['chairmain'];
 		$result = array('chairmain' => $add->check_arr_chairman($_POST['chairman']), 'secretary' => $add->check_arr_secr($_POST['secretary']), 'arr_member_ssk' => $add->check_arr_member($_POST['members_ssk']), 'arr_1_commission' => $add->check_arr_1_com($_POST['commission']));
 
 		$result += ['login' => $user->check_login($_POST['login']), 'password' => $user->check_password($_POST['password'])];

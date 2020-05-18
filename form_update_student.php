@@ -1,3 +1,4 @@
+<?php require('check_login.php'); ?>
 <?php
 	require('blocks/connect.php');
 
@@ -12,16 +13,6 @@
 			return $var;
 		}
 	}
-/*	function output_groups()
-	{
-		require('blocks/connect.php');
-		$result = $conn->query('SELECT id, cipher_group FROM group_1');
-		while($arr = $result->fetch_assoc())
-		{
-			$arr_group[] = $arr; //array( "id" => $arr['id'], "cipher_group"  => $arr['cipher_group']);
-		}
-		return $arr_group;
-	}*/
 
 	$arr_1 = $_GET['arr_1'];
 	if(empty($arr_1))
@@ -76,23 +67,10 @@
 	        	async: false,
 	        	success: function(response)
 	        	{
-	        		//alert(response);
 	        		var obj = JSON.parse(response);
-					//out_toast(result);
-					//$("#np_se").val(obj.np_se);
-					//delete(obj.se_1);
-					//alert(obj);
-					//get_meeting();
 					$(obj).each(function(index, item) {
-						//alert(1);
 						$('#m_se').append("<option value="+item.arr_1_meeting+">"+item.nm+" "+item.date_se+"</option>");
 					});
-					//alert(index);
-/*							for(var i=0; i<5; i++)
-					{
-						$('#m_se').append('<option value="' + obj.arr_1_meeting + '">' + obj.nm + '</option>');
-					}*/
-					//$("#m_se option[value=obj.se_1.arr_1_meeting]").attr("selected", "selected");
 	        	},
 	        	error: function(jqxhr, status, errorMsg)
 	        	{
@@ -111,23 +89,10 @@
 	        	async: false,
 	        	success: function(response)
 	        	{
-	        		//alert(response);
 	        		var obj = JSON.parse(response);
-					//out_toast(result);
-					//$("#np_se").val(obj.np_se);
-					//delete(obj.se_1);
-					//alert(obj);
-					//get_meeting();
 					$(obj).each(function(index, item) {
-						//alert(1);
 						$('#ticket_se').append("<option value="+item.arr_1_ticket+">"+item.arr_1_ticket+" "+item.fq+"</option>");
 					});
-					//alert(index);
-/*							for(var i=0; i<5; i++)
-					{
-						$('#m_se').append('<option value="' + obj.arr_1_meeting + '">' + obj.nm + '</option>');
-					}*/
-					//$("#m_se option[value=obj.se_1.arr_1_meeting]").attr("selected", "selected");
 	        	},
 	        	error: function(jqxhr, status, errorMsg)
 	        	{
@@ -146,23 +111,10 @@
 	        	async: false,
 	        	success: function(response)
 	        	{
-	        		//alert(response);
 	        		var obj = JSON.parse(response);
-					//out_toast(result);
-					//$("#np_se").val(obj.np_se);
-					//delete(obj.se_1);
-					//alert(obj);
-					//get_meeting();
 					$(obj).each(function(index, item) {
-						//alert(1);
 						$('#mark_se').append("<option value="+item.arr_1_mark+">"+item.mark+"</option>");
 					});
-					//alert(index);
-/*							for(var i=0; i<5; i++)
-					{
-						$('#m_se').append('<option value="' + obj.arr_1_meeting + '">' + obj.nm + '</option>');
-					}*/
-					//$("#m_se option[value=obj.se_1.arr_1_meeting]").attr("selected", "selected");
 	        	},
 	        	error: function(jqxhr, status, errorMsg)
 	        	{
@@ -181,7 +133,6 @@
 	        	async: false,
 	        	success: function(response)
 	        	{
-	        		//alert(response);
 	        		var obj = JSON.parse(response);
 					$(obj).each(function(index, item) {
 						$('#mark_diploma').append("<option value="+item.arr_1_mark+">"+item.mark+"</option>");
@@ -196,14 +147,11 @@
 
 		function diploma()
 		{
-			//alert(1);
 			var exsist_np = <?php echo check_var($arr_diploma['number_protocol']); ?>;
 			alert(exsist_np);
 			if(exsist_np != 0)
 			{
-				//$('#se_first').remove();
 				$('#np_diploma').val(<?php echo $arr_diploma['number_protocol']; ?>);
-				//alert(arr_1_se);
 				var meeting_diploma = 1;
 				$.ajax({
 			        	type: 'POST',
@@ -212,7 +160,6 @@
 			        	async: false,
 			        	success: function(response)
 			        	{
-			        		//alert(response);
 			        		var obj = JSON.parse(response);
 			        		$(obj).each(function(index, item) {
 							$('#m_diploma').append("<option value="+item.arr_1_meeting+">"+item.nm+" "+item.date_diploma+"</option>");
@@ -221,9 +168,7 @@
 							var diploma_mark = <?php echo check_var($arr_diploma['id_mark_fk']); ?>;
 							if(diploma_mark != 0)
 							{
-								//alert(10001100);
 								get_mark_diploma();
-								//$('#ticket_se option:nth-child('+obj.arr_1_ticket+')').attr('selected', 'selected');
 								$('#mark_diploma option[value=<?php echo $arr_diploma["id_mark_fk"]; ?>]').attr('selected', 'selected');
 							}
 							else
@@ -241,7 +186,6 @@
 			{
 				$('#diploma_first').remove();
 				$('#diploma_second').remove();
-				//$('#se_third').remove();
 
 			}
 		}
@@ -251,7 +195,6 @@
 			var arr_1_se = <?php echo check_var($arr_student['id_se_fk']); ?>;
 			if(arr_1_se != 0)
 			{
-				//alert(arr_1_se);
 				var se = 1;
 				$.ajax({
 			        	type: 'POST',
@@ -260,20 +203,13 @@
 			        	async: false,
 			        	success: function(response)
 			        	{
-			        		//alert(response);
 			        		var obj = JSON.parse(response);
-							//out_toast(result);
 							$("#np_se").val(obj.np_se);
-							//delete(obj.se_1);
-							//alert(obj);
 							get_meeting_se();
 							var se_ticket = <?php echo check_var($arr_se['id_ticket_fk']); ?>;
-							//alert(se_ticket);
 							if(se_ticket != 0)
 							{
-								//alert(10001100);
 								get_ticket_se();
-								//$('#ticket_se option:nth-child('+obj.arr_1_ticket+')').attr('selected', 'selected');
 								$('#ticket_se option[value=<?php echo $arr_se["id_ticket_fk"]; ?>]').attr('selected', 'selected');
 							}
 							else
@@ -284,28 +220,14 @@
 							var se_mark = <?php echo check_var($arr_se['id_mark_fk']); ?>;
 							if(se_mark != 0)
 							{
-								//alert(10001100);
 								get_mark_se();
-								//$('#ticket_se option:nth-child('+obj.arr_1_ticket+')').attr('selected', 'selected');
 								$('#mark_se option[value=<?php echo $arr_se["id_mark_fk"]; ?>]').attr('selected', 'selected');
 							}
 							else
 							{
 								$('#se_third').remove();
 							}
-/*							$(obj).each(function(index, item) {
-								//alert(1);
-								$('#m_se').append("<option value"+item.arr_1_meeting+">"+item.nm+"</option>");
-							});*/
-/*							for(var i=0; i<5; i++)
-							{
-								$('#m_se').append('<option value="' + obj.arr_1_meeting + '">' + obj.nm + '</option>');
-							}*/
-							//alert(obj.arr_1_meeting);
-							//var za = obj.arr_1_meeting;
 							$('#m_se option[value='+obj.arr_1_meeting+']').attr('selected', 'selected');
-							//$('#m_se option[value='+obj.arr_1_meeting+']').prop("selected", "selected");
-							//$('#m_se option:nth-child('+obj.arr_1_meeting+')').attr('selected', 'selected');
 			        	},
 			        	error: function(jqxhr, status, errorMsg)
 			        	{
@@ -324,7 +246,6 @@
 
 		$(function(){
 			$("form").on('submit',function(){
-				//$("#m_se option[value=39]").prop("selected", "selected");
 				var arr_1 = <?php echo $arr_1; ?>;
 				var mode_1 = 2;
 				var nrb = $("#nrb").val();
@@ -349,8 +270,6 @@
 		        var meeting_diploma = $("#m_diploma").val();
 
 		        var mark_diploma = $("#mark_diploma").val();
-		        //var mark_diploma = $("#mark_diploma").val();
-		        //alert(1);
 		    	$.ajax({
 		        	type: 'POST',
 		        	url: 'handler_student.php',
@@ -401,12 +320,12 @@
 					{
 						if(arr['nrb'] == 0)
 						{
-							toastr.error('Введите данные','Ошибка!');
+							toastr.error('Введите Номер зачетной книжки','Ошибка!');
 							flag = false;
 						}
 						if(arr['nrb'] == 2)
 						{
-							toastr.error('Некорректные данные','Ошибка!');
+							toastr.error('Некорректный номер зачетной книжки','Ошибка!');
 							flag = false;
 						}
 						if(arr['nrb'] == 3)
@@ -424,12 +343,12 @@
 					{
 						if(arr['last_name'] == 0)
 						{
-							toastr.error('Введите данные','Ошибка!');
+							toastr.error('Введите фамилию','Ошибка!');
 							flag = false;
 						}
 						if(arr['last_name'] == 2)
 						{
-							toastr.error('Некорректные данные','Ошибка!');
+							toastr.error('Некорректая фамилия','Ошибка!');
 							flag = false;
 						}
 						if(arr['student'] == 0)
@@ -442,12 +361,12 @@
 					{
 						if(arr['first_name'] == 0)
 						{
-							toastr.error('Введите данные','Ошибка!');
+							toastr.error('Введите имя','Ошибка!');
 							flag = false;
 						}
 						if(arr['first_name'] == 2)
 						{
-							toastr.error('Некорректные данные','Ошибка!');
+							toastr.error('Некорректное имя','Ошибка!');
 							flag = false;
 						}
 					}
@@ -455,12 +374,12 @@
 					{
 						if(arr['patronymic'] == 0)
 						{
-							toastr.error('Введите данные','Ошибка!');
+							toastr.error('Введите отчество','Ошибка!');
 							flag = false;
 						}
 						if(arr['patronymic'] == 2)
 						{
-							toastr.error('Некорректные данные','Ошибка!');
+							toastr.error('Некорректное отчество','Ошибка!');
 							flag = false;
 						}
 					}
@@ -468,12 +387,12 @@
 					{
 						if(arr['group_1'] == 0)
 						{
-							toastr.error('Введите данные','Ошибка!');
+							toastr.error('Выберете группу','Ошибка!');
 							flag = false;
 						}
 						if(arr['group_1'] == 2)
 						{
-							toastr.error('Некорректные данные','Ошибка!');
+							toastr.error('Некорректная группа','Ошибка!');
 							flag = false;
 						}
 					}
@@ -481,12 +400,12 @@
 					{
 						if(arr['topic'] == 0)
 						{
-							toastr.error('Введите данные','Ошибка!');
+							toastr.error('Введите тему','Ошибка!');
 							flag = false;
 						}
 						if(result['topic'] == 2)
 						{
-							toastr.error('Некорректные данные','Ошибка!');
+							toastr.error('Некорректная тема','Ошибка!');
 							flag = false;
 						}
 					}
@@ -494,12 +413,12 @@
 					{
 						if(arr['type_work'] == 0)
 						{
-							toastr.error('Введите данные','Ошибка!');
+							toastr.error('Выберете тип работы','Ошибка!');
 							flag = false;
 						}
 						if(arr['type_work'] == 2)
 						{
-							toastr.error('Некорректные данные','Ошибка!');
+							toastr.error('Некорректный тип работы','Ошибка!');
 							flag = false;
 						}
 					}
@@ -507,7 +426,7 @@
 					{
 						if(arr['anti_plagiarism'] == 2)
 						{
-							toastr.error('Некорректные данные','Ошибка!');
+							toastr.error('Некорректное значение антиплагиата','Ошибка!');
 							flag = false;
 						}
 					}
@@ -515,12 +434,12 @@
 					{
 						if(arr['supervisor'] == 0)
 						{
-							toastr.error('Введите данные','Ошибка!');
+							toastr.error('Выберете научного руководителя','Ошибка!');
 							flag = false;
 						}
 						if(arr['supervisor'] == 2)
 						{
-							toastr.error('Некорректные данные','Ошибка!');
+							toastr.error('Некорректное значение научного руководителя','Ошибка!');
 							flag = false;
 						}
 					}
@@ -528,12 +447,12 @@
 					{
 						if(arr['protocol_diploma'] == 0)
 						{
-							toastr.error('Введите данные','Ошибка!');
+							toastr.error('Введите номер протокола ВКР','Ошибка!');
 							flag = false;
 						}
 						if(arr['protocol_diploma'] == 2)
 						{
-							toastr.error('Некорректные данные','Ошибка!');
+							toastr.error('Некорректный номер протокола ВКР','Ошибка!');
 							flag = false;
 						}
 					}
@@ -541,12 +460,12 @@
 					{
 						if(arr['meeting_diploma'] == 0)
 						{
-							toastr.error('Введите данные','Ошибка!');
+							toastr.error('Выберете номер заседания по ВКР','Ошибка!');
 							flag = false;
 						}
 						if(arr['meeting_diploma'] == 2)
 						{
-							toastr.error('Некорректные данные','Ошибка!');
+							toastr.error('Некорректные данные номера заседания по ВКР','Ошибка!');
 							flag = false;
 						}
 					}
@@ -554,12 +473,12 @@
 					{
 						if(arr['mark_diploma'] == 0)
 						{
-							toastr.error('Введите данные','Ошибка!');
+							toastr.error('Выберете оценку ВКР','Ошибка!');
 							flag = false;
 						}
 						if(arr['mark_diploma'] == 2)
 						{
-							toastr.error('Некорректные данные','Ошибка!');
+							toastr.error('Некорректная оценка ВКР','Ошибка!');
 							flag = false;
 						}
 					}
@@ -567,12 +486,12 @@
 					{
 						if(arr['protocol_se'] == 0)
 						{
-							toastr.error('Введите данные','Ошибка!');
+							toastr.error('Введите номер протокола госэкзамена','Ошибка!');
 							flag = false;
 						}
 						if(arr['protocol_se'] == 2)
 						{
-							toastr.error('Некорректные данные','Ошибка!');
+							toastr.error('Некорректный номер протокола госэкзамена','Ошибка!');
 							flag = false;
 						}
 					}
@@ -580,12 +499,12 @@
 					{
 						if(arr['meeting_se'] == 0)
 						{
-							toastr.error('Введите данные','Ошибка!');
+							toastr.error('Выберете номер заседания по госэкзамену','Ошибка!');
 							flag = false;
 						}
 						if(arr['meeting_se'] == 2)
 						{
-							toastr.error('Некорректные данные','Ошибка!');
+							toastr.error('Некорректные данные номера заседания по госэкзамену','Ошибка!');
 							flag = false;
 						}
 					}
@@ -593,12 +512,12 @@
 					{
 						if(arr['ticket_se'] == 0)
 						{
-							toastr.error('Введите данные','Ошибка!');
+							toastr.error('Выберете номер билета','Ошибка!');
 							flag = false;
 						}
 						if(arr['ticket_se'] == 2)
 						{
-							toastr.error('Некорректные данные','Ошибка!');
+							toastr.error('Некорректные номер билета','Ошибка!');
 							flag = false;
 						}
 					}
@@ -606,12 +525,12 @@
 					{
 						if(arr['mark_se'] == 0)
 						{
-							toastr.error('Введите данные','Ошибка!');
+							toastr.error('Выберете оценку госэкзамена','Ошибка!');
 							flag = false;
 						}
 						if(arr['mark_se'] == 2)
 						{
-							toastr.error('Некорректные данные','Ошибка!');
+							toastr.error('Некорректная оценка госэкзамена','Ошибка!');
 							flag = false;
 						}
 					}
@@ -620,32 +539,11 @@
 		    }
     		if(flag == true)
     		{
-    			toastr.success('Успешно! Студент добавлен');
-/*		        			$("#nrb").val("");
-    			$("#last_name").val("");
-    			$("#first_name").val("");
-    			$("#patronymic").val("");
-    			$("#group_1").val("");
-    			$("#topic").val("");
-    			$("#type_work").val("");
-    			$("#anti_plagiarism").val("");
-    			$("#supervisor").val("");*/
+    			toastr.success('Успешно! Информация обновлена');
     		}
 		}
 
-/*		window.onbeforeunload = function (evt) {
-			var message = "Измененные данные не отправлены";
-			if (typeof evt == "undefined") {
-				evt = window.event;
-			}
-			if (evt) {
-				evt.returnValue = message;
-			}
-			return message;
-		}*/
-
 		$(window).ready(function() {
-			//var arr_1_slc = $("#group_1 option:selected").val();
 			if($("#anti_plagiarism").val() == 0)
 			{
 				$("#anti_plagiarism").val("");
@@ -655,52 +553,6 @@
 			$("#supervisor option[value=<?php echo $arr_diploma['id_teacher_fk']; ?>]").attr("selected", "selected");
 			se();
 			diploma();
-/*			$("#group_1 option").each(function(index, element){
-				if($("group_1 option:selected").val() == $(element).eq(index).val())
-				{
-					$("#group_1").text("ss");
-				}
-			});*/
-/*			if($("#group_1").val() == )
-			{
-
-			}*/
-			/*if($.cookie('nrb') != null)
-			{
-				$("#nrb").val($.cookie("nrb"));
-			}
-			if($.cookie('last_name') != null)
-			{
-				$("#last_name").val($.cookie("last_name"));
-			}
-			if($.cookie('first_name') != null)
-			{
-				$("#first_name").val($.cookie("first_name"));
-			}
-			if($.cookie('patronymic') != null)
-			{
-				$("#patronymic").val($.cookie("patronymic"));
-			}
-			if($.cookie('group_1') != null)
-			{
-				$("#group_1").val($.cookie("group_1"));
-			}
-			if($.cookie('topic') != null)
-			{
-				$("#topic").val($.cookie("topic"));
-			}
-			if($.cookie('type_work') != null)
-			{
-				$("#type_work").val($.cookie("type_work"));
-			}
-			if($.cookie('anti_plagiarism') != null)
-			{
-				$("#anti_plagiarism").val($.cookie("anti_plagiarism"));
-			}
-			if($.cookie('supervisor') != null)
-			{
-				$("#supervisor").val($.cookie("supervisor"));
-			}*/
 		});
 	</script>
 
@@ -783,27 +635,21 @@
 						</div>
 						<div class="form-group">
 							<label for="m_se">Номер встречи ГЭ:</label>
-							<!-- <input type="text" class="form-control" id="m_se" name="m_se" > -->
 							<select name="m_se" id="m_se">
-								<!-- <option value="" disabled selected></option> -->
 							</select>
 						</div>
 					</div>
 					<div id="se_second">
 							<div class="form-group">
 							<label for="ticket_se">Номер билета:</label>
-							<!-- <input type="text" class="form-control" id="m_se" name="m_se" > -->
 							<select name="ticket_se" id="ticket_se">
-								<!-- <option value="" disabled selected></option> -->
 							</select>
 						</div>
 					</div>
 					<div id="se_third">
 							<div class="form-group">
 							<label for="mark_se">Оценка ГЭ:</label>
-							<!-- <input type="text" class="form-control" id="m_se" name="m_se" > -->
 							<select name="mark_se" id="mark_se">
-								<!-- <option value="" disabled selected></option> -->
 							</select>
 						</div>
 					</div>
@@ -814,18 +660,14 @@
 						</div>
 						<div class="form-group">
 							<label for="m_diploma">Номер встречи ВКР:</label>
-							<!-- <input type="text" class="form-control" id="m_se" name="m_se" > -->
 							<select name="m_diploma" id="m_diploma">
-								<!-- <option value="" disabled selected></option> -->
 							</select>
 						</div>
 					</div>
 					<div id="diploma_second">
 							<div class="form-group">
 							<label for="mark_diploma">Оценка ВКР:</label>
-							<!-- <input type="text" class="form-control" id="m_se" name="m_se" > -->
 							<select name="mark_diploma" id="mark_diploma">
-								<!-- <option value="" disabled selected></option> -->
 							</select>
 						</div>
 					</div>

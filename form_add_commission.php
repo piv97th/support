@@ -1,3 +1,4 @@
+<?php require('check_login.php'); ?>
 <?php
 	require('blocks/connect.php');
 
@@ -38,7 +39,6 @@
 		        	async: false,
 		        	success: function(response)
 		        	{
-		        		alert(response);
 		        		var result = JSON.parse(response);
 		        		outToast(result);
 		        	},
@@ -129,14 +129,13 @@
     		if(flag == true)
     		{
     			toastr.success('Успешно! Комиссия добавлена');
-/*		        $("#nrb").val("");
-    			$("#last_name").val("");*/
-    		}
+		        $("#order_1").val("");
+		        $.removeCookie('order_1');
+		    }
 		}
 
 		window.onbeforeunload = function() {
 			$.cookie('order_1', $("#order_1").val(), { expires: 1 });
-			//$.cookie('year', $("#year").val(), { expires: 1 });
 		};
 
 		$(window).ready(function() {
@@ -145,10 +144,6 @@
 				$("#order_1").val($.cookie("order_1"));
 			}
 			$('#number_meeting').val(0);
-/*			if($.cookie('year') != null)
-			{
-				$("#year").val($.cookie("year"));
-			}*/
 		});
 	</script>
 

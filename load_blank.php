@@ -1,3 +1,4 @@
+<?php require('check_login.php'); ?>
 <?php
 	require('blocks/connect.php');
 ?>
@@ -22,7 +23,6 @@
 				e.stopPropagation();
 				e.preventDefault(); 
 				var file_blank = new FormData(this);
-				//alert(1000);
 		        $.ajax({
 		        	type: 'POST',
 					processData: false,

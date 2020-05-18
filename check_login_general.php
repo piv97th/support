@@ -17,7 +17,7 @@
 		$res_uid = $result_uid->get_result();
 		$row_uid = $res_uid->fetch_assoc();
 
-		if($row_uid['uid'] != $uid || $row_uid['hash'] != $hash || $row_uid['id'] != 1)
+		if($row_uid['uid'] != $uid || $row_uid['hash'] != $hash)
 		{
 			setcookie("uid", "", time() - 3600*24*30*12, "/");
 			setcookie("hash", "", time() - 3600*24*30*12, "/");

@@ -1,3 +1,4 @@
+<?php require('check_login.php'); ?>
 <?php
 	require('blocks/connect.php');
 
@@ -40,7 +41,6 @@
 		        	async: false,
 		        	success: function(response)
 		        	{
-		        		alert(response);
 		        		var result = JSON.parse(response);
 		        		out_toast(result);
 		        	},
@@ -65,12 +65,12 @@
 					{
 						if(arr['nrb'] == 0)
 						{
-							toastr.error('Введите данные','Ошибка!');
+							toastr.error('Введите Номер зачетной книжки','Ошибка!');
 							flag = false;
 						}
 						if(arr['nrb'] == 2)
 						{
-							toastr.error('Некорректные данные','Ошибка!');
+							toastr.error('Некорректный номер зачетной книжки','Ошибка!');
 							flag = false;
 						}
 						if(arr['nrb'] == 3)
@@ -88,12 +88,12 @@
 					{
 						if(arr['last_name'] == 0)
 						{
-							toastr.error('Введите данные','Ошибка!');
+							toastr.error('Введите фамилию','Ошибка!');
 							flag = false;
 						}
 						if(arr['last_name'] == 2)
 						{
-							toastr.error('Некорректные данные','Ошибка!');
+							toastr.error('Некорректая фамилия','Ошибка!');
 							flag = false;
 						}
 						if(arr['student'] == 0)
@@ -106,12 +106,12 @@
 					{
 						if(arr['first_name'] == 0)
 						{
-							toastr.error('Введите данные','Ошибка!');
+							toastr.error('Введите имя','Ошибка!');
 							flag = false;
 						}
 						if(arr['first_name'] == 2)
 						{
-							toastr.error('Некорректные данные','Ошибка!');
+							toastr.error('Некорректное имя','Ошибка!');
 							flag = false;
 						}
 					}
@@ -119,12 +119,12 @@
 					{
 						if(arr['patronymic'] == 0)
 						{
-							toastr.error('Введите данные','Ошибка!');
+							toastr.error('Введите отчество','Ошибка!');
 							flag = false;
 						}
 						if(arr['patronymic'] == 2)
 						{
-							toastr.error('Некорректные данные','Ошибка!');
+							toastr.error('Некорректное отчество','Ошибка!');
 							flag = false;
 						}
 					}
@@ -132,12 +132,12 @@
 					{
 						if(arr['group_1'] == 0)
 						{
-							toastr.error('Введите данные','Ошибка!');
+							toastr.error('Выберете группу','Ошибка!');
 							flag = false;
 						}
 						if(arr['group_1'] == 2)
 						{
-							toastr.error('Некорректные данные','Ошибка!');
+							toastr.error('Некорректная группа','Ошибка!');
 							flag = false;
 						}
 					}
@@ -145,12 +145,12 @@
 					{
 						if(arr['topic'] == 0)
 						{
-							toastr.error('Введите данные','Ошибка!');
+							toastr.error('Введите тему','Ошибка!');
 							flag = false;
 						}
 						if(result['topic'] == 2)
 						{
-							toastr.error('Некорректные данные','Ошибка!');
+							toastr.error('Некорректная тема','Ошибка!');
 							flag = false;
 						}
 					}
@@ -158,12 +158,12 @@
 					{
 						if(arr['type_work'] == 0)
 						{
-							toastr.error('Введите данные','Ошибка!');
+							toastr.error('Выберете тип работы','Ошибка!');
 							flag = false;
 						}
 						if(arr['type_work'] == 2)
 						{
-							toastr.error('Некорректные данные','Ошибка!');
+							toastr.error('Некорректный тип работы','Ошибка!');
 							flag = false;
 						}
 					}
@@ -171,7 +171,7 @@
 					{
 						if(arr['anti_plagiarism'] == 2)
 						{
-							toastr.error('Некорректные данные','Ошибка!');
+							toastr.error('Некорректное значение антиплагиата','Ошибка!');
 							flag = false;
 						}
 					}
@@ -179,12 +179,12 @@
 					{
 						if(arr['supervisor'] == 0)
 						{
-							toastr.error('Введите данные','Ошибка!');
+							toastr.error('Выберете научного руководителя','Ошибка!');
 							flag = false;
 						}
 						if(arr['supervisor'] == 2)
 						{
-							toastr.error('Некорректные данные','Ошибка!');
+							toastr.error('Некорректное значение научного руководителя','Ошибка!');
 							flag = false;
 						}
 					}
@@ -194,7 +194,7 @@
     		if(flag == true)
     		{
     			toastr.success('Успешно! Студент добавлен');
-/*		        			$("#nrb").val("");
+		        $("#nrb").val("");
     			$("#last_name").val("");
     			$("#first_name").val("");
     			$("#patronymic").val("");
@@ -202,7 +202,16 @@
     			$("#topic").val("");
     			$("#type_work").val("");
     			$("#anti_plagiarism").val("");
-    			$("#supervisor").val("");*/
+    			$("#supervisor").val("");
+    			$.removeCookie('nrb');
+    			$.removeCookie('last_name');
+    			$.removeCookie('first_name');
+    			$.removeCookie('patronymic');
+    			$.removeCookie('group_1');
+    			$.removeCookie('topic');
+    			$.removeCookie('type_work');
+    			$.removeCookie('anti_plagiarism');
+    			$.removeCookie('supervisor');
     		}
 		}
 

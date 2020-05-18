@@ -1,3 +1,4 @@
+<?php require('check_login.php'); ?>
 <!DOCTYPE html>
 <html>
 
@@ -64,7 +65,6 @@
 		        var patronymic = $("#patronymic").val();
 		        var degree = $("#degree").val();
 		        var rank = $("#rank").val();
-		        alert(cipher);
 		        var post = $("#post").val();
 		        var mode_1 = 1;
 		    	$.ajax({
@@ -74,7 +74,6 @@
 		        	async: false,
 		        	success: function(response)
 		        	{
-		        		alert(response);
 		        		var result = JSON.parse(response);
 						outToast(result);
 		        	},
@@ -204,17 +203,6 @@
     			toastr.success('Успешно! Информация добавлена');
     		}
 		}
-
-/*		window.onbeforeunload = function (evt) {
-			var message = "Измененные данные не отправлены";
-			if (typeof evt == "undefined") {
-				evt = window.event;
-			}
-			if (evt) {
-				evt.returnValue = message;
-			}
-			return message;
-		}*/
 
 	</script>
 

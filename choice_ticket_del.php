@@ -1,3 +1,4 @@
+<?php require('check_login.php'); ?>
 <!DOCTYPE html>
 <html>
 
@@ -29,7 +30,6 @@
 				async: false,
 				success: function(response)
 				{
-					alert(response);
 					var obj = JSON.parse(response);
 					$('#content').append('<ul class="add_content"></ul>');
 					$(obj).each(function(index, item) {
@@ -55,7 +55,6 @@
 					async: false,
 					success: function(response)
 					{
-						alert(response);
 		        		var result = JSON.parse(response);
 		        		outToast(result);
 		        		refresh();

@@ -1,3 +1,4 @@
+<?php require('check_login_general.php'); ?>
 <?php
 	require('blocks/connect.php');
 

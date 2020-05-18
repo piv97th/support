@@ -1,3 +1,4 @@
+<?php require('check_login_general.php'); ?>
 <?php
 	require('blocks/connect.php');
 
@@ -11,7 +12,6 @@
 
 	$result_diploma = $conn->query('SELECT * FROM diploma WHERE id = '.$arr_student['id_diploma_fk']);
 	$arr_diploma = $result_diploma->fetch_assoc();
-	//$result_member_ssk = $conn->query('SELECT * FROM member_ssk WHERE ');
 	$result_member_ssk = $conn->query('SELECT DISTINCT member_ssk.id as id, member_ssk.last_name as last_name, member_ssk.first_name as first_name, member_ssk.patronymic as patronymic, member_ssk.post as post FROM curation_event JOIN commission ON commission.id=curation_event.id_commission_fk JOIN member_ssk ON member_ssk.id=curation_event.id_member_ssk_fk WHERE curation_event.id_commission_fk = (SELECT id_commission_fk FROM timetable_meeting WHERE id = '.$arr_diploma['id_meeting_fk'].')');
 ?>
 
@@ -37,21 +37,13 @@
 		        var arr_1 = <?php echo $arr_diploma['id']; ?>;
 		        var members_ssk = [];
 		        var questions = [];
-		        //cMember = $(this).find('input[name="date_meeting"]').length;
-		        //alert(90);
 		        var cMember = $(this).find('.member_ssk').length;
-		        alert(cMember);
 		        for(var i = 0; i < cMember; i++)
 		        {
 		        	members_ssk[i] = $('select[name="member_ssk"]:eq('+i+')').val();
 		        	questions[i] = $('textarea:eq('+i+')').val();
-		        	//alert(members_ssk[i]);
 		    	}
-		    	alert(arr_1);
-		        //var members_ssk = $(".member_ssk").serialize();
-		        //var questions = $("form").serialize();
 		        var mark = $("#mark").val();
-		        //alert(members_ssk);
 		        $.ajax({
 		        	type: 'POST',
 		        	url: 'handler_diploma.php',
@@ -59,7 +51,6 @@
 		        	async: false,
 		        	success: function(response)
 		        	{
-		        		alert(response);
 		        		var result = JSON.parse(response);
 		        		outToast(result);
 		        	},
@@ -74,7 +65,6 @@
 
 		$(function(){
 			$("#btn_plus").on('click',function(){
-				alert($('.slc_spr').length);
 				if($('.slc_spr').length < 20)
 				{
 					var mode_other = 1;
@@ -86,7 +76,6 @@
 			        	async: false,
 			        	success: function(response)
 			        	{
-			        		alert(response);
 			        		var result = JSON.parse(response);
 			        		$('#btn_minus').before('<div class="form-group appear_content slc_spr"></div>');
 			        		$('.appear_content:last').append('<label>Член комиссии:</label><select class="form-control member_ssk" name="member_ssk"><option value="" disabled selected></option></select>');
@@ -194,21 +183,8 @@
     		if(flag == true)
     		{
     			toastr.success('Успешно! Данные сохранены');
-/*		        $("#nrb").val("");
-    			$("#last_name").val("");*/
     		}
 		}
-
-		/*window.onbeforeunload = function (evt) {
-			var message = "Измененные данные не отправлены";
-			if (typeof evt == "undefined") {
-				evt = window.event;
-			}
-			if (evt) {
-				evt.returnValue = message;
-			}
-			return message;
-		}*/
 
 	</script>
 

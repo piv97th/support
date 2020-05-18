@@ -1,3 +1,4 @@
+<?php require('check_login.php'); ?>
 <?php
 	require('blocks/connect.php');
 	require_once('blocks/check_data.php');
@@ -80,7 +81,6 @@
 				async: false,
 				success: function(response)
 				{
-					alert(response);
 					var obj = JSON.parse(response);
 					$('#content').append('<ul class="add_content"></ul>');
 					if(mode == 1)
@@ -125,12 +125,10 @@
 		function aDellDirection()
 		{
 			$(".nolink").on("click", function(e){
-				alert(1000);
 				var mode_1 = 3;
 				var link = e.target;
 				link = String(link);
 				var arr_1 = link.substr(52,8);
-				alert(arr_1);
 				$.ajax({
 					type: 'POST',
 					url: 'handler_structure.php',
@@ -138,7 +136,6 @@
 					async: false,
 					success: function(response)
 					{
-						alert(response);
 						var flag = true;
 		        		var result = JSON.parse(response);
 		        		outToast(result);
@@ -156,12 +153,10 @@
 		function aDellGroup()
 		{
 			$(".nolink").on("click", function(e){
-				alert(1000);
 				var mode_1 = 6;
 				var link = e.target;
 				link = String(link);
 				var arr_1 = link.substr(52,8);
-				alert(arr_1);
 				$.ajax({
 					type: 'POST',
 					url: 'handler_structure.php',
@@ -169,7 +164,6 @@
 					async: false,
 					success: function(response)
 					{
-						alert(response);
 						var flag = true;
 		        		var result = JSON.parse(response);
 		        		outToast(result);
@@ -191,7 +185,6 @@
 				var link = e.target;
 				link = String(link);
 				var arr_1 = link.substr(52,8);
-				alert(arr_1);
 				$.ajax({
 					type: 'POST',
 					url: 'handler_structure.php',
@@ -199,7 +192,6 @@
 					async: false,
 					success: function(response)
 					{
-						alert(response);
 		        		var result = JSON.parse(response);
 		        		outToast(result);
 		        		refresh();
@@ -220,7 +212,6 @@
 				var link = e.target;
 				link = String(link);
 				var arr_1 = link.substr(53,8);
-				alert(arr_1);
 				$.ajax({
 					type: 'POST',
 					url: 'handler_supervisor.php',
@@ -228,7 +219,6 @@
 					async: false,
 					success: function(response)
 					{
-						alert(response);
 		        		var result = JSON.parse(response);
 		        		outToast(result);
 		        		refresh();
@@ -249,7 +239,6 @@
 				var link = e.target;
 				link = String(link);
 				var arr_1 = link.substr(53,8);
-				alert(arr_1);
 				$.ajax({
 					type: 'POST',
 					url: 'handler_member_ssk.php',
@@ -257,7 +246,6 @@
 					async: false,
 					success: function(response)
 					{
-						alert(response);
 		        		var result = JSON.parse(response);
 		        		outToast(result);
 		        		refresh();

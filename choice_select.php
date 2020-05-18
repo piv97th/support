@@ -1,3 +1,4 @@
+<?php require('check_login.php'); ?>
 <?php
 	require('blocks/connect.php');
 
@@ -154,10 +155,6 @@
 						{
 							a_dell();
 						}
-						/*if(mode == 4)
-						{
-							a();
-						}*/
 			        }
 			    });
 			});

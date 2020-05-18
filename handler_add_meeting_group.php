@@ -1,11 +1,10 @@
+<?php require('check_login.php'); ?>
 <?php
 	require('blocks/connect.php');
 	require_once('blocks/check_data.php');
 
 	if($_POST['mode_1'] == 1)
 	{
-		echo "again ajax";
-		//UPDATE diploma SET id_meeting_fk = 45 WHERE id IN (SELECT id_diploma_fk FROM student WHERE id_group_fk = 10)
 
 		require_once('user_classes/class_curation_events.php');
 		$add = new e_add_meeting_group();
@@ -23,8 +22,6 @@
 
 	if($_GET['mode_1'] == 2)
 	{
-		//echo "again ajax";
-		//UPDATE diploma SET id_meeting_fk = 45 WHERE id IN (SELECT id_diploma_fk FROM student WHERE id_group_fk = 10)
 
 		require_once('user_classes/class_curation_events.php');
 		$del = new e_add_meeting_group();

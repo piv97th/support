@@ -1,3 +1,4 @@
+<?php require('check_login_general.php'); ?>
 <?php
 	require('blocks/connect.php');
 	require_once('blocks/check_data.php');
@@ -14,7 +15,6 @@
 		$se = new se();
 		$q = new question();
 		$student = new student();
-		//echo $_POST['arr_1_group'];
 		$result = array('arr_1_meeting' => $se->check_meeting($_POST['arr_1_meeting']), 'ticket' => $se->check_ticket($_POST['ticket']), 'mark' => $se->check_mark($_POST['mark']), 'arr_1_group' => $se->check_group_other($_POST['arr_1_group']));
 		$result += ['members_ssk' => $q->check_arr_members($_POST['members_ssk']), 'questions' => $q->check_arr_questions($_POST['questions'])];
 		$result += ['arr_1_student' => $student->check_arr_1($_POST['arr_1_student'])];

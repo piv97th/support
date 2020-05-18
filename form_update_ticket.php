@@ -1,3 +1,4 @@
+<?php require('check_login.php'); ?>
 <?php
 
 	require_once('blocks/check_data.php');
@@ -50,7 +51,6 @@
 		        	async: false,
 		        	success: function(response)
 		        	{
-		        		alert(response);
 		        		var result = JSON.parse(response);
 						outToast(result);
 		        	},
@@ -136,17 +136,6 @@
     			toastr.success('Успешно! Информация добавлена');
     		}
 		}
-
-/*		window.onbeforeunload = function (evt) {
-			var message = "Измененные данные не отправлены";
-			if (typeof evt == "undefined") {
-				evt = window.event;
-			}
-			if (evt) {
-				evt.returnValue = message;
-			}
-			return message;
-		}*/
 
 	</script>
 

@@ -21,18 +21,6 @@
 
 		<li class="nav-item dropdown">
 			<a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-				Пользователи
-			</a>
-			<div class="dropdown-menu">
-
-				<a class="dropdown-item" href="form_add_user.php">Добавить</a>
-				<a class="dropdown-item" href="#">Редактировать</a>
-				<a class="dropdown-item" href="#">Удалить</a>
-			</div>
-		</li>
-
-		<li class="nav-item dropdown">
-			<a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
 				Комиссии
 			</a>
 			<div class="dropdown-menu">
@@ -47,7 +35,6 @@
 				<a class="dropdown-item" href="form_del_meeting_group.php">Удалить</a>
 				<div class="dropdown-header">Назначить члена ГЭК на комиссию</div>
 				<a class="dropdown-item" href="form_add_commission_member.php">Назначить</a>
-				<!-- <a class="dropdown-item" href="#">Редактировать</a> -->
 				<a class="dropdown-item" href="form_del_commission_member.php">Удалить</a>
 			</div>
 		</li>
@@ -72,8 +59,6 @@
 			</a>
 			<div class="dropdown-menu">
 				<a class="dropdown-item" href="choice_select.php?mode=4">Добавить</a>
-				<a class="dropdown-item" href="#">Редактировать</a>
-				<a class="dropdown-item" href="#">Удалить</a>
 			</div>
 		</li>
 
