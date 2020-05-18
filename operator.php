@@ -1,6 +1,5 @@
 <?php require('check_login_general.php'); ?>
 <?php
-	require('check_login.php');
 	require('blocks/connect.php');
 
 	function content_select($arr_1)

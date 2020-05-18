@@ -63,7 +63,6 @@
 		        var members_ssk = [];
 		        var questions = [];
 		        var cMember = $(this).find('.member_ssk').length;
-		        alert(arr_1_group);
 		        for(var i = 0; i < cMember; i++)
 		        {
 		        	members_ssk[i] = $('select[name="member_ssk"]:eq('+i+')').val();
@@ -93,7 +92,6 @@
 			$("#meeting").on('change',function(){
 				var arr_1_meeting = $('#meeting').val();
 				var mode_other = 1;
-				alert(arr_1_meeting);
 				$.ajax({
 		        	type: 'POST',
 		        	url: 'handler_se.php',

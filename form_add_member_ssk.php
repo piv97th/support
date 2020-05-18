@@ -177,6 +177,18 @@
     		if(flag == true)
     		{
     			toastr.success('Успешно! Информация добавлена');
+    			$("#last_name").val("");
+    			$("#first_name").val("");
+    			$("#patronymic").val("");
+    			$("#degree").val("");
+    			$("#rank").val("");
+    			$("#post").val("");
+    			$.removeCookie('last_name');
+    			$.removeCookie('first_name');
+    			$.removeCookie('patronymic');
+    			$.removeCookie('degree');
+    			$.removeCookie('rank');
+    			$.removeCookie('post');
     		}
 		}
 

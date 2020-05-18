@@ -47,7 +47,6 @@
 		        	toastr.error('Добавьте членов комиссии','Ошибка!');
 		        	return false;
 		        }
-		        alert(chairman);
 		        for(var i = 0; i < cMember; i++)
 		        {
 		        	members_ssk[i] = $('select[name="member_ssk"]:eq('+i+')').val();
@@ -74,7 +73,6 @@
 
 		$(function(){
 			$("#btn_plus").on('click',function(){
-				alert($('.member_ssk').length);
 				if($('member_ssk').length < 8)
 				{
 					var mode_other = 1;

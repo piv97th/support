@@ -47,7 +47,6 @@
 				var link = e.target;
 				link = String(link);
 				var arr_1 = link.substr(49,8);
-				alert(arr_1);
 				$.ajax({
 					type: 'POST',
 					url: 'handler_ticket.php',

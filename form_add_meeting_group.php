@@ -1,3 +1,4 @@
+
 <?php require('check_login.php'); ?>
 <?php
 	require('blocks/connect.php');
@@ -69,7 +70,6 @@
 				}
 				var commission = $("#commission").val();
 				var mode_other = 1;
-				alert(commission);
 				$.ajax({
 					type: 'GET',
 					url: 'handler_add_meeting_group.php',

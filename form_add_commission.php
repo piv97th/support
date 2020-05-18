@@ -26,12 +26,10 @@
 		        var order_1 = $("#order_1").val();
 		        var arr_date = [];
 		        cDate = $(this).find('input[name="date_meeting"]').length;
-		        alert(cDate);
 		        for(var i = 0; i < cDate; i++)
 		        {
 		        	arr_date[i] = $('input[name="date_meeting"]:eq('+i+')').val();
 		    	}
-		    	alert(arr_date);
 		        $.ajax({
 		        	type: 'POST',
 		        	url: 'handler_structure.php',

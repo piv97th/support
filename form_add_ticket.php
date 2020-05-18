@@ -74,7 +74,6 @@
 						outToast(result);
 						var nq = $('#nq').text();
 						nq++;
-						alert(nq);
 						$('#nq').text(nq);
 		        	},
 		        	error: function(jqxhr, status, errorMsg)
@@ -144,6 +143,12 @@
     		if(flag == true)
     		{
     			toastr.success('Успешно! Информация добавлена');
+    			$("#fq").val("");
+    			$("#sq").val("");
+    			$("#tq").val("");
+    			$.removeCookie('fq');
+    			$.removeCookie('sq');
+    			$.removeCookie('tq');
     		}
 		}
 

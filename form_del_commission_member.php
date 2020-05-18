@@ -35,7 +35,6 @@
 			$("form").on('submit',function(){
 				var commission = $("#commission").val();
 				var mode_1 = 3;
-				alert(commission);
 				$.ajax({
 					type: 'GET',
 					url: 'handler_commission_member.php',

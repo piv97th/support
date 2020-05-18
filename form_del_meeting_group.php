@@ -35,7 +35,6 @@
 			$("form").on('submit',function(){
 				var commission = $("#commission").val();
 				var mode_1 = 2;
-				alert(commission);
 				$.ajax({
 					type: 'GET',
 					url: 'handler_add_meeting_group.php',
