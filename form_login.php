@@ -16,8 +16,6 @@
 			$("form").on('submit',function(){
 				var login = $('#login').val();
 				var password = $('#password').val();
-				alert(login);
-				alert(password);
 		        $.ajax({
 		        	type: 'POST',
 		        	url: 'handler_login.php',
@@ -25,12 +23,10 @@
 		        	async: false,
 		        	success: function(response)
 		        	{
-		        		alert(response);
 		        		var result = JSON.parse(response);
 		        		out_toast(result);
 		        		if(result['user'] == 1)
 		        		{
-		        			alert(222);
 		        			$('form').attr('action', 'index.php');
 		        			return true;
 		        		}
@@ -45,7 +41,6 @@
 		        		toastr.error(errorMsg, status);
 		        	}
 		    	});
-		    	//return false;
 		    });
 		});
 

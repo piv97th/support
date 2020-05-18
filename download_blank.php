@@ -1,9 +1,9 @@
 <?php require('check_login.php'); ?>
 <?php
-
-	if(!empty($_GET['cipher_group']))
+	
+	if(!empty($_POST['cipher_group']))
 	{
-		$cipher_group = $_GET['cipher_group'];
+		$cipher_group = $_POST['cipher_group'];
 		$cipher_group = mb_strtoupper($cipher_group);
 		$pattern = '/^[А-ЯЁ]{2}[Б,М,С][В,З,О][-][0-9]{2}[-][0-9]{2}$/u';
 		if(!preg_match($pattern, $cipher_group))

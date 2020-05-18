@@ -89,6 +89,10 @@
     		if(flag == true)
     		{
     			toastr.success('Успешно! Направление добавлено');
+    			$("#cipher_direction").val("");
+    			$("#name_cipher").val("");
+    			$.removeCookie('cipher_direction');
+    			$.removeCookie('name_cipher');
     		}
 		}
 

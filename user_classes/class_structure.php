@@ -70,23 +70,6 @@
 			}
 		}
 
-/*		public function check_arrs_1($arr)
-		{
-			foreach($arr as $data)
-			{
-				if($this->check_empty($data) == 0)
-				{
-					return 0;
-				}
-				if($this->check_num($data) == 2)
-				{
-					return 2;
-				}
-			}
-			$this->id = $arr;
-			return 1;
-		}*/
-
 		public function check_name($data)
 		{
 			if($this->check_empty($data) == 0)
@@ -436,7 +419,7 @@
 		{
 			require('blocks/connect.php');
 			$stmt = $conn->prepare('INSERT INTO group_1 (cipher_group, id_qualification_fk, id_university_fk, id_institute_fk, id_direction_fk, id_form_studying_fk, id_cathedra_fk) VALUES(?,?,?,?,?,?,?)');
-			$stmt->bind_param('siiiiii', $this->cipher, $this->qualification, $this->university, $this->institute, $this->direction, $this->form_studying, $this->cathedra);
+			$stmt->bind_param('siiiiii', $this->cipher_group, $this->qualification, $this->university, $this->institute, $this->direction, $this->form_studying, $this->cathedra);
 			if($stmt->execute() != 1)
 			{
 				return 0;
@@ -565,7 +548,6 @@
 
 	class meeting extends structure
 	{
-		//public $id = 'NULL';
 		public $number_meeting = 'NULL';
 		public $date = 'NULL';
 		public $commission_fk = 'NULL';
@@ -596,7 +578,6 @@
 			$row = $result->fetch_assoc();
 			if($row['count'] > 0)
 			{
-				echo $row['id'];
 				return 1;
 			}
 			else
@@ -613,7 +594,6 @@
 			foreach($this->date as $valdate)
 			{
 				$result = $conn->query("INSERT INTO timetable_meeting (number_meeting, date, id_commission_fk) VALUES('$nm', '$valdate', '$this->commission_fk')") or die($conn->error);
-				echo $conn->insert_id;
 				if($result != 1)
 				{
 					return 0;
@@ -635,7 +615,6 @@
 			$nm = 1;
 			foreach($this->date as $valdate)
 			{
-				//$result = $conn->query('UPDATE timetable_meeting SET ');
 				$result = $conn->query("INSERT INTO timetable_meeting (number_meeting, date, id_commission_fk) VALUES('$nm', '$valdate', '$this->commission_fk')") or die($conn->error);
 				if($result != 1)
 				{

@@ -3,6 +3,7 @@
 	require('blocks/connect.php');
 	require_once('blocks/check_data.php');
 	$mode_1 = $_POST['mode_1'];
+
 	if($mode_1 == 1)
 	{
 		require_once('user_classes/class_structure.php');

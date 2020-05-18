@@ -82,18 +82,14 @@
 		{
 			require('blocks/connect.php');
 			$n = count($this->arr_members);
-			//echo $n;
 			for($i = 0; $i < $n; $i++)
 			{
-				//echo $this->diploma;
-				//echo  $this->arr_members[$i];
 				$stmt = $conn->prepare('INSERT INTO question_diploma (question, id_diploma_fk, id_member_fk) VALUES(?,?,?)') or die($conn->error);
 				$stmt->bind_param('sii', $this->arr_questions[$i], $this->diploma, $this->arr_members[$i]);
 				if($stmt->execute()!= 1)
 				{
 					return 0;
 				}
-				//echo 1;
 			}
 			return 1;
 		}
@@ -102,18 +98,14 @@
 		{
 			require('blocks/connect.php');
 			$n = count($this->arr_members);
-			//echo $n;
 			for($i = 0; $i < $n; $i++)
 			{
-				//echo $this->se;
-				//echo  $this->arr_members[$i];
 				$stmt = $conn->prepare('INSERT INTO question_se (question, id_se_fk, id_member_fk) VALUES(?,?,?)') or die($conn->error);
 				$stmt->bind_param('sii', $this->arr_questions[$i], $this->se, $this->arr_members[$i]);
 				if($stmt->execute()!= 1)
 				{
 					return 0;
 				}
-				//echo 1;
 			}
 			return 1;
 		}

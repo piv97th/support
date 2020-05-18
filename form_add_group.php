@@ -31,6 +31,7 @@
 		        var cathedra = $("#cathedra").val();
 		        var direction = $("#direction").val();
 		        var form_studying = $("#form_studying").val();
+		        cipher_group = cipher_group.toUpperCase();
 		        $.ajax({
 		        	type: 'POST',
 		        	url: 'handler_structure.php',
@@ -138,7 +139,17 @@
 		    }
     		if(flag == true)
     		{
-    			toastr.success('Успешно! Направление добавлено');
+    			toastr.success('Успешно! Группа добавлена');
+    			$("#cipher_group").val("");
+    			$("#qualification").val("");
+    			$("#cathedra").val("");
+    			$("#direction").val("");
+    			$("#form_studying").val("");
+    			$.removeCookie('cipher_group');
+    			$.removeCookie('qualification');
+    			$.removeCookie('cathedra');
+    			$.removeCookie('direction');
+    			$.removeCookie('form_studying');
     		}
 		}
 

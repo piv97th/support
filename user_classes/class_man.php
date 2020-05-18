@@ -111,19 +111,6 @@
 			}
 		}
 
-/*		public function check_alpha($data)
-		{
-			$pattern_alpha = '/^[0-9]{2}[Б,М,С][0-9]{4}$/u';
-			if(!is_numeric($data) || 1 > mb_strlen($data) || 8 < mb_strlen($data))
-			{
-				return 2;
-			}
-			else
-			{
-				return 1;
-			}
-		}*/
-
 		public function check_arr_1($data)
 		{
 			$status = $this->check_empty($data);
@@ -145,27 +132,6 @@
 			}
 		}
 
-		/*public function check_numeral($data)
-		{
-			$status = $this->check_empty($data);
-			if($status == 0)
-			{
-				return 0;
-			}
-			else
-			{
-				if($this->check_num($data) == 2)
-				{
-					return 2;
-				}
-				else
-				{
-					$this->id = $data;
-					return 1;
-				}
-			}
-		}*/
-
 	}
 
 	class student extends man
@@ -176,29 +142,6 @@
 		public $diploma = 'NULL';
 		public $review = 'NULL';
 		public $cipher_group = 'NULL';
-
-/*		public function __construct($fields)
-		{
-			foreach($fields as $key => $value) {
-				$this->$key = $value;
-			}
-		}*/
-
-/*		public function exist_nrb_u($data)
-		{
-			require('blocks/connect.php');
-			$sql = "SELECT COUNT(number_record_book) as `count` FROM student WHERE number_record_book = '$data'";
-			$result = $conn->query($sql) or die($conn->error);
-			$row = $result->fetch_assoc();
-			if($row['count'] > 0)
-			{
-				return TRUE;
-			}
-			else
-			{
-				return FALSE;
-			}
-		}*/
 
 		public function get_old_nrb()
 		{
@@ -331,12 +274,6 @@
 				}
 			}
 		}
-
-/*		public function data_student($nrb, $last_name, $first_name, $patronymic, $group_1, $topic, $type_work, $anti_plagiarism, $supervisor, $mode_1, $arr_1)
-		{
-			//require('blocks/connect.php');
-			$this->$
-		}*/
 
 		public function add_student()
 		{
@@ -649,8 +586,6 @@
 		public $degree = 'NULL';
 		public $rank = 'NULL';
 		public $post = 'NULL';
-		//public $role = 'NULL';
-		//public $commission = 'NULL';
 
 		private function is_old_cipher_supervisor($data)
 		{

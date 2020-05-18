@@ -28,10 +28,9 @@
 	<div class="container" id="content">    
 		<div class="row content">
 			<div class="col-sm text-left"> 
-				<form method="GET" action="download_blank.php">
+				<form method="POST" action="download_blank.php">
 					Выбор группы
-					<select id="slc" name="cipher_group
-					" required>
+					<select id="slc" name="cipher_group" required>
 						<option value="" disabled selected></option>
 						<?php
 							while ($arr = $result->fetch_assoc())

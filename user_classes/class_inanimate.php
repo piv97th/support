@@ -154,23 +154,12 @@
 		public $kind_work = 'NULL';
 		public $supervisor = 'NULL';
 		public $type_work = 'NULL';
-
-/*		public function __construct($fields)
-		{
-			foreach($fields as $key => $value) {
-				$this->$key = $value;
-			}
-		}
-*/
+		
 		public function check_ap($data)
 		{
 			if(empty($data) && ($this->check_isset($data) == 1))
 			{
 				return 1;
-			}
-			else
-			{
-				return 2;
 			}
 			$pattern_1 = '/^[0].[0-9]{0,7}$/u';
 			if(!preg_match($pattern_1, $data))
@@ -344,7 +333,6 @@
 
 		public function check_group_other($data)
 		{
-			//echo $data;
 			$status = $this->check_empty($data);
 			if($status == 0)
 			{
