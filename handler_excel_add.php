@@ -6,7 +6,6 @@
 
 	function next_id_diploma($row)
 	{
-		//$row1 = $row;
 		$row = $row - 3;
 		require("blocks/connect.php");
 		$res = $conn->query('SELECT id from diploma ORDER BY id DESC LIMIT 1');
@@ -169,7 +168,7 @@
 		}
 		else
 		{
-			$result += ['student' => 1];
+			$result = array('student' => 1);
 		}
 	}
 

@@ -99,15 +99,15 @@
 
 	if($mode_1 == 3)
 	{
-		$result = array('first' => check_num($_POST['arr_1']), 'second' => check_num($_POST['mode_1']));
+		require_once('user_classes/class_man.php');
 
+		$student = new student();
+
+		$result = array('arr_1' => $student->check_arr_1($_POST['arr_1']));
 		check_result($result);
 
-		require_once('user_classes/class_man.php');
-		require_once('user_classes/class_inanimate.php');
-
-		$student = new student(['id' => $_POST['arr_1']]);
-		$result = $student->delete_student();
+		$result_student = $student->delete_student();
+		$result = array('student' => $result_student);
 
 		echo json_encode($result);
         exit;

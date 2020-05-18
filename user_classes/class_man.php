@@ -314,13 +314,11 @@
 				$result_diploma = $conn->query('DELETE FROM diploma WHERE id = '.$arr["id_diploma_fk"]);
 				if($result_diploma == 1)
 				{
-					$result = array('eleventh' => 1);
-					return $result;
+					return 1;
 				}
 				else
 				{
-					$result = array('eleventh' => 0);
-					return $result;
+					return 0;
 				}
 			}
 			else
@@ -331,13 +329,11 @@
 					$result_diploma = $conn->query('DELETE FROM diploma WHERE id = '.$arr[id_diploma_fk]);
 					if($result_diploma == 1 && $result_se == 1 )
 					{
-						$result = array('eleventh' => 1, 'twelfth' => 1);
-						return $result;
+						return 1;
 					}
 					else
 					{
-						$result = array('eleventh' => 0, 'twelfth' => 0);
-						return $result;
+						return 0;
 					}
 				}
 				else
@@ -346,13 +342,11 @@
 					$result_diploma = $conn->query('DELETE FROM diploma WHERE id = '.$arr[id_diploma_fk]);
 					if($result_diploma == 1 && $result_review == 1 )
 					{
-						$result = array('eleventh' => 1, 'twelfth' => 1);
-						return $result;
+						return 1;
 					}
 					else
 					{
-						$result = array('eleventh' => 0, 'twelfth' => 0);
-						return $result;
+						return 0;
 					}
 				}
 			}

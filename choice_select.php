@@ -70,7 +70,9 @@
 
 	<title><?php echo $title; ?></title>
 
+	<link href="scripts/toastr.css" rel="stylesheet">
 	<script type="text/javascript" src="scripts/disabled_link.js"></script>
+	<script type="text/javascript" src="scripts/toastr.js"></script>
 
 	<script type="text/javascript">
 
@@ -108,22 +110,9 @@
 					async: false,
 					success: function(response)
 					{
-						var flag = true;
 		        		var result = JSON.parse(response);
-		        		for(var i in result)
-		        		{
-		        			if(result[i] != 1)
-		        			{
-		        				toastr.error('Ошибка при удалении','Ошибка!');
-		        				flag = false;
-		        				break;
-		        			}
-		        		}
-		        		if(flag == true)
-		        		{
-		        			toastr.success('Успешно! Студент удален');
-		        			$("#btn_choice").trigger("click");
-		        		}
+		        		outToast(result);
+		        		$("#btn_choice").trigger("click");
 					},
 					error: function(jqxhr, status, errorMsg)
 		        	{
@@ -132,7 +121,6 @@
 				});
 				return false;
 			});
-
 		}
 
 		$(function(){
@@ -159,6 +147,41 @@
 			    });
 			});
 		});
+
+		function outToast(arr)
+		{
+			var flag = true;
+			var c = 0;
+			for(var i in arr)
+			{
+				if(arr[i] != 1)
+				{
+					if(c == 0)
+					{
+						if(arr['arr_1'] == 0)
+						{
+							toastr.error('Ошибка','Ошибка!');
+							flag = false;
+						}
+						if(arr['arr_1'] == 2)
+						{
+							toastr.error('Ошибка','Ошибка!');
+							flag = false;
+						}
+						if(arr['student'] == 0)
+						{
+							toastr.error('При удалении','Ошибка!');
+							flag = false;
+						}
+					}
+		        }
+		        c = c+1;
+		    }
+    		if(flag == true)
+    		{
+    			toastr.success('Успешно! Удалено');
+    		}
+		}
 
 	</script>
 

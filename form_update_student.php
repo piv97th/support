@@ -148,7 +148,6 @@
 		function diploma()
 		{
 			var exsist_np = <?php echo check_var($arr_diploma['number_protocol']); ?>;
-			alert(exsist_np);
 			if(exsist_np != 0)
 			{
 				$('#np_diploma').val(<?php echo $arr_diploma['number_protocol']; ?>);
@@ -277,7 +276,6 @@
 		        	async: false,
 		        	success: function(response)
 		        	{
-		        		alert(response);
 		        		var result = JSON.parse(response);
 						out_toast(result);
 		        	},

@@ -32,7 +32,6 @@
 					data: file_blank,
 		        	success: function(response)
 		        	{
-		        		alert(response);
 		        		var flag = true;
 		        		var result = JSON.parse(response);
 		        		out_toast(result);
@@ -161,7 +160,11 @@
 		    }
     		if(flag == true)
     		{
-    			toastr.success('Успешно! Студент добавлен');
+    			toastr.success('Успешно! Студенты добавлен');
+    		}
+    		else
+    		{
+    			toastr.error('Проверьте данные','Ошибка!');
     		}
 		}
 
