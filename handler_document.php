@@ -2,165 +2,54 @@
 <?php
 	require('blocks/connect.php');
 	require_once('blocks/check_data.php');
+
+	function exsist_ap($student)
+	{
+		require('blocks/connect.php');
+		$result = $conn->query('SELECT anti_plagiarism FROM diploma WHERE id = (SELECT id_diploma_fk FROM student WHERE id = '.$student.') AND anti_plagiarism IS NOT NULL ');
+		$row = $result->fetch_assoc();
+		if($row['anti_plagiarism'] != 0 || $row['anti_plagiarism'] != NULL)
+		{
+			return 1;
+		}
+	}
+
+	function exsist_protocol_se($student)
+	{
+		require('blocks/connect.php');
+		$result = $conn->query('SELECT id_mark_fk FROM se WHERE id = (SELECT id_se_fk FROM student WHERE id = '.$student.') AND id_mark_fk IS NOT NULL');
+		$row = $result->fetch_assoc();
+		if($row['id_se_fk'] != 0 || $row['id_se_fk'] != NULL)
+		{
+			return 1;
+		}
+	}
+
+	function exsist_protocol_diploma($student)
+	{
+		require('blocks/connect.php');
+		$result = $conn->query('SELECT id_mark_fk FROM diploma WHERE id = (SELECT id_diploma_fk FROM student WHERE id = '.$student.') AND id_mark_fk IS NOT NULL');
+		$row = $result->fetch_assoc();
+		if($row['id_diploma_fk'] != NULL)
+		{
+			return 1;
+		}
+	}
+
 	$mode_1 = $_POST['mode_1'];
 
-	/*if($mode_1 == 1)
+	if($mode_1 == 1)
 	{
-		require_once('user_classes/class_structure.php');
-		$direction = new direction();
-
-		$result = array('cipher_direction' => $direction->check_cipher($_POST['cipher_direction']), 'name_cipher' => $direction->check_name($_POST['name_cipher']));
-		check_result($result);
-
-		$result_direction = $direction->add_direction();
-		$result = array('direction' => $result_direction);
-		echo json_encode($result);
-        exit;
+		
 	}
-
-	if($mode_1 == 2)
-	{
-		require_once('user_classes/class_structure.php');
-		$direction = new direction();
-
-		$result = array('arr_1' => $direction->check_arr_1($_POST['arr_1']), 'cipher_direction' => $direction->check_cipher_u($_POST['cipher_direction']), 'name_cipher' => $direction->check_name($_POST['name_cipher']));
-		check_result($result);
-
-		$result_direction = $direction->update_direction();
-		$result = array('direction' => $result_direction);
-		echo json_encode($result);
-        exit;
-	}
-
-	if($mode_1 == 3)
-	{
-		require_once('user_classes/class_structure.php');
-		$direction = new direction();
-
-		$result = array('arr_1' => $direction->check_arr_1($_POST['arr_1']));
-		check_result($result);
-
-		$result_direction = $direction->delete_direction();
-		$result = array('direction' => $result_direction);
-		echo json_encode($result);
-        exit;
-	}
-
-	if($mode_1 == 4)
-	{
-		require_once('user_classes/class_structure.php');
-		$group = new group();
-
-		$result = array('cipher_group' => $group->check_cipher_group($_POST['cipher_group']), 'qualification' => $group->check_qualification($_POST['qualification']), 'cathedra' => $group->check_cathedra($_POST['cathedra']), 'direction' => $group->check_direction($_POST['direction']), 'form_studying' => $group->check_fs($_POST['form_studying']));
-		check_result($result);
-
-		$result_group = $group->add_group();
-		$result = array('group' => $result_group);
-		echo json_encode($result);
-        exit;
-	}
-
-	if($mode_1 == 5)
-	{
-		require_once('user_classes/class_structure.php');
-		$group = new group();
-
-		$result = array('arr_1' => $group->check_arr_1($_POST['arr_1']), 'cipher_group' => $group->check_cipher_group_u($_POST['cipher_group']), 'qualification' => $group->check_qualification($_POST['qualification']), 'cathedra' => $group->check_cathedra($_POST['cathedra']), 'direction' => $group->check_direction($_POST['direction']), 'form_studying' => $group->check_fs($_POST['form_studying']));
-
-		$result_group = $group->update_group();
-		$result = array('group' => $result_group);
-		echo json_encode($result);
-        exit;
-	}
-
-	if($mode_1 == 6)
-	{
-		require_once('user_classes/class_structure.php');
-		$group = new group();
-
-		$result = array('arr_1' => $group->check_arr_1($_POST['arr_1']));
-		check_result($result);
-
-		$result_group = $group->delete_group();
-		$result = array('group' => $result_group);
-		echo json_encode($result);
-        exit;
-	}
-
-	if($mode_1 == 7)
-	{
-		require_once('user_classes/class_structure.php');
-		$commission = new commission();
-		$meeting = new meeting();
-
-		$result = array('order_1' => $commission->check_order_1($_POST['order_1']));
-
-		$result += ['date' => $meeting->check_date($_POST['arr_date'])];
-		check_result($result);
-
-		$result_commission = $commission->add_commission();
-		$result = array('commission' => $result_commission);
-		check_result($result);
-
-		$meeting->commission_fk = $commission->get_commission_fk();
-		$result_meeting = $meeting->update_meeting();
-		$result += ['meeting' => $result_meeting];
-
-		echo json_encode($result);
-        exit;
-	}
-
-	if($mode_1 == 8)
-	{
-		require_once('user_classes/class_structure.php');
-		$commission = new commission();
-		$meeting = new meeting();
-
-		$result = array('arr_1' => $commission->check_arr_1($_POST['arr_1_commission']), 'order_1' => $commission->check_order_1($_POST['order_1']));
-
-		$result += ['date' => $meeting->check_date($_POST['arr_date'])];
-		check_result($result);
-
-		$meeting->commission_fk = $commission->get_commission_fk();
-		$result_meeting = $meeting->update_meeting();
-		$result = array('meeting' => $result_meeting);
-		check_result($result);
-
-		$result_commission = $commission->update_commission();
-		$result += ['commission' => $result_commission];
-
-		echo json_encode($result);
-        exit;
-	}
-
-	if($mode_1 == 9)
-	{
-		require_once('user_classes/class_structure.php');
-		$commission = new commission();
-		$meeting = new meeting();
-
-		$result = array('arr_1' => $commission->check_arr_1($_POST['arr_1']));
-		check_result($result);
-		$meeting->commission_fk = $commission->get_commission_fk();
-		if($meeting->is_commission() == 1)
-		{
-			$result_meeting = $meeting->delete_meeting();
-			$result = array('meeting' => $result_meeting);
-			check_result($result);
-		}
-
-		$result_commission = $commission->delete_commission();
-		$result = array('commission' => $result_commission);
-		echo json_encode($result);
-        exit;
-	}*/
 
 	if($_POST['mode_other'] == 1)
 	{
 		if(0 < $_POST['select'] && $_POST['select'] < 10000)
 		{
 			$select = $_POST['select'];
-			$result_student = $conn->query('SELECT id, number_record_book, last_name, first_name FROM student WHERE id_diploma_fk IN (SELECT id FROM diploma WHERE id_mark_fk IS NOT NULL) AND id_se_fk IN (SELECT id FROM se WHERE id_mark_fk IS NOT NULL) AND id_group_fk = '.$select);
+			$result_student = $conn->query('SELECT id, number_record_book, last_name, first_name FROM student WHERE id_group_fk = '.$select);
+			// id_diploma_fk IN (SELECT id FROM diploma WHERE id_mark_fk IS NOT NULL) AND id_se_fk IN (SELECT id FROM se WHERE id_mark_fk IS NOT NULL) AND
 			while($arr = $result_student->fetch_assoc())
 			{
 				$arr_new[] = array('arr_1' => $arr['id'], 'number_record_book' => $arr['number_record_book'], 'last_name' => $arr['last_name'], 'first_name' => $arr['first_name']);
@@ -172,13 +61,23 @@
 
 	if($_POST['mode_other'] == 2)
 	{
-		$result_group = $conn->query('SELECT id, cipher_group FROM group_1');
-		while($arr = $result_group->fetch_assoc())
+		$student = $_POST['arr_1'];
+		$result = array('reference' => 1);
+		if(exsist_ap($student) == 1)
 		{
-			$arr_new[] = array('arr_1' => $arr['id'], 'cipher_group' => $arr['cipher_group']);
+			$result += ['conclusion' => 2];
+			if(exsist_protocol_se($student) == 1)
+			{
+				$result += ['protocol_se' => 3];
+				if(exsist_protocol_diploma($student) == 1)
+				{
+					$result += ['protocol_diploma' => 4];
+					$result += ['protocol_certification' => 5];
+					$result += ['private file' => 6];
+				}
+			}
 		}
-		echo json_encode($arr_new);
-        exit;
+		echo json_encode($result);
 	}
 
 	if($_POST['mode_other'] == 3)

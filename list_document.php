@@ -5,33 +5,13 @@
 	function content_select()
 	{
 		require('blocks/connect.php');
-		$result = $conn->query('SELECT id, cipher_group FROM group_1 WHERE id IN (SELECT id_group_fk FROM student WHERE id_diploma_fk IN (SELECT id FROM diploma WHERE id_mark_fk IS NOT NULL) AND id_se_fk IN (SELECT id FROM se WHERE id_mark_fk IS NOT NULL))');
+		$result = $conn->query('SELECT id, cipher_group FROM group_1');
+		// WHERE id IN (SELECT id_group_fk FROM student WHERE id_diploma_fk IN (SELECT id FROM diploma WHERE id_mark_fk IS NOT NULL) AND id_se_fk IN (SELECT id FROM se WHERE id_mark_fk IS NOT NULL))
 		while ($arr = $result->fetch_assoc())
 		{
 			echo'<option value='.$arr["id"].'>'.$arr["cipher_group"].'</option>';
 		}
 	}
-	/*$mode = $_GET['mode'];
-	if($mode == 1)
-	{
-		$title = 'Выбор группы';
-		$name_choice = 'Группа';
-	}
-	elseif($mode == 2)
-	{
-		$title = 'Выбор группы';
-		$name_choice = 'Группа';
-	}
-	elseif($mode == 3)
-	{
-		$title = 'Выбор группы';
-		$name_choice = 'Группа';
-	}
-	elseif($mode == 4)
-	{
-		$title = 'Выбор группы';
-		$name_choice = 'Группа';
-	}*/
 ?>
 
 <!DOCTYPE html>
@@ -48,26 +28,6 @@
 	<script type="text/javascript" src="scripts/toastr.js"></script>
 
 	<script type="text/javascript">
-
-		/*function data(mode, index)
-		{
-			if(mode == 1)
-			{
-				return '(\'<li><a href=form_update_student.php?arr_1=\'+item.arr_1+\'>\'+(index+1)+\' \'+item.last_name +\' \'+item.first_name+\' \'+item.number_record_book+\'</li></a>\')';
-			}
-			else if(mode == 2)
-			{
-				return '(\'<li><a class="nolink" href=handler_student.php?arr_1=\'+item.arr_1+\'>\'+(index+1)+\' \'+item.last_name +\' \'+item.first_name+\' \'+item.number_record_book+\'</li></a>\')';
-			}
-			else if(mode == 3)
-			{
-				return '(\'<li><a class="nolink" href=form_se.php?arr_1=\'+item.arr_1+\'>\'+(index+1)+\' \'+item.last_name +\' \'+item.first_name+\' \'+item.number_record_book+\'</li></a>\')';
-			}
-			else if(mode == 4)
-			{
-				return '(\'<li><a href=form_diploma.php?arr_1=\'+item.arr_1+\'>\'+(index+1)+\' \'+item.last_name +\' \'+item.first_name+\' \'+item.number_record_book+\'</li></a>\')';
-			}
-		}*/
 
 		function a_dell()
 		{
@@ -97,7 +57,7 @@
 		}
 
 		$(function(){
-			$("#btn_choice").on('click',function(){
+			$("#slc").on('change',function(){
 				//$("#slc").children().remove();
 				var mode_other = 1;
 				var select = $("#slc").val();
@@ -108,17 +68,80 @@
 					async: false,
 					success: function(response)
 					{
-						alert(response);
 						var obj = JSON.parse(response);
 						$('#slc').after('<div id="change_block"><select id="student"><option value="" disabled selected></option></select></div>');
 						$(obj).each(function(index, item) {
 							$('#student').append('<option value='+item.arr_1+'>'+item.number_record_book+' '+item.last_name+' '+item.first_name+'</option>');
 						});
-						$('#student').after('<select id="document"><option value="" disabled selected></option><option value=1>Личное дело</option><option value=2>Справка</option><option value=3>Заключение</option><option value=4>Протокол ГЭ</option><option value=5>Протокол ВКР</option><option value=6>Протокол аттестации</option></select>');
-						/*if(mode == 2)
-						{
-							a_dell();
-						}*/
+			        }
+			    });
+			});
+		});
+
+		$(function(){
+			$("#btn_student").on('click',function(){
+				var mode_other = 2;
+				var arr_1 = $("#student").val();
+				alert(arr_1);
+				$.ajax({
+					type: 'POST',
+					url: 'handler_document.php',
+					data: {mode_other, arr_1},
+					async: false,
+					success: function(response)
+					{
+						alert(response);
+						var obj = JSON.parse(response);
+						$('#student').after('<select id="document"><option value="" disabled selected></option></select>');
+						/*for(var i in obj)
+						{*/
+							if(obj['reference'] == 1)
+							{
+								$('#document').append('<option value='+obj.reference+'>справка</option>');
+							}
+							if(obj['conclusion'] == 2)
+							{
+								$('#document').append('<option value='+obj.conclusion+'>Заключение</option>');
+							}
+							if(obj['protocol_se'] == 3)
+							{
+								$('#document').append('<option value='+obj.protocol_se+'>протокол ГЭ</option>');
+							}
+							if(obj['protocol_diploma'] == 4)
+							{
+								$('#document').append('<option value='+obj.protocol_diploma+'>протокол ВКР</option>');
+							}
+							if(obj['protocol_certification'] == 5)
+							{
+								$('#document').append('<option value='+obj.protocol_certification+'>протокол аттестации</option>');
+							}
+							if(obj['private_file'] == 6)
+							{
+								$('#document').append('<option value='+obj.private_file+'>личное дело</option>');
+							}
+			        }
+				});
+			});
+		});
+
+		$(function(){
+			$("#btn_document").on('click',function(){
+				//$("#slc").children().remove();
+				var mode_1 = 1;
+				var select = $("#document").val();
+				$.ajax({
+					type: 'POST',
+					url: 'handler_document.php',
+					data: {mode_other, select},
+					async: false,
+					success: function(response)
+					{
+						alert(response);
+						/*var obj = JSON.parse(response);
+						$('#slc').after('<div id="change_block"><select id="student"><option value="" disabled selected></option></select></div>');
+						$(obj).each(function(index, item) {
+							$('#student').append('<option value='+item.arr_1+'>'+item.number_record_book+' '+item.last_name+' '+item.first_name+'</option>');
+						});*/
 			        }
 			    });
 			});
@@ -182,7 +205,8 @@
 							content_select();
 						?>
 					</select>
-					<button class="btn btn-primary" id="btn_choice">Выбрать</button>
+					<button class="btn btn-primary" id="btn_student">Выбрать студента</button>
+					<button class="btn btn-primary" id="btn_document">Выбрать документ</button>
 					<!-- <form name="heh">
 						<div id="content">
 							<ul class="add_content">
