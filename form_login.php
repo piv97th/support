@@ -24,7 +24,7 @@
 		        	success: function(response)
 		        	{
 		        		var result = JSON.parse(response);
-		        		out_toast(result);
+		        		outToast(result);
 		        		if(result['user'] == 1)
 		        		{
 		        			$('form').attr('action', 'index.php');
@@ -44,7 +44,7 @@
 		    });
 		});
 
-		function out_toast(arr)
+		function outToast(arr)
 		{
 			var flag = true;
 			var c = 0;
@@ -115,7 +115,7 @@
 						</div>
 						<input type="password" class="form-control" id="password">
 					</div>
-					<button type="submit" class="btn btn-primary">Submit</button>
+					<button type="submit" class="btn btn-primary">Вход</button>
 				</form>
 			</div>
 		</div>

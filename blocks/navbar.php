@@ -116,6 +116,10 @@
 		</li>
 
 		<li class="nav-item">
+     		<a class="nav-link" href="list_document.php">Документы</a>
+    	</li>
+
+		<li class="nav-item">
 			<button class="btn btn-light" type="button" id="logout">Выход</button>
 		</li>
 	</ul>
