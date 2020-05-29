@@ -112,7 +112,7 @@
 					</select>
 				</div> 
 				<form method="POST" action="#">
-					<button type="submit" class="btn btn-primary">Submit</button>
+					<button type="submit" class="btn btn-primary">Выбрать</button>
 				</form>
 			</div>
 		</div>

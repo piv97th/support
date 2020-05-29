@@ -136,7 +136,7 @@
 						<label for="name_cipher">Полное название:</label>
 						<textarea class="form-control" id="name_cipher" name="name_cipher" ></textarea>
 					</div>
-					<button type="submit" class="btn btn-primary">Submit</button>
+					<button type="submit" class="btn btn-primary">Добавить</button>
 				</form>
 			</div>
 		</div>

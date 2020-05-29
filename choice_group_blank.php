@@ -29,6 +29,7 @@
 		<div class="row content">
 			<div class="col-sm text-left"> 
 				<form method="POST" action="download_blank.php">
+					<legend>Скачать бланк для добавления</legend>
 					Выбор группы
 					<select id="slc" name="cipher_group" required>
 						<option value="" disabled selected></option>

@@ -297,7 +297,7 @@
 		<div class="row content">
 			<div class="col-sm text-left"> 
 				<form method="POST" action="#">
-					<legend>ВКР:</legend>
+					<legend>Госэкзамен:</legend>
 					<div id="info_student"><h3><?php echo $arr_student["number_record_book"].' '.$arr_student["last_name"].' '.$arr_student["first_name"].' '.$arr_student["patronymic"]; ?></h3><input type="hidden" name="arr_1_meeting" id="arr_1_meeting" value=<?php echo $arr_diploma["id_meeting_fk"] ?>></div>
 					<div class="form-group">
 						<label>Заседание:</label>

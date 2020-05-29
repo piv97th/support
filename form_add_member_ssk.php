@@ -236,7 +236,7 @@
 						<label for="post">Должность:</label>
 						<textarea class="form-control" id="post" name="post" ></textarea>
 					</div>
-					<button type="submit" class="btn btn-primary">Submit</button>
+					<button type="submit" class="btn btn-primary">Добавить</button>
 				</form>
 			</div>
 		</div>

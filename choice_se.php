@@ -58,7 +58,6 @@
 
 	<?php
 	require_once('blocks/header.php');
-	require_once('blocks/navbar.php');
 	?>
 
 	<div class="container" id="content">    

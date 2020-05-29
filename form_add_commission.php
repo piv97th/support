@@ -170,7 +170,7 @@
 						<button type="button" id="btn_minus" class="btn btn-primary">-</button>
 						<button type="button" id="btn_plus" class="btn btn-primary">+</button>
 					</div>
-					<button type="submit" class="btn btn-primary">Submit</button>
+					<button type="submit" class="btn btn-primary">Добавить</button>
 				</form>
 			</div>
 		</div>

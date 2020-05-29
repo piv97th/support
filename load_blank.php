@@ -184,8 +184,9 @@
 		<div class="row content">
 			<div class="col-sm text-left"> 
 				<form method="POST" action="#">
+					<legend>Загрузить бланк для добавления</legend>
 					<input type="file" id="file_blank" name="file_blank" accept='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel'>
-					<button type="submit" class="btn btn-primary">Submit</button>
+					<button type="submit" class="btn btn-primary">Загрузить</button>
 				</form>
 			</div>
 		</div>

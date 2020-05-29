@@ -67,6 +67,7 @@
 				if($('.main_content').length > 0)
 				{
 					$(".main_content").remove();
+					$("submit").remove();
 				}
 				var commission = $("#commission").val();
 				var mode_other = 1;
@@ -89,6 +90,7 @@
 							arrs_1_meeting[index] = item.arr_1;
 							arrs_date[index] = item.date;
 						});
+						$(".groups:last").after('<br/><br/><button type="submit" class="btn btn-primary">Добавить</button>');
 						pretrain(arrs_1_meeting, arrs_date);
 			        }
 			    });
@@ -176,7 +178,9 @@
 		<div class="row content">
 			<div class="col-sm text-left">
 				<div>
-					<select name="commission" id="commission">
+					<legend>Добавить комиссию группе</legend>
+					Приказ
+					<select class="form-control" name="commission" id="commission">
 						<option value="" selected disabled></option>
 						<?php
 							slc_commision();
@@ -184,7 +188,7 @@
 					</select>
 				</div> 
 				<form method="POST" action="#">
-					<button type="submit" class="btn btn-primary">Submit</button>
+					<!-- <button type="submit" class="btn btn-primary">Выбрать</button> -->
 				</form>
 			</div>
 		</div>

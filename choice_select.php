@@ -42,21 +42,25 @@
 	if($mode == 1)
 	{
 		$title = 'Выбор группы';
+		$legend = 'Редактировать данные студента';
 		$name_choice = 'Группа';
 	}
 	elseif($mode == 2)
 	{
 		$title = 'Выбор группы';
+		$legend = 'Удалить студента';
 		$name_choice = 'Группа';
 	}
 	elseif($mode == 3)
 	{
 		$title = 'Выбор группы';
+		$legend = 'Проведение ГЭ у группы';
 		$name_choice = 'Группа';
 	}
 	elseif($mode == 4)
 	{
 		$title = 'Выбор группы';
+		$legend = 'Защита ВКР у группы';
 		$name_choice = 'Группа';
 	}
 ?>
@@ -199,6 +203,7 @@
 		<div class="row content">
 			<div class="col-sm text-left"> 
 				<div>
+					<legend><?php echo $legend; ?></legend>
 					<?php echo $name_choice; ?>
 					<select id="slc" name="slc">
 						<option value="" disabled selected></option>

@@ -258,7 +258,7 @@
 		<div class="row content">
 			<div class="col-sm text-left">
 				<form method="POST" action="#">
-					<legend>О комиссии:</legend>
+					<legend>Добавить членов ГЭК на комиссию:</legend>
 					<div class="form-group" id="div_chairman">
 						<label>Председатель:</label>
 						<select class="form-control" id="chairman">
@@ -290,7 +290,7 @@
 							?>
 						</select>
 					</div>
-					<button type="submit" class="btn btn-primary">Submit</button>
+					<button type="submit" class="btn btn-primary">Добавить</button>
 				</form>
 			</div>
 		</div>
