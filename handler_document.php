@@ -19,7 +19,7 @@
 		require('blocks/connect.php');
 		$result = $conn->query('SELECT id_mark_fk FROM se WHERE id = (SELECT id_se_fk FROM student WHERE id = '.$student.') AND id_mark_fk IS NOT NULL');
 		$row = $result->fetch_assoc();
-		if($row['id_se_fk'] != 0 || $row['id_se_fk'] != NULL)
+		if($row['id_mark_fk'] != 0 || $row['id_mark_fk'] != NULL)
 		{
 			return 1;
 		}
@@ -30,7 +30,7 @@
 		require('blocks/connect.php');
 		$result = $conn->query('SELECT id_mark_fk FROM diploma WHERE id = (SELECT id_diploma_fk FROM student WHERE id = '.$student.') AND id_mark_fk IS NOT NULL');
 		$row = $result->fetch_assoc();
-		if($row['id_diploma_fk'] != NULL)
+		if($row['id_mark_fk'] != NULL)
 		{
 			return 1;
 		}

@@ -58,7 +58,8 @@
 
 		$(function(){
 			$("#slc").on('change',function(){
-				//$("#slc").children().remove();
+				$("#student").remove();
+				$("#document").remove();
 				var mode_other = 1;
 				var select = $("#slc").val();
 				$.ajax({
@@ -69,7 +70,7 @@
 					success: function(response)
 					{
 						var obj = JSON.parse(response);
-						$('#slc').after('<div id="change_block"><select id="student"><option value="" disabled selected></option></select></div>');
+						$('#slc').after('<div class="form-group"><label for="student">Студент:</label><select id="student" class="new_student form-control"><option value="" disabled selected></option></select></div>');
 						$(obj).each(function(index, item) {
 							$('#student').append('<option value='+item.arr_1+'>'+item.number_record_book+' '+item.last_name+' '+item.first_name+'</option>');
 						});
@@ -79,10 +80,11 @@
 		});
 
 		$(function(){
-			$("#btn_student").on('click',function(){
+			$("body").on('change','.new_student',function(){
+				$("#document").remove();
 				var mode_other = 2;
 				var arr_1 = $("#student").val();
-				alert(arr_1);
+				//alert(arr_1);
 				$.ajax({
 					type: 'POST',
 					url: 'handler_document.php',
@@ -90,35 +92,37 @@
 					async: false,
 					success: function(response)
 					{
-						alert(response);
+						//alert(response);
 						var obj = JSON.parse(response);
-						$('#student').after('<select id="document"><option value="" disabled selected></option></select>');
+						$('#student').after('<div class="form-group"><label for="document">Документ:</label><select id="document" class="form-control" ><option value="" disabled selected></option></select></div>');
 						/*for(var i in obj)
 						{*/
-							if(obj['reference'] == 1)
-							{
-								$('#document').append('<option value='+obj.reference+'>справка</option>');
-							}
-							if(obj['conclusion'] == 2)
-							{
-								$('#document').append('<option value='+obj.conclusion+'>Заключение</option>');
-							}
-							if(obj['protocol_se'] == 3)
-							{
-								$('#document').append('<option value='+obj.protocol_se+'>протокол ГЭ</option>');
-							}
-							if(obj['protocol_diploma'] == 4)
-							{
-								$('#document').append('<option value='+obj.protocol_diploma+'>протокол ВКР</option>');
-							}
-							if(obj['protocol_certification'] == 5)
-							{
-								$('#document').append('<option value='+obj.protocol_certification+'>протокол аттестации</option>');
-							}
-							if(obj['private_file'] == 6)
-							{
-								$('#document').append('<option value='+obj.private_file+'>личное дело</option>');
-							}
+						if(obj['reference'] == 1)
+						{
+							$('#document').append('<option value='+obj.reference+'>справка</option>');
+						}
+						if(obj['conclusion'] == 2)
+						{
+							$('#document').append('<option value='+obj.conclusion+'>Заключение</option>');
+						}
+						if(obj['protocol_se'] == 3)
+						{
+							$('#document').append('<option value='+obj.protocol_se+'>протокол ГЭ</option>');
+						}
+						if(obj['protocol_diploma'] == 4)
+						{
+							$('#document').append('<option value='+obj.protocol_diploma+'>протокол ВКР</option>');
+						}
+						if(obj['protocol_certification'] == 5)
+						{
+							$('#document').append('<option value='+obj.protocol_certification+'>протокол аттестации</option>');
+						}
+						if(obj['private_file'] == 6)
+						{
+							$('#document').append('<option value='+obj.private_file+'>личное дело</option>');
+						}
+						$('#document').after('<br/><button type="submit" class="btn btn-primary">Сформировать</button>');
+
 			        }
 				});
 			});
@@ -136,7 +140,7 @@
 					async: false,
 					success: function(response)
 					{
-						alert(response);
+						//alert(response);
 						/*var obj = JSON.parse(response);
 						$('#slc').after('<div id="change_block"><select id="student"><option value="" disabled selected></option></select></div>');
 						$(obj).each(function(index, item) {
@@ -197,23 +201,17 @@
 	<div class="container" id="content">    
 		<div class="row content">
 			<div class="col-sm text-left"> 
-				<div>
-					Выбор группы
-					<select id="slc" name="slc">
-						<option value="" disabled selected></option>
-						<?php
-							content_select();
-						?>
-					</select>
-					<button class="btn btn-primary" id="btn_student">Выбрать студента</button>
-					<button class="btn btn-primary" id="btn_document">Выбрать документ</button>
-					<!-- <form name="heh">
-						<div id="content">
-							<ul class="add_content">
-							</ul>
-						</div>
-					</form> -->
-				</div>
+				<form>
+					<legend>Сформировать документ</legend>
+					<div class="form-group">
+						<select class="form-control" id="slc" name="slc">
+							<option value="" disabled selected></option>
+							<?php
+								content_select();
+							?>
+						</select>
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>
