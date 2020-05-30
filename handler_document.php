@@ -73,7 +73,7 @@
 				{
 					$result += ['protocol_diploma' => 4];
 					$result += ['protocol_certification' => 5];
-					$result += ['private file' => 6];
+					$result += ['private_file' => 6];
 				}
 			}
 		}
