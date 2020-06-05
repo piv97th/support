@@ -111,7 +111,7 @@
 
 				<a class="dropdown-item" href="form_add_review.php">Добавить</a>
 				<a class="dropdown-item" href="operation_review.php?mode=1">Редактировать</a>
-				<a class="dropdown-item" href="#">Удалить</a>
+				<a class="dropdown-item" href="operation_review.php?mode=2">Удалить</a>
 			</div>
 		</li>
 

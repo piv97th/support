@@ -22,7 +22,7 @@
 	elseif($mode == 2)
 	{
 		$title = 'Выбор рецензии';
-		$legend = 'Удалиниие рецензии';
+		$legend = 'Удаление рецензии';
 		$name_choice = 'Группа';
 	}
 ?>
@@ -42,43 +42,25 @@
 
 	<script type="text/javascript">
 
-		function data(mode, index)
-		{
-			if(mode == 1)
-			{
-				return '(\'<li><a href=form_update_student.php?arr_1=\'+item.arr_1+\'>\'+(index+1)+\' \'+item.last_name +\' \'+item.first_name+\' \'+item.number_record_book+\'</li></a>\')';
-			}
-			else if(mode == 2)
-			{
-				return '(\'<li><a class="nolink" href=handler_student.php?arr_1=\'+item.arr_1+\'>\'+(index+1)+\' \'+item.last_name +\' \'+item.first_name+\' \'+item.number_record_book+\'</li></a>\')';
-			}
-			else if(mode == 3)
-			{
-				return '(\'<li><a class="nolink" href=form_se.php?arr_1=\'+item.arr_1+\'>\'+(index+1)+\' \'+item.last_name +\' \'+item.first_name+\' \'+item.number_record_book+\'</li></a>\')';
-			}
-			else if(mode == 4)
-			{
-				return '(\'<li><a href=form_diploma.php?arr_1=\'+item.arr_1+\'>\'+(index+1)+\' \'+item.last_name +\' \'+item.first_name+\' \'+item.number_record_book+\'</li></a>\')';
-			}
-		}
-
 		function a_dell()
 		{
 			$(".nolink").on("click", function(e){
 				var mode_1 = 3;
 				var link = e.target;
 				link = String(link);
-				var arr_1 = link.substr(50,8);
+				var arr_1 = link.substr(48,8);
+				alert(arr_1);
 				$.ajax({
 					type: 'POST',
-					url: 'handler_student.php',
+					url: 'handler_review.php',
 					data: {arr_1, mode_1},
 					async: false,
 					success: function(response)
 					{
 		        		var result = JSON.parse(response);
 		        		outToast(result);
-		        		$("#btn_choice").trigger("click");
+		        		location.reload();
+
 					},
 					error: function(jqxhr, status, errorMsg)
 		        	{
@@ -113,6 +95,9 @@
 						}
 						if(mode == 2)
 						{
+							$(obj).each(function(index, item) {
+								$('.add_content').append('<li><a class="nolink" href=delete_review.php?arr_1='+item.arr_1+'>'+(index+1)+' '+item.last_name +' '+item.first_name+' '+item.number_record_book+'</a></li>');
+							});
 							a_dell();
 						}
 			        }

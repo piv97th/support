@@ -35,16 +35,16 @@
         exit;
 	}
 
-	if(isset($_POST['arr_1']) && $mode_1 == 3)
+	if($mode_1 == 3)
 	{
 		require_once('user_classes/class_man.php');
-		$supervisor = new supervisor();
+		$reviewer = new reviewer();
 
-		$result = array('arr_1' => $supervisor->check_arr_1($_POST['arr_1']));
+		$result = array('arr_1' => $reviewer->check_student($_POST['arr_1']));
 		check_result($result);
 
-		$result_supervisor = $supervisor->delete_supervisor();
-		$result = array('supervisor' => $result_supervisor);
+		$result_reviewer = $reviewer->delete_reviewer();
+		$result = array('review' => $result_reviewer);
 		echo json_encode($result);
         exit;
 	}
@@ -69,7 +69,7 @@
 		$select = $_GET['select'];
 		if(0 < $select && $select < 1000)
 		{
-			$result = $conn->query('SELECT id, number_record_book, last_name, first_name FROM student WHERE id_group_fk ='.$select) or die($conn->error);
+			$result = $conn->query('SELECT id, number_record_book, last_name, first_name FROM student WHERE id_group_fk ='.$select.' AND id_diploma_fk IN (SELECT id FROM diploma WHERE id_review_fk IS NOT NULL)') or die($conn->error);
 			while($arr = $result->fetch_assoc())
 			{
 				$arr_new[] = array('arr_1' => $arr['id'], 'number_record_book' => $arr['number_record_book'], 'last_name' => $arr['last_name'], 'first_name' => $arr['first_name']);

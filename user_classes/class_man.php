@@ -863,5 +863,20 @@
 				return 1;
 			}
 		}
+
+		//удаление рецензии
+		public function delete_reviewer()
+		{
+			require('blocks/connect.php');
+			$res = $conn->query('DELETE FROM review WHERE id = (SELECT id_review_fk FROM diploma WHERE id = (SELECT id_diploma_fk FROM student WHERE id = '.$this->student.'))');
+			if($res != 1)
+			{
+				return 0;
+			}
+			else
+			{
+				return 1;
+			}
+		}
 	}
 ?>
