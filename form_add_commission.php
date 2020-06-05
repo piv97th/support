@@ -56,7 +56,7 @@
 				if(countMeeting < 10)
 				{
 					$('#number_meeting').val(countMeeting);
-					$('.form-group:last').after('<div class="form-group date"><label>Дата:</label><input type="date" class="form-control" name="date_meeting" ></div>');
+					$('.form-group:last').after('<div class="form-group date"><label>Дата:</label><input type="date" class="form-control" name="date_meeting" ></div><div class="form-group block_type_meeting"><label>Тип ГИА:</label><select class="form-control type_meeting" ><option value="" disabled selected></option><option value=1>Госэкзамен</option><option value=2>Защита ВКР</option></select></div>');
 				}
 		    });
 		});
@@ -69,6 +69,7 @@
 				{
 					$('#number_meeting').val(countMeeting);
 					$('.date:last').remove();
+					$('.block_type_meeting:last').remove();
 				}
 				else
 				{

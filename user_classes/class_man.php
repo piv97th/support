@@ -88,7 +88,7 @@
 
 		public function check_num($data)
 		{
-			$status = $this->check_empty($data);
+			//$this->check_empty($data);
 			if(!is_numeric($data) || 1 > mb_strlen($data) || 8 < mb_strlen($data))
 			{
 				return 2;
@@ -756,8 +756,97 @@
 				return 1;
 			}
 		}
+	}
 
+	class reviewer extends man
+	{
+		public $post = 'NULL';
+		public $place_work = 'NULL';
+		public $student = 'NULL';
 
+		public function check_post($data)
+		{
+			if($this->check_empty($data) == 0)
+			{
+				return 0;
+			}
+			else
+			{
+				if(mb_strlen($data, 'UTF-8') > 255)
+				{
+					return 2;
+				}
+				else
+				{
+					$this->post = $data;
+					return 1;
+				}
+			}
+		}
 
+		public function check_place_work($data)
+		{
+			if($this->check_empty($data) == 0)
+			{
+				return 0;
+			}
+			else
+			{
+				if(mb_strlen($data, 'UTF-8') > 255)
+				{
+					return 2;
+				}
+				else
+				{
+					$this->place_work = $data;
+					return 1;
+				}
+			}
+		}
+
+		public function check_student($data)
+		{
+			if($this->check_empty($data) == 0)
+			{
+				return 0;
+			}
+			else
+			{
+				if($this->check_num($data) == 2)
+				{
+					return 2;
+				}
+				else
+				{
+					$this->student = $data;
+					return 1;
+				}
+			}
+		}
+
+		public function add_reviewer()
+		{
+			require('blocks/connect.php');
+			$stmt = $conn->prepare('INSERT INTO review (last_name, first_name, patronymic, post, place_work) VALUES(?,?,?,?,?)');
+			$stmt->bind_param('sssss', $this->last_name, $this->first_name, $this->patronymic, $this->post, $this->place_work);
+			if($stmt->execute() != 1)
+			{
+				return 0;
+			}
+			else
+			{
+				$res = $conn->query('SELECT id FROM review ORDER BY id DESC LIMIT 1');
+				$last_review = $res->fetch_assoc()['id'];
+				$res = $conn->query('UPDATE diploma SET id_review_fk = '.$last_review.' WHERE id = (SELECT id_diploma_fk FROM student WHERE id = '.$this->student.')');
+				if($res != 1)
+				{
+					return 0;
+				}
+				else
+				{
+					return 1;
+				}
+			}
+		}
 	}
 ?>
