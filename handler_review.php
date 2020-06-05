@@ -20,17 +20,17 @@
         exit;
 	}
 
-	if(isset($_POST['arr_1']) && $mode_1 == 2)
+	if($mode_1 == 2)
 	{
 		require_once('user_classes/class_man.php');
 
-		$supervisor = new supervisor();
+		$reviewer = new reviewer();
 
-		$result = array('arr_1' => $supervisor->check_arr_1($_POST['arr_1']), 'cipher' => $supervisor->check_cipher_supervisor_u($_POST['cipher']), 'last_name' => $supervisor->check_last_name($_POST['last_name']), 'first_name' => $supervisor->check_first_name($_POST['first_name']), 'patronymic' =>  $supervisor->check_patronymic($_POST['patronymic']), 'degree' => $supervisor->check_degree($_POST['degree']), 'rank' => $supervisor->check_rank($_POST['rank']), 'post' => $supervisor->check_post($_POST['post']));
+		$result = array('student' => $reviewer->check_student($_POST['student']), 'last_name' => $reviewer->check_last_name($_POST['last_name']), 'first_name' => $reviewer->check_first_name($_POST['first_name']), 'patronymic' =>  $reviewer->check_patronymic($_POST['patronymic']), 'post' => $reviewer->check_post($_POST['post']), 'place_work' => $reviewer->check_place_work($_POST['place_work']));
 		check_result($result);
 
-		$result_supervisor = $supervisor->update_supervisor();
-		$result = array('supervisor' => $result_supervisor);
+		$result_supervisor = $reviewer->update_review();
+		$result = array('review' => $result_supervisor);
 		echo json_encode($result);
         exit;
 	}
@@ -62,5 +62,19 @@
 			echo json_encode($arr_new);
 		}
 	    exit;
+	}
+
+	if($_GET['mode_other'] == 2)
+	{
+		$select = $_GET['select'];
+		if(0 < $select && $select < 1000)
+		{
+			$result = $conn->query('SELECT id, number_record_book, last_name, first_name FROM student WHERE id_group_fk ='.$select) or die($conn->error);
+			while($arr = $result->fetch_assoc())
+			{
+				$arr_new[] = array('arr_1' => $arr['id'], 'number_record_book' => $arr['number_record_book'], 'last_name' => $arr['last_name'], 'first_name' => $arr['first_name']);
+			}
+			echo json_encode($arr_new);
+		}
 	}
 ?>

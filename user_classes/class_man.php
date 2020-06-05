@@ -848,5 +848,20 @@
 				}
 			}
 		}
+
+		public function update_review()
+		{
+			require('blocks/connect.php');
+			$stmt = $conn->prepare('UPDATE review SET last_name = ?, first_name = ?, patronymic = ?, post = ?, place_work = ? WHERE id = (SELECT id_review_fk FROM diploma WHERE id = (SELECT id_diploma_fk FROM student WHERE id = ?))');
+			$stmt->bind_param('sssssi', $this->last_name, $this->first_name, $this->patronymic, $this->post, $this->place_work, $this->student);
+			if($stmt->execute() != 1)
+			{
+				return 0;
+			}
+			else
+			{
+				return 1;
+			}
+		}
 	}
 ?>
