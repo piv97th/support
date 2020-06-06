@@ -6,7 +6,7 @@
 	$arr_1 = $_GET['arr_1'];
 	check_get($arr_1);
 
-	$qs_direction = $conn->query('SELECT * FROM direction WHERE id = '.$arr_1);
+	$qs_direction = $conn->query('SELECT direction.*, qualification.id as `qualification_id`, qualification.name as `name_qualification` FROM direction INNER JOIN qualification ON direction.id_qualification_fk = qualification.id WHERE direction.id = '.$arr_1);
 	$arr_direction = $qs_direction->fetch_assoc();
 ?>
 
@@ -27,16 +27,21 @@
 
 	<script type="text/javascript">
 
+		$(window).ready(function() {
+			$("#qualification option[value=<?php echo $arr_direction['qualification_id']; ?>]").attr("selected", "selected");
+		});
+
 		$(function(){
 			$("form").on('submit',function(){
 				var arr_1 = <?php echo $arr_direction['id']; ?>;
 				var mode_1 = 2;
 				var cipher_direction = $("#cipher_direction").val();
 		        var name_cipher = $("#name_cipher").val();
+		        var qualification = $("#qualification").val();
 		    	$.ajax({
 		        	type: 'POST',
 		        	url: 'handler_structure.php',
-		        	data: {cipher_direction, name_cipher, arr_1, mode_1},
+		        	data: {cipher_direction, name_cipher, qualification, arr_1, mode_1},
 		        	async: false,
 		        	success: function(response)
 		        	{
@@ -109,6 +114,19 @@
 							flag = false;
 						}
 					}
+					if(c == 3)
+					{
+						if(arr['qualification'] == 0)
+						{
+							toastr.error('Выберете квалификацию','Ошибка!');
+							flag = false;
+						}
+						if(arr['qualification'] == 2)
+						{
+							toastr.error('Некорректная квалификация','Ошибка!');
+							flag = false;
+						}
+					}
 		        }
 		        c = c+1;
 		    }
@@ -143,7 +161,16 @@
 						<label for="name_cipher">Полное название:</label>
 						<textarea class="form-control" id="name_cipher" name="name_cipher" ><?php echo $arr_direction['name']; ?></textarea>
 					</div>
-					<button type="submit" class="btn btn-primary">Submit</button>
+					<div class="form-group">
+						<label for="qualification">Квалификация:</label>
+						<select class="form-control" id="qualification" name="qualification" >
+							<option value="" disabled selected></option>
+							<option value="1">Бакалавр</option>
+							<option value="2">Магистр</option>
+							<option value="3">Специалист</option>
+						</select>
+					</div>
+					<button type="submit" class="btn btn-primary">Обновить</button>
 				</form>
 			</div>
 		</div>

@@ -8,11 +8,11 @@
 		require('blocks/connect.php');
 		if($mode == 1)
 		{
-			$result_direction = $conn->query('SELECT * FROM direction');
+			$result_direction = $conn->query('SELECT direction.*, qualification.name as `name_qualification` FROM direction INNER JOIN qualification ON direction.id_qualification_fk = qualification.id');
 			echo '<ul class="add_content">';
 			while ($arr_direction = $result_direction->fetch_assoc())
 			{
-				printf('<li><a href=form_update_direction.php?arr_1=%s>%s %s</a></li>', $arr_direction['id'], $arr_direction['name'], $arr_direction['cipher_direction']);
+				printf('<li><a href=form_update_direction.php?arr_1=%s>%s %s %s</a></li>', $arr_direction['id'], $arr_direction['name'], $arr_direction['cipher_direction'], $arr_direction['name_qualification']);
 			}
 			echo '</ul>';
 		}

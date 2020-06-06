@@ -246,7 +246,7 @@
 							<option value="3">заочная</option>
 						</select>
 					</div>
-					<button type="submit" class="btn btn-primary">Отправить</button>
+					<button type="submit" class="btn btn-primary">Добавить</button>
 				</form>
 			</div>
 		</div>
