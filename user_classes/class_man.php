@@ -275,6 +275,20 @@
 			}
 		}
 
+		private function have_review()
+		{
+			$result = $conn->query('SELECT id_review_fk FROM diploma WHERE id = '.$this->diploma);
+			$review = $result->fetch_assoc()['id_review_fk'];
+			if($review != NULL)
+			{
+				return 1;
+			}
+			else
+			{
+				return 0;
+			}
+		}
+
 		public function add_student()
 		{
 			require('blocks/connect.php');
@@ -309,7 +323,8 @@
 		{
 			require('blocks/connect.php');
 			$arr = $this->get_info_student();
-			if($arr['id_diploma_fk'] != NULL && $arr['id_se_fk'] == NULL && $arr['id_review_fk'] == NULL)
+			$arr_diploma = $this->get_info_diploma();
+			if($arr['id_diploma_fk'] != NULL && $arr['id_se_fk'] == NULL)
 			{
 				$result_diploma = $conn->query('DELETE FROM diploma WHERE id = '.$arr["id_diploma_fk"]);
 				if($result_diploma == 1)
@@ -323,25 +338,24 @@
 			}
 			else
 			{
-				if($arr['id_diploma_fk'] != NULL && $arr['id_se_fk'] != NULL && $arr['id_review_fk'] == NULL)
+				if($arr['id_diploma_fk'] != NULL && $arr['id_se_fk'] != NULL)
 				{
-					$result_se = $conn->query('DELETE FROM se WHERE id = '.$arr[id_se_fk]);
-					$result_diploma = $conn->query('DELETE FROM diploma WHERE id = '.$arr[id_diploma_fk]);
+					$result_se = $conn->query('DELETE FROM se WHERE id = '.$arr['id_se_fk']);
+					$result_diploma = $conn->query('DELETE FROM diploma WHERE id = '.$arr['id_diploma_fk']);
 					if($result_diploma == 1 && $result_se == 1 )
 					{
-						return 1;
-					}
-					else
-					{
-						return 0;
-					}
-				}
-				else
-				{
-					$result_review = $conn->query('DELETE FROM review WHERE id = '.$arr[id_review_fk]);
-					$result_diploma = $conn->query('DELETE FROM diploma WHERE id = '.$arr[id_diploma_fk]);
-					if($result_diploma == 1 && $result_review == 1 )
-					{
+						if(have_review() == 1)
+						{
+							$delete_review = $conn->query('DELETE FROM review WHERE id = '.$arr_diploma['id_review_fk']);
+							if($delete_review == 1)
+							{
+								return 1;
+							}
+							else
+							{
+								return 0;
+							}
+						}
 						return 1;
 					}
 					else
@@ -371,6 +385,13 @@
 		{
 			require('blocks/connect.php');
 			$result = $conn->query('SELECT * FROM student WHERE id = '.$this->id);
+			$arr = $result->fetch_assoc();
+			return $arr;
+		}
+		public function get_info_diploma()
+		{
+			require('blocks/connect.php');
+			$result = $conn->query('SELECT * FROM diploma WHERE id = (SELECT id_diploma_fk FROM student WHERE id = '.$this->id.')');
 			$arr = $result->fetch_assoc();
 			return $arr;
 		}
