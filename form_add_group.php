@@ -3,7 +3,7 @@
 	require('blocks/connect.php');
 
 	$result_cathedra = $conn->query('SELECT * FROM cathedra');
-	$result_direction = $conn->query('SELECT * FROM direction');
+	$result_direction = $conn->query('SELECT direction.*, qualification.id as `qualification_id`, qualification.name as `qualification_name` FROM direction INNER JOIN qualification ON direction.id_qualification_fk = qualification.id');
 
 ?>
 
@@ -27,7 +27,6 @@
 			$("form").on('submit',function(){
 				var mode_1 = 4;
 		        var cipher_group = $("#cipher_group").val();
-		        var qualification = $("#qualification").val();
 		        var cathedra = $("#cathedra").val();
 		        var direction = $("#direction").val();
 		        var form_studying = $("#form_studying").val();
@@ -35,7 +34,7 @@
 		        $.ajax({
 		        	type: 'POST',
 		        	url: 'handler_structure.php',
-		        	data: {cipher_group, qualification, cathedra, direction, form_studying, mode_1},
+		        	data: {cipher_group, cathedra, direction, form_studying, mode_1},
 		        	async: false,
 		        	success: function(response)
 		        	{
@@ -84,19 +83,6 @@
 					}
 					if(c == 1)
 					{
-						if(arr['qualification'] == 0)
-						{
-							toastr.error('Выберете квалификацию','Ошибка!');
-							flag = false;
-						}
-						if(arr['qualification'] == 2)
-						{
-							toastr.error('Некорректное значение квалификации','Ошибка!');
-							flag = false;
-						}
-					}
-					if(c == 2)
-					{
 						if(arr['cathedra'] == 0)
 						{
 							toastr.error('Введите квалификацию','Ошибка!');
@@ -108,7 +94,7 @@
 							flag = false;
 						}
 					}
-					if(c == 3)
+					if(c == 2)
 					{
 						if(arr['direction'] == 0)
 						{
@@ -121,7 +107,7 @@
 							flag = false;
 						}
 					}
-					if(c == 4)
+					if(c == 3)
 					{
 						if(arr['form_studying'] == 0)
 						{
@@ -141,12 +127,10 @@
     		{
     			toastr.success('Успешно! Группа добавлена');
     			$("#cipher_group").val("");
-    			$("#qualification").val("");
     			$("#cathedra").val("");
     			$("#direction").val("");
     			$("#form_studying").val("");
     			$.removeCookie('cipher_group');
-    			$.removeCookie('qualification');
     			$.removeCookie('cathedra');
     			$.removeCookie('direction');
     			$.removeCookie('form_studying');
@@ -155,7 +139,6 @@
 
 		window.onbeforeunload = function() {
 			$.cookie('cipher_group', $("#cipher_group").val(), { expires: 1 });
-			$.cookie('qualification', $("#qualification").val(), { expires: 1 });
 			$.cookie('cathedra', $("#cathedra").val(), { expires: 1 });
 			$.cookie('direction', $("#direction").val(), { expires: 1 });
 			$.cookie('form_studying', $("#form_studying").val(), { expires: 1 });
@@ -165,10 +148,6 @@
 			if($.cookie('cipher_group') != null)
 			{
 				$("#cipher_group").val($.cookie("cipher_group"));
-			}
-			if($.cookie('qualification') != null)
-			{
-				$("#qualification").val($.cookie("qualification"));
 			}
 			if($.cookie('cathedra') != null)
 			{
@@ -205,15 +184,6 @@
 						<input type="text" class="form-control" id="cipher_group" name="cipher_group" >
 					</div>
 					<div class="form-group">
-						<label for="qualification">Квалификация:</label>
-						<select class="form-control" id="qualification" name="qualification" >
-							<option value="" disabled selected></option>
-							<option value="1">Бакалавр</option>
-							<option value="2">Магистр</option>
-							<option value="3">Специалист</option>
-						</select>
-					</div>
-					<div class="form-group">
 						<label for="cathedra">Кафедра:</label>
 						<select class="form-control" id="cathedra" name="cathedra" >
 							<option value="" disabled selected></option>
@@ -232,7 +202,7 @@
 							<?php
 							while($arr_direction = $result_direction->fetch_assoc())
 							{
-								echo '<option value='.$arr_direction["id"].'>'.$arr_direction["cipher_direction"].' '.$arr_direction['name'].'</option>';
+								echo '<option value='.$arr_direction["id"].'>'.$arr_direction["cipher_direction"].' '.$arr_direction['name'].' '.$arr_direction["qualification_name"].'</option>';
 							}
 							?>
 						</select>

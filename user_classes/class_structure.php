@@ -250,7 +250,6 @@
 	class group extends structure
 	{
 		public $cipher_group = 'NULL';
-		public $qualification = 'NULL';
 		public $university = 1;
 		public $institute = 1;
 		public $direction = 'NULL';
@@ -376,6 +375,26 @@
 			}
 		}
 
+		public function check_direction($data)
+		{
+			if($this->check_empty($data) == 0)
+			{
+				return 0;
+			}
+			else
+			{
+				if($data < 1 || 9999 < $data)
+				{
+					return 2;
+				}
+				else
+				{
+					$this->direction = $data;
+					return 1;
+				}
+			}
+		}
+
 		public function check_fs($data)
 		{
 			if($this->check_empty($data) == 0)
@@ -399,7 +418,7 @@
 		public function add_group()
 		{
 			require('blocks/connect.php');
-			$stmt = $conn->prepare('INSERT INTO group_1 (cipher_group, id_university_fk, id_institute_fk, id_direction_fk, id_form_studying_fk, id_cathedra_fk) VALUES(?,?,?,?,?,?,?)');
+			$stmt = $conn->prepare('INSERT INTO group_1 (cipher_group, id_university_fk, id_institute_fk, id_direction_fk, id_form_studying_fk, id_cathedra_fk) VALUES(?,?,?,?,?,?)');
 			$stmt->bind_param('siiiii', $this->cipher_group, $this->university, $this->institute, $this->direction, $this->form_studying, $this->cathedra);
 			if($stmt->execute() != 1)
 			{
