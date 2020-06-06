@@ -10,7 +10,7 @@
 	$arr_group = $qs_group->fetch_assoc();
 
 	$result_cathedra = $conn->query('SELECT * FROM cathedra');
-	$result_direction = $conn->query('SELECT * FROM direction');
+	$result_direction = $conn->query('SELECT direction.*, qualification.id as `qualification_id`, qualification.name as `qualification_name` FROM direction INNER JOIN qualification ON direction.id_qualification_fk = qualification.id');
 ?>
 
 <!DOCTYPE html>
@@ -31,7 +31,6 @@
 	<script type="text/javascript">
 
 		$(window).ready(function() {
-			$("#qualification option[value=<?php echo $arr_group['id_qualification_fk']; ?>]").attr("selected", "selected");
 			$("#cathedra option[value=<?php echo $arr_group['id_cathedra_fk']; ?>]").attr("selected", "selected");
 			$("#direction option[value=<?php echo $arr_group['id_direction_fk']; ?>]").attr("selected", "selected");
 			$("#form_studying option[value=<?php echo $arr_group['id_form_studying_fk']; ?>]").attr("selected", "selected");
@@ -42,14 +41,13 @@
 				var arr_1 = <?php echo $arr_group['id']; ?>;
 				var mode_1 = 5;
 				var cipher_group = $("#cipher_group").val();
-		        var qualification = $("#qualification").val();
 		        var cathedra = $("#cathedra").val();
 		        var direction = $("#direction").val();
 		        var form_studying = $("#form_studying").val();
 		    	$.ajax({
 		        	type: 'POST',
 		        	url: 'handler_structure.php',
-		        	data: {cipher_group, qualification, cathedra, direction, form_studying, arr_1, mode_1},
+		        	data: {cipher_group, cathedra, direction, form_studying, arr_1, mode_1},
 		        	async: false,
 		        	success: function(response)
 		        	{
@@ -116,19 +114,6 @@
 					}
 					if(c == 2)
 					{
-						if(arr['qualification'] == 0)
-						{
-							toastr.error('Выберете квалификацию','Ошибка!');
-							flag = false;
-						}
-						if(arr['qualification'] == 2)
-						{
-							toastr.error('Некорректное значение квалификации','Ошибка!');
-							flag = false;
-						}
-					}
-					if(c == 3)
-					{
 						if(arr['cathedra'] == 0)
 						{
 							toastr.error('Введите квалификацию','Ошибка!');
@@ -140,7 +125,7 @@
 							flag = false;
 						}
 					}
-					if(c == 4)
+					if(c == 3)
 					{
 						if(arr['direction'] == 0)
 						{
@@ -153,7 +138,7 @@
 							flag = false;
 						}
 					}
-					if(c == 5)
+					if(c == 4)
 					{
 						if(arr['form_studying'] == 0)
 						{
@@ -222,7 +207,7 @@
 							<?php
 							while($arr_direction = $result_direction->fetch_assoc())
 							{
-								echo '<option value='.$arr_direction["id"].'>'.$arr_direction["cipher_direction"].' '.$arr_direction['name'].'</option>';
+								echo '<option value='.$arr_direction["id"].'>'.$arr_direction["cipher_direction"].' '.$arr_direction['name'].' '.$arr_direction["qualification_name"].'</option>';
 							}
 							?>
 						</select>
@@ -236,7 +221,7 @@
 							<option value="3">заочная</option>
 						</select>
 					</div>
-					<button type="submit" class="btn btn-primary">Submit</button>
+					<button type="submit" class="btn btn-primary">Редактировать</button>
 				</form>
 			</div>
 		</div>
