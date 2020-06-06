@@ -86,7 +86,7 @@
 					if(mode == 1)
 					{
 						$(obj).each(function(index, item) {
-						$('.add_content').append('<li><a class="nolink" href=handler_structure.php?arr_1='+item.arr_1+'>'+item.name+' '+item.cipher_direction+'</a></li>');
+						$('.add_content').append('<li><a class="nolink" href=handler_structure.php?arr_1='+item.arr_1+'>'+item.name+' '+item.cipher_direction+' '+item.qualification_name+'</a></li>');
 						});
 						aDellDirection();
 					}

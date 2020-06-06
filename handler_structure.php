@@ -51,7 +51,7 @@
 		require_once('user_classes/class_structure.php');
 		$group = new group();
 
-		$result = array('cipher_group' => $group->check_cipher_group($_POST['cipher_group']), 'qualification' => $group->check_qualification($_POST['qualification']), 'cathedra' => $group->check_cathedra($_POST['cathedra']), 'direction' => $group->check_direction($_POST['direction']), 'form_studying' => $group->check_fs($_POST['form_studying']));
+		$result = array('cipher_group' => $group->check_cipher_group($_POST['cipher_group']), 'cathedra' => $group->check_cathedra($_POST['cathedra']), 'direction' => $group->check_direction($_POST['direction']), 'form_studying' => $group->check_fs($_POST['form_studying']));
 		check_result($result);
 
 		$result_group = $group->add_group();
@@ -65,7 +65,7 @@
 		require_once('user_classes/class_structure.php');
 		$group = new group();
 
-		$result = array('arr_1' => $group->check_arr_1($_POST['arr_1']), 'cipher_group' => $group->check_cipher_group_u($_POST['cipher_group']), 'qualification' => $group->check_qualification($_POST['qualification']), 'cathedra' => $group->check_cathedra($_POST['cathedra']), 'direction' => $group->check_direction($_POST['direction']), 'form_studying' => $group->check_fs($_POST['form_studying']));
+		$result = array('arr_1' => $group->check_arr_1($_POST['arr_1']), 'cipher_group' => $group->check_cipher_group_u($_POST['cipher_group']), 'cathedra' => $group->check_cathedra($_POST['cathedra']), 'direction' => $group->check_direction($_POST['direction']), 'form_studying' => $group->check_fs($_POST['form_studying']));
 
 		$result_group = $group->update_group();
 		$result = array('group' => $result_group);
@@ -157,10 +157,10 @@
 
 	if($_POST['mode_other'] == 1)
 	{
-		$result_direction = $conn->query('SELECT * FROM direction');
+		$result_direction = $conn->query('SELECT direction.*, qualification.id as `qualification_id`, qualification.name as `qualification_name` FROM direction INNER JOIN qualification ON direction.id_qualification_fk = qualification.id');
 		while($arr = $result_direction->fetch_assoc())
 		{
-			$arr_new[] = array('arr_1' => $arr['id'], 'cipher_direction' => $arr['cipher_direction'], 'name' => $arr['name']);
+			$arr_new[] = array('arr_1' => $arr['id'], 'cipher_direction' => $arr['cipher_direction'], 'name' => $arr['name'], 'qualification_name' => $arr['qualification_name']);
 		}
 		echo json_encode($arr_new);
         exit;

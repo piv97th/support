@@ -376,26 +376,6 @@
 			}
 		}
 
-		public function check_direction($data)
-		{
-			if($this->check_empty($data) == 0)
-			{
-				return 0;
-			}
-			else
-			{
-				if($data < 1 || 9999 < $data)
-				{
-					return 2;
-				}
-				else
-				{
-					$this->direction = $data;
-					return 1;
-				}
-			}
-		}
-
 		public function check_fs($data)
 		{
 			if($this->check_empty($data) == 0)
@@ -419,8 +399,8 @@
 		public function add_group()
 		{
 			require('blocks/connect.php');
-			$stmt = $conn->prepare('INSERT INTO group_1 (cipher_group, id_qualification_fk, id_university_fk, id_institute_fk, id_direction_fk, id_form_studying_fk, id_cathedra_fk) VALUES(?,?,?,?,?,?,?)');
-			$stmt->bind_param('siiiiii', $this->cipher_group, $this->qualification, $this->university, $this->institute, $this->direction, $this->form_studying, $this->cathedra);
+			$stmt = $conn->prepare('INSERT INTO group_1 (cipher_group, id_university_fk, id_institute_fk, id_direction_fk, id_form_studying_fk, id_cathedra_fk) VALUES(?,?,?,?,?,?,?)');
+			$stmt->bind_param('siiiii', $this->cipher_group, $this->university, $this->institute, $this->direction, $this->form_studying, $this->cathedra);
 			if($stmt->execute() != 1)
 			{
 				return 0;
@@ -434,8 +414,8 @@
 		public function update_group()
 		{
 			require('blocks/connect.php');
-			$stmt = $conn->prepare('UPDATE group_1 SET cipher_group = ?, id_qualification_fk = ?, id_university_fk = ?, id_institute_fk = ?, id_direction_fk = ?, id_form_studying_fk = ?, id_cathedra_fk = ? WHERE id = ?');
-			$stmt->bind_param('siiiiiii', $this->cipher_group, $this->qualification, $this->university, $this->institute, $this->direction, $this->form_studying, $this->cathedra, $this->id);
+			$stmt = $conn->prepare('UPDATE group_1 SET cipher_group = ?, id_university_fk = ?, id_institute_fk = ?, id_direction_fk = ?, id_form_studying_fk = ?, id_cathedra_fk = ? WHERE id = ?');
+			$stmt->bind_param('siiiiii', $this->cipher_group, $this->university, $this->institute, $this->direction, $this->form_studying, $this->cathedra, $this->id);
 			if($stmt->execute() != 1)
 			{
 				return 0;
