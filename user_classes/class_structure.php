@@ -91,6 +91,7 @@
 	class direction extends structure
 	{
 		public $cipher = 'NULL';
+		public $qualification = 'NULL';
 
 		private function exist_cipher($data)
 		{
@@ -128,6 +129,26 @@
 				else
 				{
 					$this->cipher = $data;
+					return 1;
+				}
+			}
+		}
+
+		public function check_qualification($data)
+		{
+			if($this->check_empty($data) == 0)
+			{
+				return 0;
+			}
+			else
+			{
+				if($data < 1 || 3 < $data)
+				{
+					return 2;
+				}
+				else
+				{
+					$this->qualification = $data;
 					return 1;
 				}
 			}
@@ -184,8 +205,8 @@
 		public function add_direction()
 		{
 			require('blocks/connect.php');
-			$stmt = $conn->prepare('INSERT INTO direction (cipher_direction, name) VALUES(?,?)');
-			$stmt->bind_param('ss', $this->cipher, $this->name);
+			$stmt = $conn->prepare('INSERT INTO direction (cipher_direction, name, id_qualification_fk) VALUES(?,?,?)');
+			$stmt->bind_param('ssi', $this->cipher, $this->name, $this->qualification);
 			if($stmt->execute() != 1)
 			{
 				return 0;
@@ -199,8 +220,8 @@
 		public function update_direction()
 		{
 			require('blocks/connect.php');
-			$stmt = $conn->prepare('UPDATE direction SET cipher_direction = ?, name = ? WHERE id = ?');
-			$stmt->bind_param('ssi', $this->cipher, $this->name, $this->id);
+			$stmt = $conn->prepare('UPDATE direction SET cipher_direction = ?, name = ?, id_qualification_fk = ? WHERE id = ?');
+			$stmt->bind_param('ssii', $this->cipher, $this->name, $this->qualification, $this->id);
 			if($stmt->execute() != 1)
 			{
 				return 0;
@@ -331,26 +352,6 @@
 						$this->cipher_group = $data;
 						return 1;
 					}
-				}
-			}
-		}
-
-		public function check_qualification($data)
-		{
-			if($this->check_empty($data) == 0)
-			{
-				return 0;
-			}
-			else
-			{
-				if($data < 1 || 3 < $data)
-				{
-					return 2;
-				}
-				else
-				{
-					$this->qualification = $data;
-					return 1;
 				}
 			}
 		}

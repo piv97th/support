@@ -9,7 +9,7 @@
 		require_once('user_classes/class_structure.php');
 		$direction = new direction();
 
-		$result = array('cipher_direction' => $direction->check_cipher($_POST['cipher_direction']), 'name_cipher' => $direction->check_name($_POST['name_cipher']));
+		$result = array('cipher_direction' => $direction->check_cipher($_POST['cipher_direction']), 'name_cipher' => $direction->check_name($_POST['name_cipher']), 'qualification' => $direction->check_qualification($_POST['qualification']));
 		check_result($result);
 
 		$result_direction = $direction->add_direction();
@@ -23,7 +23,7 @@
 		require_once('user_classes/class_structure.php');
 		$direction = new direction();
 
-		$result = array('arr_1' => $direction->check_arr_1($_POST['arr_1']), 'cipher_direction' => $direction->check_cipher_u($_POST['cipher_direction']), 'name_cipher' => $direction->check_name($_POST['name_cipher']));
+		$result = array('arr_1' => $direction->check_arr_1($_POST['arr_1']), 'cipher_direction' => $direction->check_cipher_u($_POST['cipher_direction']), 'name_cipher' => $direction->check_name($_POST['name_cipher']), $direction->check_qualification($_POST['qualification']));
 		check_result($result);
 
 		$result_direction = $direction->update_direction();

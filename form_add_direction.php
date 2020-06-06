@@ -12,18 +12,64 @@
 	<script type="text/javascript" src="scripts/jquery_cookies.js"></script>
 	<script type="text/javascript" src="scripts/disabled_link.js"></script>
 	<script type="text/javascript" src="scripts/toastr.js"></script>
+	<script type="text/javascript" src="scripts/check_data.js"></script>
 
 
 	<script type="text/javascript">
+
+		function checks()
+		{
+			var cipher_direction = $("#cipher_direction").val();
+			alert(cipher_direction);
+			cipher_direction = checkDirection(cipher_direction);
+			alert(2222);
+			if(cipher_direction != 1)
+			{
+				if(cipher_direction == 0)
+				{
+					toastr.error('Введите шифр направления','Ошибка!');
+					return false;
+				}
+				else if(cipher_direction == 2)
+				{
+					toastr.error('Некорректный шифр направления','Ошибка!');
+					return false;
+				}
+			}
+
+			alert(333);
+		    var name_cipher = $("#name_cipher").val();
+		    name_cipher = checkText(name_cipher);
+		    if(name_cipher != 1)
+		    {
+		    	if(name_cipher == 0)
+				{
+					alert(2);
+					toastr.error('Введите наименование шифра','Ошибка!');
+					return false;
+				}
+				else if(name_cipher == 2)
+				{
+					toastr.error('Некорректное наименование шифра направления','Ошибка!');
+					return false;
+				}
+		    }
+		}
+
 		$(function(){
 			$("form").on('submit',function(){
+				/*if(checks() == false)
+				{
+					return false;
+				}*/
 				var mode_1 = 1;
 		        var cipher_direction = $("#cipher_direction").val();
 		        var name_cipher = $("#name_cipher").val();
+		        var qualification = $("#qualification").val();
 		        $.ajax({
 		        	type: 'POST',
 		        	url: 'handler_structure.php',
-		        	data: {cipher_direction, name_cipher, mode_1},
+		        	data: {cipher_direction, name_cipher, qualification, mode_1},
 		        	async: false,
 		        	success: function(response)
 		        	{
@@ -83,6 +129,19 @@
 							flag = false;
 						}
 					}
+					if(c == 2)
+					{
+						if(arr['qualification'] == 0)
+						{
+							toastr.error('Выберете квалификацию','Ошибка!');
+							flag = false;
+						}
+						if(arr['qualification'] == 2)
+						{
+							toastr.error('Некорректная квалификация','Ошибка!');
+							flag = false;
+						}
+					}
 		        }
 		        c = c+1;
 		    }
@@ -93,12 +152,14 @@
     			$("#name_cipher").val("");
     			$.removeCookie('cipher_direction');
     			$.removeCookie('name_cipher');
+    			$.removeCookie('qualification');
     		}
 		}
 
 		window.onbeforeunload = function() {
 			$.cookie('cipher_direction', $("#cipher_direction").val(), { expires: 1 });
 			$.cookie('name_cipher', $("#name_cipher").val(), { expires: 1 });
+			$.cookie('qualification', $("#qualification").val(), { expires: 1 });
 		};
 
 		$(window).ready(function() {
@@ -109,6 +170,10 @@
 			if($.cookie('name_cipher') != null)
 			{
 				$("#name_cipher").val($.cookie("name_cipher"));
+			}
+			if($.cookie('qualification') != null)
+			{
+				$("#qualification").val($.cookie("qualification"));
 			}
 		});
 	</script>
@@ -135,6 +200,15 @@
 					<div class="form-group">
 						<label for="name_cipher">Полное название:</label>
 						<textarea class="form-control" id="name_cipher" name="name_cipher" ></textarea>
+					</div>
+					<div class="form-group">
+						<label for="qualification">Квалификация:</label>
+						<select class="form-control" id="qualification" name="qualification" >
+							<option value="" disabled selected></option>
+							<option value="1">Бакалавр</option>
+							<option value="2">Магистр</option>
+							<option value="3">Специалист</option>
+						</select>
 					</div>
 					<button type="submit" class="btn btn-primary">Добавить</button>
 				</form>
