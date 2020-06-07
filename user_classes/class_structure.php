@@ -53,6 +53,18 @@
 			}
 		}
 
+		protected function check_result($arr)
+		{
+			foreach($arr as $i)
+			{
+				if($i != 1)
+				{
+					echo json_encode($arr);
+					exit;
+				}
+			}
+		}
+
 		public function check_arr_1($data)
 		{
 			if($this->check_empty($data) == 0)
@@ -463,7 +475,7 @@
 	class commission extends structure
 	{
 		public $order_1 = 'NULL';
-		public $year = 'NULL';
+		public $number_commission = 'NULL';
 
 		public function check_order_1($data)
 		{
@@ -482,7 +494,23 @@
 			}
 		}
 
-		public function check_year($data)
+		private function exist_number_commission($data)
+		{
+			require('blocks/connect.php');
+			$sql = "SELECT COUNT(number) as `count` FROM commission WHERE number = '$data'";
+			$result = $conn->query($sql) or die($conn->error);
+			$row = $result->fetch_assoc();
+			if($row['count'] > 0)
+			{
+				return 1;
+			}
+			else
+			{
+				return 0;
+			}
+		}
+
+		public function check_number_commission($data)
 		{
 			if($this->check_empty($data) == 0)
 			{
@@ -490,10 +518,42 @@
 			}
 			else
 			{
-				$this->year = $data;
-				return 1;
+				//require('blocks/connect.php');
+				if($this->check_num($data) == 2)
+				{
+					return 2;
+				}
+				else
+				{
+					if($this->exist_number_commission($data) == 1)
+					{
+						return 3;
+					}
+					else
+					{
+						$this->number_commission = $data;
+						return 1;
+					}
+				}
 			}
 		}
+
+		/*public function check_number_commission($data)
+		{
+			if($this->check_empty($data) == 0)
+			{
+				return 0;
+			}
+			if($this->check_num($data) == 2)
+			{
+				return 2;
+			}
+			else
+			{
+				$this->number_commission = $data;
+				return 1;
+			}
+		}*/
 
 		public function get_commission_fk()
 		{
@@ -503,7 +563,7 @@
 		public function add_commission()
 		{
 			require('blocks/connect.php');
-			$result = $conn->query("INSERT INTO commission (order_1) VALUES('$this->order_1')");
+			$result = $conn->query("INSERT INTO commission (number, order_1) VALUES('$this->number_commission', '$this->order_1')") or die($conn->error);
 			//TODO norm id
 			$this->id = $conn->insert_id;
 			if($result != 1)
@@ -549,13 +609,17 @@
 	class meeting extends structure
 	{
 		public $number_meeting = 'NULL';
-		public $date = 'NULL';
+		public $arr_type_meeting = 'NULL';
+		public $arr_date = 'NULL';
 		public $commission_fk = 'NULL';
+		public $arr_temp_group = 'NULL';
+		protected $c_temp = 'NULL';
+		public $arr_insert_id = 'NULL';
 
-		public function check_date($data)
+		private function check_date($arr)
 		{
 			$pattern_date = '/^[0-9,-]{10}$/';
-			foreach($data as $date)
+			foreach($arr as $date)
 			{
 				if($this->check_empty($date) == 0)
 				{
@@ -566,9 +630,131 @@
 					return 2;
 				}
 			}
-			sort($data);
-			$this->date = $data;
+			//sort($data);
+			//$this->date = $data;
 			return 1;
+		}
+
+		private function check_type_meeting($arr)
+		{
+			foreach($arr as $date)
+			{
+				if($this->check_empty($date) == 0)
+				{
+					return 0;
+				}
+				if($this->check_num($date) == 2)
+				{
+					return 2;
+				}
+			}
+			//sort($data);
+			//$this->date = $data;
+			return 1;
+		}
+
+		private function check_group($arr)
+		{
+			foreach($arr as $date)
+			{
+				if($this->check_empty($date) == 0)
+				{
+					return 0;
+				}
+				if($this->check_num($date) == 2)
+				{
+					return 2;
+				}
+			}
+			//sort($data);
+			//$this->date = $data;
+			return 1;
+		}
+
+		public function repeat_event($arr)
+		{
+			$arr_iter = [];
+			$arr_need = [[]];
+			for($i = 0; $i < $this->c_temp; $i++)
+			{
+				$arr_need[$i][0] = $arr[$i][0];
+				$arr_need[$i][1] = $arr[$i][2];
+				/*for($j = 0; $j < $this->c_temp; $j++)
+				{
+					$arr_need[][] = $arr
+				} */
+			}
+			//print_r($arr_need);
+			$t = 0;
+			for($i = 0; $i < ($this->c_temp)-1; $i++)
+			{
+				$arr_iter = array($arr[$i][0], $arr[$i][2]);
+				//print_r($arr_iter);
+				echo 0;
+				//for($k = 1; $k < ($this->c_temp) - $i; $k++)
+				for($k = 1; $k < ($this->c_temp) - $i; $k++)
+				{
+					echo 1;
+					if(($arr_need[$k+$t][0] == $arr_iter[0]) && ($arr_need[$k+$t][1] == $arr_iter[1]))
+					{
+						echo "string";
+					}
+				}
+				$t++;
+				/*if(($arr_need[$i][0] == $arr_iter[0]) && ($arr_need[$i][0] == $arr_iter[0]))
+				{
+					echo "string";
+				}*/
+
+				/*for($j = 0; $i < 2; $j++)
+				{
+					if($arr_iter)
+					//$arr_iter = $arr[$i][$j];
+				}*/
+				//$arr_iter = $arr[$i][0]
+			}
+		}
+
+		public function check_arr_mixed($arr)
+		{
+			$c = 0;
+			foreach($arr as $d)
+			{
+				$c++;
+			}
+			$this->c_temp = $c;
+
+			$arr_temp_group = [];
+			for($i = 0; $i < $c; $i++)
+			{
+				$arr_temp_group[] = intval($arr[$i][0]);
+			}
+			$result = array('group' => $this->check_group($arr_temp_group));
+			//$this->check_result($result);
+			$this->arr_temp_group = $arr_temp_group;
+
+			$arr_date = [];
+			for($i = 0; $i < $c; $i++)
+			{
+				$arr_date[] = $arr[$i][1];
+			}
+			$result += ['date' => $this->check_date($arr_date)];
+			$this->arr_date = $arr_date;
+
+			$arr_type_meeting = [];
+			for($i = 0; $i < $c; $i++)
+			{
+				$arr_type_meeting[] = $arr[$i][2];
+			}
+			$result += ['type_meeting' => $this->check_type_meeting($arr_type_meeting)];
+			$this->check_result($result);
+			$this->arr_type_meeting = $arr_type_meeting;
+
+			
+			$this->repeat_event($arr);
+			usort($arr, function($a,$b){return end($a) > end($b);});
+			//$this->repeat_event($arr);
+			return $result;
 		}
 
 		public function is_commission()
@@ -591,14 +777,62 @@
 		{
 			require('blocks/connect.php');
 			$nm = 1;
-			foreach($this->date as $valdate)
+			$arr_insert_id = [];
+			//print_r($this->arr_date);
+			for($i = 0; $i < $this->c_temp; $i++)
 			{
-				$result = $conn->query("INSERT INTO timetable_meeting (number_meeting, date, id_commission_fk) VALUES('$nm', '$valdate', '$this->commission_fk')") or die($conn->error);
+				/*echo $this->arr_date[$i];
+				$result = $conn->query('INSERT INTO timetable_meeting (number_meeting, type_meeting, date, id_commission_fk) VALUES('.$nm.', '.$this->arr_type_meeting[$i].', '.$this->arr_date[$i].', '.$this->commission_fk.')') or die($conn->error);
+				$this->arr_insert_id[] = $conn->insert_id;
 				if($result != 1)
+				{
+					return 0;
+				}*/
+				//echo $this->arr_date[$i];
+				$stmt = $conn->prepare('INSERT INTO timetable_meeting (number_meeting, type_meeting, date, id_commission_fk) VALUES(?,?,?,?)') or die('prepare() failed: ' . htmlspecialchars($conn->error));;
+				$stmt->bind_param('iisi', $nm, $this->arr_type_meeting[$i], $this->arr_date[$i], $this->commission_fk) or die('prepare() failed: ' . htmlspecialchars($stmt->error));;
+				if($stmt->execute() != 1)
 				{
 					return 0;
 				}
 				$nm++;
+				$result = $conn->query('SELECT id FROM timetable_meeting ORDER BY id DESC LIMIT 1');
+				$arr_insert_id[$i] = $result->fetch_assoc()['id'];
+			}
+			$this->arr_insert_id = $arr_insert_id;
+			return 1;
+		}
+
+		public function add_meeting_to_group()
+		{
+			require('blocks/connect.php');
+			$nm = 1;
+			print_r($this->arr_insert_id);
+			print_r($this->arr_temp_group);
+			$arr_temp = [];
+			for($i = 0; $i < $this->c_temp; $i++)
+			{
+				$temp_i = $this->arr_insert_id[$i];
+				$arr_temp_i[$i] = (int)$temp_i;
+				//echo $this->arr_temp_group[$i];
+				if($this->arr_type_meeting[$i] == 1)
+				{
+					$result = $conn->query('UPDATE group_1 SET id_meeting_se_fk = '.$arr_temp_i[$i].' WHERE id = '.$this->arr_temp_group[$i]) or die($conn->error);
+					if($result != 1)
+					{
+						return 0;
+					}
+					$nm++;
+				}
+				if($this->arr_type_meeting[$i] == 2)
+				{
+					$result = $conn->query('UPDATE group_1 SET id_meeting_diploma_fk = '.$arr_temp_i[$i].' WHERE id = '.$this->arr_temp_group[$i]);
+					if($result != 1)
+					{
+						return 0;
+					}
+					$nm++;
+				}
 			}
 			return 1;
 		}

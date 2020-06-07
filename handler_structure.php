@@ -2,6 +2,34 @@
 <?php
 	require('blocks/connect.php');
 	require_once('blocks/check_data.php');
+
+	function check_result_1($arr)
+	{
+		foreach($arr as $key => $i)
+		{
+			//if($i != 1 || !in_array("data", $arr))
+			if($i == 1 || $key == "data")
+			{
+				if($key == "data")
+				{
+					foreach($i as $j)
+					{
+						if($j != 1)
+						{
+							echo json_encode($arr);
+							exit;
+						}
+					}
+				}
+			}
+			else
+			{
+				echo json_encode($arr);
+				exit;
+			}
+		}
+	}
+
 	$mode_1 = $_POST['mode_1'];
 
 	if($mode_1 == 1)
@@ -93,18 +121,26 @@
 		$commission = new commission();
 		$meeting = new meeting();
 
-		$result = array('order_1' => $commission->check_order_1($_POST['order_1']));
+		$result = array('number_commission' => $commission->check_number_commission($_POST['number_commission']), 'order_1' => $commission->check_order_1($_POST['order_1']));
+		check_result_1($result);
 
-		$result += ['date' => $meeting->check_date($_POST['arr_date'])];
-		check_result($result);
+		//проверяется, сортируется дата и пишется дата, группа и тип ГИА в класс и БД
+		$result += ['data' => $meeting->check_arr_mixed($_POST['arr_mixed'])];
+		check_result_1($result);
 
-		$result_commission = $commission->add_commission();
+
+		/*$result_commission = $commission->add_commission();
 		$result = array('commission' => $result_commission);
-		check_result($result);
+		check_result_1($result);
 
 		$meeting->commission_fk = $commission->get_commission_fk();
-		$result_meeting = $meeting->update_meeting();
+
+		$result_meeting = $meeting->add_meeting();
 		$result += ['meeting' => $result_meeting];
+		check_result_1($result);
+
+		$result_group = $meeting->add_meeting_to_group();
+		$result += ['meeting_to_group' => $result_group];*/
 
 		echo json_encode($result);
         exit;
@@ -205,6 +241,17 @@
 		while($arr = $result_member_ssk->fetch_assoc())
 		{
 			$arr_new[] = array('arr_1' => $arr['id'], 'last_name' => $arr['last_name'], 'first_name' => $arr['first_name'], 'post' => $arr['post']);
+		}
+		echo json_encode($arr_new);
+        exit;
+	}
+
+	if($_POST['mode_other'] == 6)
+	{
+		$result_group = $conn->query('SELECT id, cipher_group FROM group_1');
+		while($arr = $result_group->fetch_assoc())
+		{
+			$arr_new[] = array('arr_1' => $arr['id'], 'cipher_group' => $arr['cipher_group']);
 		}
 		echo json_encode($arr_new);
         exit;
