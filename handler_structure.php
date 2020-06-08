@@ -129,7 +129,7 @@
 		check_result_1($result);
 
 
-		/*$result_commission = $commission->add_commission();
+		$result_commission = $commission->add_commission();
 		$result = array('commission' => $result_commission);
 		check_result_1($result);
 
@@ -140,7 +140,7 @@
 		check_result_1($result);
 
 		$result_group = $meeting->add_meeting_to_group();
-		$result += ['meeting_to_group' => $result_group];*/
+		$result += ['meeting_to_group' => $result_group];
 
 		echo json_encode($result);
         exit;
@@ -248,7 +248,7 @@
 
 	if($_POST['mode_other'] == 6)
 	{
-		$result_group = $conn->query('SELECT id, cipher_group FROM group_1');
+		$result_group = $conn->query('SELECT id, cipher_group FROM group_1 WHERE id_meeting_se_fk IS NULL AND id_meeting_diploma_fk IS NULL');
 		while($arr = $result_group->fetch_assoc())
 		{
 			$arr_new[] = array('arr_1' => $arr['id'], 'cipher_group' => $arr['cipher_group']);

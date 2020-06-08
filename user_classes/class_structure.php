@@ -630,8 +630,6 @@
 					return 2;
 				}
 			}
-			//sort($data);
-			//$this->date = $data;
 			return 1;
 		}
 
@@ -648,8 +646,6 @@
 					return 2;
 				}
 			}
-			//sort($data);
-			//$this->date = $data;
 			return 1;
 		}
 
@@ -666,8 +662,6 @@
 					return 2;
 				}
 			}
-			//sort($data);
-			//$this->date = $data;
 			return 1;
 		}
 
@@ -679,40 +673,21 @@
 			{
 				$arr_need[$i][0] = $arr[$i][0];
 				$arr_need[$i][1] = $arr[$i][2];
-				/*for($j = 0; $j < $this->c_temp; $j++)
-				{
-					$arr_need[][] = $arr
-				} */
 			}
-			//print_r($arr_need);
 			$t = 0;
 			for($i = 0; $i < ($this->c_temp)-1; $i++)
 			{
 				$arr_iter = array($arr[$i][0], $arr[$i][2]);
-				//print_r($arr_iter);
-				echo 0;
-				//for($k = 1; $k < ($this->c_temp) - $i; $k++)
 				for($k = 1; $k < ($this->c_temp) - $i; $k++)
 				{
-					echo 1;
 					if(($arr_need[$k+$t][0] == $arr_iter[0]) && ($arr_need[$k+$t][1] == $arr_iter[1]))
 					{
-						echo "string";
+						return 3;
 					}
 				}
 				$t++;
-				/*if(($arr_need[$i][0] == $arr_iter[0]) && ($arr_need[$i][0] == $arr_iter[0]))
-				{
-					echo "string";
-				}*/
-
-				/*for($j = 0; $i < 2; $j++)
-				{
-					if($arr_iter)
-					//$arr_iter = $arr[$i][$j];
-				}*/
-				//$arr_iter = $arr[$i][0]
 			}
+			return 1;
 		}
 
 		public function check_arr_mixed($arr)
@@ -730,8 +705,6 @@
 				$arr_temp_group[] = intval($arr[$i][0]);
 			}
 			$result = array('group' => $this->check_group($arr_temp_group));
-			//$this->check_result($result);
-			$this->arr_temp_group = $arr_temp_group;
 
 			$arr_date = [];
 			for($i = 0; $i < $c; $i++)
@@ -739,7 +712,6 @@
 				$arr_date[] = $arr[$i][1];
 			}
 			$result += ['date' => $this->check_date($arr_date)];
-			$this->arr_date = $arr_date;
 
 			$arr_type_meeting = [];
 			for($i = 0; $i < $c; $i++)
@@ -748,12 +720,32 @@
 			}
 			$result += ['type_meeting' => $this->check_type_meeting($arr_type_meeting)];
 			$this->check_result($result);
+			
+			$result += ['repeat' => $this->repeat_event($arr)];
+			$this->check_result($result);
+			usort($arr, function($a,$b){return next($a) > next($b);});
+
+			$arr_temp_group = [];
+			for($i = 0; $i < $c; $i++)
+			{
+				$arr_temp_group[] = intval($arr[$i][0]);
+			}
+			$this->arr_temp_group = $arr_temp_group;
+
+			$arr_date = [];
+			for($i = 0; $i < $c; $i++)
+			{
+				$arr_date[] = $arr[$i][1];
+			}
+			$this->arr_date = $arr_date;
+
+			$arr_type_meeting = [];
+			for($i = 0; $i < $c; $i++)
+			{
+				$arr_type_meeting[] = $arr[$i][2];
+			}
 			$this->arr_type_meeting = $arr_type_meeting;
 
-			
-			$this->repeat_event($arr);
-			usort($arr, function($a,$b){return end($a) > end($b);});
-			//$this->repeat_event($arr);
 			return $result;
 		}
 
@@ -807,8 +799,6 @@
 		{
 			require('blocks/connect.php');
 			$nm = 1;
-			print_r($this->arr_insert_id);
-			print_r($this->arr_temp_group);
 			$arr_temp = [];
 			for($i = 0; $i < $this->c_temp; $i++)
 			{

@@ -181,6 +181,15 @@
 							flag = false;
 						}
 					}
+					if(c == 3)
+					{
+						if(arr['repeat'] == 3)
+						{
+							toastr.error('Повтор события для группы','Ошибка!');
+							flag = false;
+						}
+					}
+
 		        }
 		        c = c+1;
 		    }
@@ -189,7 +198,9 @@
     			toastr.success('Успешно! Комиссия добавлена');
     			$("#number_commission").val("");
 		        $("#order_1").val("");
+		        $.removeCookie('number_commission');
 		        $.removeCookie('order_1');
+		        location.reload();
 		    }
 		}
 
