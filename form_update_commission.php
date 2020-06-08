@@ -7,8 +7,6 @@
 	check_get($arr_1);
 	$qs_commission = $conn->query('SELECT * FROM commission WHERE id = '.$arr_1);
 	$arr_commission = $qs_commission->fetch_assoc();
-
-	$qs_meeting = $conn->query('SELECT * FROM timetable_meeting WHERE id_commission_fk = '.$arr_commission['id']);
 ?>
 
 <!DOCTYPE html>
@@ -27,25 +25,29 @@
 
 
 	<script type="text/javascript">
-
 		$(function(){
 			$("form").on('submit',function(){
-				var arr_1_commission = <?php echo $arr_commission['id'];?>;
+				var arr_1 = <?php echo $arr_commission['id']; ?>;
 				var mode_1 = 8;
+				var number_commission = $("#number_commission").val();
 		        var order_1 = $("#order_1").val();
-		        var arr_date = [];
+		        var arr_mixed = [];
 		        cDate = $(this).find('input[name="date_meeting"]').length;
 		        for(var i = 0; i < cDate; i++)
 		        {
-		        	arr_date[i] = $('input[name="date_meeting"]:eq('+i+')').val();
+		        	arr_mixed[i] = [];
+	        		arr_mixed[i][0] = parseInt($('select[name="group"]:eq('+i+')').val());
+	        		arr_mixed[i][1] = $('input[name="date_meeting"]:eq('+i+')').val();
+	        		arr_mixed[i][2] = $('select[name="type_meeting"]:eq('+i+')').val();
 		    	}
 		        $.ajax({
 		        	type: 'POST',
 		        	url: 'handler_structure.php',
-		        	data: {arr_1_commission, order_1, arr_date, mode_1},
+		        	data: {arr_1, number_commission, order_1, arr_mixed, mode_1},
 		        	async: false,
 		        	success: function(response)
 		        	{
+		        		alert(response);
 		        		var result = JSON.parse(response);
 		        		outToast(result);
 		        	},
@@ -60,13 +62,28 @@
 
 		$(function(){
 			$("#btn_plus").on('click',function(){
+				var mode_other = 6;
 				var countMeeting = $('#number_meeting').val();
-				countMeeting++;
-				if(countMeeting < 10)
-				{
-					$('#number_meeting').val(countMeeting);
-					$('.form-group:last').after('<div class="form-group date"><label>Дата:</label><input type="date" class="form-control" name="date_meeting" ></div>');
-				}
+				$.ajax({
+					type: 'POST',
+					url: 'handler_structure.php',
+					data: {mode_other},
+					async: false,
+					success: function(response)
+					{
+						var obj = JSON.parse(response);
+						$('.form-group:last').after('<div class="form-group block_group"><label for="group">Группа:</label><select class="form-control group" name="group"><option value="" disabled selected></option></select></div>');
+						$(obj).each(function(index, item) {
+							$('.group:last').append('<option value='+item.arr_1+'>'+item.cipher_group+'</option>');
+						});
+						countMeeting++;
+						if(countMeeting < 10)
+						{
+							$('#number_meeting').val(countMeeting);
+							$('.form-group:last').after('<div class="form-group block_date"><label>Дата:</label><input type="date" class="form-control" name="date_meeting" ></div><div class="form-group block_type_meeting"><label>Тип ГИА:</label><select class="form-control type_meeting" name="type_meeting" ><option value="" disabled selected></option><option value=1>Госэкзамен</option><option value=2>Защита ВКР</option></select></div>');
+						}
+			        }
+			    });
 		    });
 		});
 
@@ -77,7 +94,9 @@
 				if(0 <= countMeeting)
 				{
 					$('#number_meeting').val(countMeeting);
-					$('.date:last').remove();
+					$('.block_group:last').remove();
+					$('.block_date:last').remove();
+					$('.block_type_meeting:last').remove();
 				}
 				else
 				{
@@ -96,17 +115,32 @@
 				{
 					if(c == 0)
 					{
-						if(arr['arr_1'] == 0)
+						if(arr['number_commission'] == 0)
 						{
-							toastr.error('Что-то не так','Ошибка!');
+							toastr.error('Введите номер комиссии','Ошибка!');
 							flag = false;
 						}
-						if(arr['arr_1'] == 2)
+						if(arr['number_commission'] == 2)
 						{
-							toastr.error('Что-то не так','Ошибка!');
+							toastr.error('Введите корректный номер','Ошибка!');
 							flag = false;
 						}
-						if(arr['meeting'] == 0)
+						if(arr['number_commission'] == 3)
+						{
+							toastr.error('Такой номер комиссии уже есть','Ошибка!');
+							flag = false;
+						}
+						if(arr['group'] == 0)
+						{
+							toastr.error('Выберете группу','Ошибка!');
+							flag = false;
+						}
+						if(arr['group'] == 2)
+						{
+							toastr.error('Некорректный номер группы','Ошибка!');
+							flag = false;
+						}
+						if(arr['commission'] == 0)
 						{
 							toastr.error('При записи','Ошибка!');
 							flag = false;
@@ -124,7 +158,17 @@
 							toastr.error('Слишком много символов','Ошибка!');
 							flag = false;
 						}
-						if(arr['commission'] == 0)
+						if(arr['date'] == 0)
+						{
+							toastr.error('Выберете дату','Ошибка!');
+							flag = false;
+						}
+						if(arr['date'] == 2)
+						{
+							toastr.error('Некорректная дата','Ошибка!');
+							flag = false;
+						}
+						if(arr['meeting'] == 0)
 						{
 							toastr.error('При записи','Ошибка!');
 							flag = false;
@@ -132,30 +176,99 @@
 					}
 					if(c == 2)
 					{
-						if(arr['date'] == 0)
+						if(arr['type_meeting'] == 0)
 						{
-							toastr.error('Выберете год','Ошибка!');
+							toastr.error('Выберете тип ГИА','Ошибка!');
 							flag = false;
 						}
-						if(arr['date'] == 2)
+						if(arr['type_meeting'] == 2)
 						{
-							toastr.error('Неправильно набран год','Ошибка!');
+							toastr.error('Некорректный тип ГИА','Ошибка!');
 							flag = false;
 						}
 					}
+					if(c == 3)
+					{
+						if(arr['repeat'] == 3)
+						{
+							toastr.error('Повтор события для группы','Ошибка!');
+							flag = false;
+						}
+					}
+
 		        }
 		        c = c+1;
 		    }
     		if(flag == true)
     		{
-    			toastr.success('Успешно! Информация отредактирована');
-    		}
+    			toastr.success('Успешно! Комиссия добавлена');
+    			$("#number_commission").val("");
+		        $("#order_1").val("");
+		        $.removeCookie('number_commission');
+		        $.removeCookie('order_1');
+		        location.reload();
+		    }
 		}
 
-		$(window).ready(function() {
-			$('#number_meeting').val($(".date").length);
-		});
+		window.onbeforeunload = function() {
+			$.cookie('number_commission', $("#number_commission").val(), { expires: 1 });
+			$.cookie('order_1', $("#order_1").val(), { expires: 1 });
+		};
 
+		$(window).ready(function() {
+			var mode_other = 7;
+			var commission = <?php echo $arr_commission["id"]; ?>;
+			$.ajax({
+				type: 'POST',
+				url: 'handler_structure.php',
+				data: {mode_other, commission},
+				async: false,
+				success: function(response)
+				{
+					var c = response;
+					$('#number_meeting').val(c);
+					for(var i = 0; i < c; i++) 
+					{
+						$('.form-group:last').after('<div class="form-group block_group"><label for="group">Группа:</label><select class="form-control group" name="group"><option value="" disabled selected></option></select></div>');
+						var mode_other = 8;
+						$.ajax({
+							type: 'POST',
+							url: 'handler_structure.php',
+							data: {mode_other},
+							async: false,
+							success: function(response_2)
+							{
+								var obj = JSON.parse(response_2);
+								$(obj).each(function(index, item) {
+									$('.group:last').append('<option value='+item.arr_1+'>'+item.cipher_group+'</option>');
+								});
+							}
+						});
+							$('.form-group:last').after('<div class="form-group block_date"><label>Дата:</label><input type="date" class="form-control date" name="date_meeting" ></div><div class="form-group block_type_meeting"><label>Тип ГИА:</label><select class="form-control type_meeting" name="type_meeting" ><option value="" disabled selected></option><option value=1>Госэкзамен</option><option value=2>Защита ВКР</option></select></div>');
+					}
+					var mode_other = 9;
+					$.ajax({
+							type: 'POST',
+							url: 'handler_structure.php',
+							data: {mode_other, commission},
+							async: false,
+							success: function(response_3)
+							{
+								alert(response_3);
+								var current_obj = JSON.parse(response_3);
+								//alert(current_obj);
+								$(current_obj).each(function(index, item) {
+									
+									$('.group:eq('+index+')').val(item.arr_1_group);
+									$('.date:eq('+index+')').val(item.date);
+									$('.type_meeting:eq('+index+')').val(item.type_meeting);
+									
+								});
+							}
+						});
+		        }
+		    });
+		});
 	</script>
 
 </head>
@@ -174,8 +287,12 @@
 				<form method="POST" action="#">
 					<legend>О комиссии</legend>
 					<div class="form-group">
+						<label for="number_commission">Номер комиссии:</label>
+						<input type="text" class="form-control" id="number_commission" name="number_commission" value="<?php echo $arr_commission['number'] ?>">
+					</div>
+					<div class="form-group">
 						<label for="order_1">Приказ:</label>
-						<textarea class="form-control" id="order_1" name="order_1" required><?php echo $arr_commission['order_1']; ?></textarea>
+						<textarea class="form-control" id="order_1" name="order_1" ><?php echo $arr_commission['order_1'] ?></textarea>
 					</div>
 					<div class="form-group">
 						<label for="number_meeting">Количество заседаний:</label>
@@ -183,13 +300,7 @@
 						<button type="button" id="btn_minus" class="btn btn-primary">-</button>
 						<button type="button" id="btn_plus" class="btn btn-primary">+</button>
 					</div>
-					<?php
-					while($arr_meeting = $qs_meeting->fetch_assoc())
-					{
-						echo '<div class="form-group date"><label>Дата:</label><input type="date" class="form-control" name="date_meeting" value='.$arr_meeting["date"].'></div>';
-					}
-					?>
-					<button type="submit" class="btn btn-primary">Submit</button>
+					<button type="submit" class="btn btn-primary">Добавить</button>
 				</form>
 			</div>
 		</div>

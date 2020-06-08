@@ -28,11 +28,11 @@
 		}
 		if($mode == 3)
 		{
-			$result_commission = $conn->query('SELECT id, order_1 FROM commission');
+			$result_commission = $conn->query('SELECT id, number FROM commission');
 			echo '<ul class="add_content">';
 			while ($arr_commission = $result_commission->fetch_assoc())
 			{
-				printf('<li><a href=form_update_commission.php?arr_1=%s>%s</a></li>', $arr_commission['id'], $arr_commission['order_1']);
+				printf('<li>Комиссия: <a href=form_update_commission.php?arr_1=%s>%s</a></li>', $arr_commission['id'], $arr_commission['number']);
 			}
 			echo '</ul>';
 		}

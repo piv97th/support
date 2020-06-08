@@ -148,7 +148,8 @@
 
 	if($mode_1 == 8)
 	{
-		require_once('user_classes/class_structure.php');
+		
+		/*require_once('user_classes/class_structure.php');
 		$commission = new commission();
 		$meeting = new meeting();
 
@@ -166,7 +167,7 @@
 		$result += ['commission' => $result_commission];
 
 		echo json_encode($result);
-        exit;
+        exit;*/
 	}
 
 	if($mode_1 == 9)
@@ -254,6 +255,38 @@
 			$arr_new[] = array('arr_1' => $arr['id'], 'cipher_group' => $arr['cipher_group']);
 		}
 		echo json_encode($arr_new);
+        exit;
+	}
+
+	if($_POST['mode_other'] == 7)
+	{
+		$commission = $_POST['commission'];
+		$result_group = $conn->query('SELECT COUNT(group_1.id) as `count` FROM group_1 INNER JOIN timetable_meeting ON group_1.id_meeting_se_fk = timetable_meeting.id OR group_1.id_meeting_diploma_fk = timetable_meeting.id WHERE id_commission_fk = (SELECT id FROM commission WHERE id = '.$commission.')');
+		$c = $result_group->fetch_assoc()['count'];
+		echo $c;
+        exit;
+	}
+
+	if($_POST['mode_other'] == 8)
+	{
+		$result_group = $conn->query('SELECT id, cipher_group FROM group_1');
+		while($arr = $result_group->fetch_assoc())
+		{
+			$arr_new[] = array('arr_1' => $arr['id'], 'cipher_group' => $arr['cipher_group']);
+		}
+		echo json_encode($arr_new);
+        exit;
+	}
+
+	if($_POST['mode_other'] == 9)
+	{
+		$commission = $_POST['commission'];
+		$qs_grp_tmtm = $conn->query('SELECT group_1.id as `id_group`, group_1.cipher_group, timetable_meeting.id, timetable_meeting.number_meeting, timetable_meeting.type_meeting, timetable_meeting.date FROM group_1 INNER JOIN timetable_meeting ON group_1.id_meeting_se_fk = timetable_meeting.id OR group_1.id_meeting_diploma_fk = timetable_meeting.id WHERE id_commission_fk = (SELECT id FROM commission WHERE id = '.$commission.')');
+		while($arr_qs_gt = $qs_grp_tmtm->fetch_assoc())
+		{
+			$arr_qs_gt_new[] = array('arr_1_group' => $arr_qs_gt['id_group'], 'cipher_group' => $arr_qs_gt['cipher_group'], 'arr_1' => $arr_qs_gt['id'], 'number_meeting' => $arr_qs_gt['number_meeting'], 'type_meeting' => $arr_qs_gt['type_meeting'], 'date' => $arr_qs_gt['date']);
+		}
+		echo json_encode($arr_qs_gt_new);
         exit;
 	}
 
