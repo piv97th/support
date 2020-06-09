@@ -216,15 +216,19 @@
 
 		private function check_repeat($arr)
 		{
+			array_push($arr, $this->chairman, $this->secretary);
 			$c = count($arr);
-			for($i = 0; $i < $c-1; $i++)
+			for($i = 0; $i < $c - 1; $i++)
 			{
-				$temp = $arr[$i];
-				for($k = 1; $i < $c; $i++)
+				for($k = 1 + $i; $k < $c; $k++)
 				{
-
+					if($arr[$i] == $arr[$k])
+					{
+						return 3;
+					}
 				}
 			}
+			return 1;
 		}
 
 		public function check_arr_member($arr)

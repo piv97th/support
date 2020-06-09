@@ -15,6 +15,9 @@
 		$result += ['login' => $user->check_login($_POST['login']), 'password' => $user->check_password($_POST['password'])];
 		check_result($result);
 
+		/*$result += ['repeat_member' => $user->check_repeat()];
+		check_result($result);*/
+
 		$result_add = $add->add_commission_member();
 		$result = array('add' => $result_add);
 		check_result($result);

@@ -59,6 +59,7 @@
 		        	async: false,
 		        	success: function(response)
 		        	{
+		        		alert(response);
 		        		var result = JSON.parse(response);
 		        		outToast(result);
 		        	},
@@ -189,6 +190,11 @@
 							toastr.error('Ошибка формата члена ГЭК','Ошибка!');
 							flag = false;
 						}
+						if(arr['arr_member_ssk'] == 3)
+						{
+							toastr.error('Повтор члена ГЭК','Ошибка!');
+							flag = false;
+						}
 					}
 					if(c == 3)
 					{
@@ -240,6 +246,7 @@
     		if(flag == true)
     		{
     			toastr.success('Успешно! Добавлено');
+    			location.reload();
     		}
 		}
 	</script>
