@@ -1,7 +1,7 @@
 <?php require('check_login.php'); ?>
 <?php
 	require('blocks/connect.php');
-	$result = $conn->query('SELECT cipher_group FROM group_1');
+	$result = $conn->query('SELECT id, cipher_group FROM group_1 WHERE id NOT IN (SELECT id_group_fk FROM student)');
 ?>
 
 <!DOCTYPE html>
@@ -30,16 +30,18 @@
 			<div class="col-sm text-left"> 
 				<form method="POST" action="download_blank.php">
 					<legend>Скачать бланк для добавления</legend>
-					Выбор группы
-					<select id="slc" name="cipher_group" required>
-						<option value="" disabled selected></option>
-						<?php
-							while ($arr = $result->fetch_assoc())
-							{
-								echo'<option value='.$arr["cipher_group"].'>'.$arr["cipher_group"].'</option>';
-							}
-						?>
-					</select>
+					<div class="form-group">
+						<label for="slc">Выбор группы:</label>
+						<select id="slc" class="form-control" name="cipher_group" required>
+							<option value="" disabled selected></option>
+							<?php
+								while ($arr = $result->fetch_assoc())
+								{
+									echo'<option value='.$arr["cipher_group"].'>'.$arr["cipher_group"].'</option>';
+								}
+							?>
+						</select>
+					</div>
 					<button class="btn btn-primary" id="btn_choice">Выбрать</button>
 				</form>
 			</div>
