@@ -214,6 +214,19 @@
 			}
 		}
 
+		private function check_repeat($arr)
+		{
+			$c = count($arr);
+			for($i = 0; $i < $c-1; $i++)
+			{
+				$temp = $arr[$i];
+				for($k = 1; $i < $c; $i++)
+				{
+
+				}
+			}
+		}
+
 		public function check_arr_member($arr)
 		{
 			foreach($arr as $member)
@@ -227,6 +240,10 @@
 					return 2;
 				}
 			}
+			if($this->check_repeat($arr) == 3)
+				{
+					return 3;
+				}
 			$this->arr_member_ssk = $arr;
 			return 1;
 		}

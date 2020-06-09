@@ -5,10 +5,10 @@
 	function slc_commision()
 	{
 		require('blocks/connect.php');
-		$result = $conn->query('SELECT id, order_1 FROM commission');
+		$result = $conn->query('SELECT id, number FROM commission');
 		while($arr_commission = $result->fetch_assoc())
 		{
-			echo '<option value='.$arr_commission["id"].'>'.$arr_commission["order_1"].'</option>';
+			echo '<option value='.$arr_commission["id"].'>'.$arr_commission["number"].'</option>';
 		}
 	}
 

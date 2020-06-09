@@ -5,7 +5,8 @@
 	function out_group()
 	{
 		require('blocks/connect.php');
-		$result = $conn->query('SELECT id, cipher_group FROM group_1 WHERE id_qualification_fk = 2 OR id_qualification_fk = 3');
+		$result = $conn->query('SELECT id, cipher_group FROM group_1 WHERE id_direction_fk IN (SELECT id FROM direction WHERE id_qualification_fk = 2 OR id_qualification_fk = 3)');
+		//id_qualification_fk = 2 OR id_qualification_fk = 3
 		while ($arr = $result->fetch_assoc())
 		{
 			echo'<option value='.$arr["id"].'>'.$arr["cipher_group"].'</option>';

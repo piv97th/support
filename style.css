@@ -1,37 +1,57 @@
-	/* Remove the navbar's default margin-bottom and rounded borders */ 
-	.navbar {
-		margin-bottom: 0;
-		border-radius: 0;
-	}
+	body
+{
+    background: #F0F8FF;
+}
 
-	/* Set gray background color and 100% height */
-	.sidenav {
-		padding-top: 20px;
-		background-color: #f1f1f1;
-		height: 100%;
-	}
+/* Remove the navbar's default margin-bottom and rounded borders */
+.navbar
+{
+    margin-bottom: 0;
 
-	/* Set black background color, white text and some padding */
-	footer {
-		padding: 15px;
-	}
+    border-radius: 0;
+}
 
-	#content {
-		padding: 20px;
-	}
-	/* On small screens, set height to 'auto' for sidenav and grid */
-	@media screen and (max-width: 767px) {
-	.sidenav {
-		height: auto;
-		padding: 15px;
-	}
-	.row.content {height:auto;} 
-	}
+/* Set gray background color and 100% height */
+.sidenav
+{
+    height: 100%;
+    padding-top: 20px;
 
-	.jumbotron {
-		margin-bottom: 0;
-	}
+    background-color: #f1f1f1;
+}
 
-	footer{
-		position:fixed; bottom:0;
-	}
+/* Set black background color, white text and some padding */
+footer
+{
+    padding: 15px;
+}
+
+#content
+{
+    padding: 20px;
+}
+/* On small screens, set height to 'auto' for sidenav and grid */
+@media screen and (max-width: 767px)
+{
+    .sidenav
+    {
+        height: auto;
+        padding: 15px;
+    }
+    .row.content
+    {
+        height: auto;
+    }
+}
+
+.jumbotron
+{
+    margin-bottom: 0;
+}
+
+footer
+{
+    bottom: 0;
+
+    //position: fixed;
+}
