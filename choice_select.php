@@ -116,7 +116,7 @@
 					{
 		        		var result = JSON.parse(response);
 		        		outToast(result);
-		        		$("#btn_choice").trigger("click");
+		        		$("#slc").trigger("change");
 					},
 					error: function(jqxhr, status, errorMsg)
 		        	{
@@ -128,7 +128,7 @@
 		}
 
 		$(function(){
-			$("#btn_choice").on('click',function(){
+			$("#slc").on('change',function(){
 				$(".add_content").children().remove();
 				var mode = <?php echo $mode; ?>;
 				var select = $("#slc").val();
@@ -211,7 +211,6 @@
 							content_select($mode);
 						?>
 					</select>
-					<button class="btn btn-primary" id="btn_choice">Выбрать</button>
 					<form name="heh">
 						<div id="content">
 							<ul class="add_content">
