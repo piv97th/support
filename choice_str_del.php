@@ -100,7 +100,7 @@
 					if(mode == 3)
 					{
 						$(obj).each(function(index, item) {
-						$('.add_content').append('<li><a class="nolink" href=handler_structure.php?arr_1='+item.arr_1+'>'+item.order_1+'</a></li>');
+						$('.add_content').append('<li><a class="nolink" href=handler_structure.php?arr_1='+item.arr_1+'>'+item.number+'</a></li>');
 						});
 						aDellCommission();
 					}

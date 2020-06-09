@@ -148,7 +148,21 @@
 
 	if($mode_1 == 8)
 	{
-		
+		require_once('user_classes/class_structure.php');
+		$commission = new commission();
+		$meeting = new meeting();
+
+		$result = array('arr_1' => $commission->check_arr_1($_POST['arr_1']),'number_commission' => $commission->check_number_commission_u($_POST['number_commission']), 'order_1' => $commission->check_order_1($_POST['order_1']));
+		check_result_1($result);
+
+		$result += ['data' => $meeting->check_arr_mixed($_POST['arr_mixed'])];
+		check_result_1($result);
+
+		$meeting->commission_fk = $commission->get_commission_fk();
+		$result_setnull_group = $meeting->setnull_group();
+		$result = array('meeting' => $result_setnull_group);
+		check_result($result);
+
 		/*require_once('user_classes/class_structure.php');
 		$commission = new commission();
 		$meeting = new meeting();
@@ -164,10 +178,10 @@
 		check_result($result);
 
 		$result_commission = $commission->update_commission();
-		$result += ['commission' => $result_commission];
+		$result += ['commission' => $result_commission];*/
 
 		echo json_encode($result);
-        exit;*/
+        exit;
 	}
 
 	if($mode_1 == 9)
@@ -179,12 +193,9 @@
 		$result = array('arr_1' => $commission->check_arr_1($_POST['arr_1']));
 		check_result($result);
 		$meeting->commission_fk = $commission->get_commission_fk();
-		if($meeting->is_commission() == 1)
-		{
-			$result_meeting = $meeting->delete_meeting();
-			$result = array('meeting' => $result_meeting);
-			check_result($result);
-		}
+		$result_meeting = $meeting->delete_meeting();
+		$result = array('meeting' => $result_meeting);
+		check_result($result);
 
 		$result_commission = $commission->delete_commission();
 		$result = array('commission' => $result_commission);
@@ -216,10 +227,10 @@
 
 	if($_POST['mode_other'] == 3)
 	{
-		$result_commission = $conn->query('SELECT id, order_1 FROM commission');
+		$result_commission = $conn->query('SELECT id, number FROM commission');
 		while($arr = $result_commission->fetch_assoc())
 		{
-			$arr_new[] = array('arr_1' => $arr['id'], 'order_1' => $arr['order_1']);
+			$arr_new[] = array('arr_1' => $arr['id'], 'number' => $arr['number']);
 		}
 		echo json_encode($arr_new);
         exit;

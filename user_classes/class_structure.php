@@ -494,6 +494,53 @@
 			}
 		}
 
+		private function is_old_number_commission($data)
+		{
+			require('blocks/connect.php');
+			$result = $conn->query('SELECT number FROM commission WHERE id = '.$this->id) or die($conn->error);
+			$arr = $result->fetch_assoc();
+			if($arr['number'] == $data)
+			{
+				return 1;
+			}
+			else
+			{
+				return 0;
+			}
+		}
+
+		public function check_number_commission_u($data)
+		{
+			if($this->check_empty($data) == 0)
+			{
+				return 0;
+			}
+			if($this->check_num($data) == 2)
+			{
+				return 2;
+			}
+			else
+			{
+				if(($this->exist_number_commission($data) == 1))
+				{
+					if($this->is_old_number_commission($data) == 1)
+					{
+						$this->cipher = $data;
+						return 1;
+					}
+					else
+					{
+						return 3;
+					}
+				}
+				else
+				{
+					$this->cipher = $data;
+					return 1;
+				}
+			}
+		}
+
 		private function exist_number_commission($data)
 		{
 			require('blocks/connect.php');
@@ -615,6 +662,18 @@
 		public $arr_temp_group = 'NULL';
 		protected $c_temp = 'NULL';
 		public $arr_insert_id = 'NULL';
+		protected $arr_old_group = [];
+
+		protected function get_info_group()
+		{
+			require('blocks/connect.php');
+			$result = $conn->query('SELECT id, cipher_group, id_meeting_se_fk, id_meeting_diploma_fk FROM group_1 WHERE id_meeting_se_fk IN (SELECT id FROM timetable_meeting WHERE id_commission_fk IN (SELECT id FROM commission WHERE id ='.$commission_fk.')) OR id_meeting_diploma_fk IN (SELECT id FROM timetable_meeting WHERE id_commission_fk IN (SELECT id FROM commission WHERE id ='.$commission_fk.'))') or die($conn->error);
+			while($arr = $result->fetch_assoc())
+			{
+				$arr_new = $arr;
+			}
+			$this->arr_old_group = $arr_new;
+		}
 
 		private function check_date($arr)
 		{
@@ -861,6 +920,36 @@
 			{
 				return 1;
 			}
+		}
+
+		public function setnull_group()
+		{
+			require('blocks/connect.php');
+			$result = $conn->query('UPDATE group_1 SET  WHERE');
+
+			require('blocks/connect.php');
+			for($i = 0; $i < $this->c_temp; $i++)
+			{
+				$temp_i = $this->arr_insert_id[$i];
+				$arr_temp_i[$i] = (int)$temp_i;
+				if($this->arr_type_meeting[$i] == 1)
+				{
+					$result = $conn->query('UPDATE group_1 SET id_meeting_se_fk = '.$arr_temp_i[$i].' WHERE id = '.$this->arr_temp_group[$i]) or die($conn->error);
+					if($result != 1)
+					{
+						return 0;
+					}
+				}
+				if($this->arr_type_meeting[$i] == 2)
+				{
+					$result = $conn->query('UPDATE group_1 SET id_meeting_diploma_fk = '.$arr_temp_i[$i].' WHERE id = '.$this->arr_temp_group[$i]);
+					if($result != 1)
+					{
+						return 0;
+					}
+				}
+			}
+			return 1;
 		}
 
 		
