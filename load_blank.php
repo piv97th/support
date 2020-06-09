@@ -32,7 +32,7 @@
 					data: file_blank,
 		        	success: function(response)
 		        	{
-		        		var flag = true;
+		        		alert(response);
 		        		var result = JSON.parse(response);
 		        		out_toast(result);
 		        	},
@@ -47,6 +47,7 @@
 
 		function out_toast(arr)
 		{
+			//alert(2);
 			var flag = true;
 			var c = 0;
 			for(var i in arr)
@@ -98,6 +99,11 @@
 						if(arr['сellname'] == 2)
 						{
 							toastr.error('Проверьте столбец c ФИО','Ошибка!');
+							flag = false;
+						}
+						if(arr['сelltopic'] == 2)
+						{
+							toastr.error('Проверьте столбец c темой','Ошибка!');
 							flag = false;
 						}
 						if(arr['сell5'] == 2)
@@ -162,10 +168,10 @@
     		{
     			toastr.success('Успешно! Студенты добавлен');
     		}
-    		else
+    		/*else
     		{
     			toastr.error('Проверьте данные','Ошибка!');
-    		}
+    		}*/
 		}
 
 	</script>

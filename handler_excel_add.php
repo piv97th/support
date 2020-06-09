@@ -4,9 +4,8 @@
 	require_once('blocks/check_data.php');
 	require_once('Classes/PHPExcel.php');
 
-	function next_id_diploma($row)
+	function get_last_id()
 	{
-		$row = $row - 3;
 		require("blocks/connect.php");
 		$res = $conn->query('SELECT id from diploma ORDER BY id DESC LIMIT 1');
 		$qdiploma_id = $res->fetch_assoc();
@@ -18,7 +17,6 @@
 		{
 			return $qdiploma_id['id'];
 		}
-		
 	}
 
 	function ckind_work($group_1)
@@ -68,9 +66,8 @@
 		return $group['id'];
 	}
 
-	function cin_data($var, $row, $col, $group_1)
+	function cin_data($var, $col, $row)
 	{
-		$col_p = $col+1;
 		if(empty($var))
 		{
 			$result = array('cell' => 0);
@@ -113,6 +110,17 @@
 				exit;
 			}
 		}
+
+		if($col == 4)
+		{
+			if(1 > mb_strlen($var) || 255 < mb_strlen($var))
+			{
+				$result = array('celltopic' => 2);
+				echo json_encode($result);
+				exit;
+			}
+		}
+
 		if($col == 5)
 		{
 			$var = mb_strtolower($var);
@@ -137,69 +145,79 @@
 		return $var;
 	}
 
-	function insert_data($nrb, $last_name, $first_name, $patronymic, $id_group_fk, $topic, $id_kind_work_fk, $id_teacher_fk, $id_type_work_fk, $row)
+	function insert_data($arr_data, $id_group_fk, $id_kind_work_fk)
 	{
 		require("blocks/connect.php");
-		
-		$stmt_diploma = $conn->prepare('INSERT INTO diploma (topic, id_kind_work_fk, id_teacher_fk, id_type_work_fk) VALUES(?,?,?,?)');
-		
-		$stmt_diploma->bind_param('siii', $topic,  $id_kind_work_fk, $id_teacher_fk, $id_type_work_fk);
-		
-		if($stmt_diploma->execute() != 1)
-		{
-			$result = array('diploma' => '0');
-			echo json_encode($result);
-			exit;
-		}
-		else
-		{
-			$result = array('diploma' => 1);
-		}
 
-		$stmt_student = $conn->prepare('INSERT INTO student (number_record_book, last_name, first_name, patronymic, id_group_fk, id_diploma_fk) VALUES(?,?,?,?,?,?)');
-		$id_diploma_fk = next_id_diploma($row);
-		
-		$stmt_student->bind_param('ssssii', $nrb, $last_name, $first_name, $patronymic, $id_group_fk, $id_diploma_fk);
-		if($stmt_student->execute() != 1)
-		{
-			$result = array('student' => '0');
-			echo json_encode($result);
-			exit;
-		}
-		else
-		{
-			$result = array('student' => 1);
-		}
-	}
 
-	if($_FILES['file_blank']['error'] == 4)
-	{
-		$result = array('file' => 0);
-	}
 
-	if($_FILES['file_blank']['error'] == 0)
-	{
-		if(($_FILES['file_blank']['type'] == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") || ($_FILES['file_blank']['type'] == "application/vnd.ms-excel"))
+		$c = count($arr_data);
+
+		for($i = 0; $i < $c ; $i++)
 		{
-			if($_FILES['file_blank']['size'] >= 15360)
+			$arr_id_teacher_fk[] = ssupervisor($arr_data[$i+4][6], $arr_data[$i+4][7], $arr_data[$i+4][8]);
+		}
+		for($i = 0; $i < $c; $i++)
+		{
+			$stmt_diploma = $conn->prepare('INSERT INTO diploma (topic, id_kind_work_fk, id_teacher_fk, id_type_work_fk) VALUES(?,?,?,?)');
+			$stmt_diploma->bind_param('siii', $arr_data[$i+4][4],  $id_kind_work_fk, $arr_id_teacher_fk[$i], $arr_data[$i+4][5]);
+			if($stmt_diploma->execute() != 1)
 			{
-				$result = array('file' => 2);
+				$result = array('diploma' => '0');
+				echo json_encode($result);
+				exit;
 			}
 			else
 			{
-				$result = array('file' => 1);
+				$result = array('diploma' => 1);
+			}
+			$insert_id = get_last_id();
+
+			$stmt_student = $conn->prepare('INSERT INTO student (number_record_book, last_name, first_name, patronymic, id_group_fk, id_diploma_fk) VALUES(?,?,?,?,?,?)');
+
+			$stmt_student->bind_param('ssssii', $arr_data[$i+4][0], $arr_data[$i+4][1], $arr_data[$i+4][2], $arr_data[$i+4][3], $id_group_fk, $insert_id);
+			if($stmt_student->execute() != 1)
+			{
+				$result = array('student' => '0');
+				echo json_encode($result);
+				exit;
+			}
+			else
+			{
+				$result = array('student' => 1);
+			}
+		}
+	}
+
+	if($_FILES['file_blank']['error'] != 4)
+	{
+		if($_FILES['file_blank']['error'] == 0)
+		{
+			if(($_FILES['file_blank']['type'] == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") || ($_FILES['file_blank']['type'] == "application/vnd.ms-excel"))
+			{
+				if($_FILES['file_blank']['size'] >= 15360)
+				{
+					$result = array('file' => 2);
+				}
+				else
+				{
+					$result = array('file' => 1);
+				}
+			}
+			else
+			{
+				$result = array('file' => 4);
 			}
 		}
 		else
 		{
-			$result = array('file' => 4);
+			$result = array('file' => 5);
 		}
 	}
 	else
 	{
-		$result = array('file' => 5);
+		$result = array('file' => 0);
 	}
-
 	check_result($result);
 
 	$destination_dir = $_FILES['file_blank']['name'];
@@ -230,18 +248,20 @@
 		// Первая строка с данными
 		$first_need_row = 4;
 
+		//$arr_data = [[]];
 		for ($row = $first_need_row; $row <= $lastRow; ++$row)
 		{
-			$arr_data = array();
-			for ($col = 0; $col < $lastColumnIndex; ++ $col)
+			if(TRUE)
 			{
-				$arr_data[] = cin_data($worksheet->getCellByColumnAndRow($col, $row)->getValue(), $row, $col, $student->group_1);	
+				for ($col = 0; $col < $lastColumnIndex; ++ $col)
+				{
+					$arr_data[$row][$col] = cin_data($worksheet->getCellByColumnAndRow($col, $row)->getValue(), $col, $row);
+				}
 			}
-			$group_fk = sgroup($student->group_1);
-			$supervisor_fk = ssupervisor($arr_data[6], $arr_data[7], $arr_data[8]);
-			$kind_work_fk=ckind_work($student->group_1);
-			insert_data($arr_data[0], $arr_data[1], $arr_data[2], $arr_data[3], $group_fk, $arr_data[4], $kind_work_fk, $supervisor_fk, $arr_data[5], $row);
 		}
+		$id_group_fk = sgroup($student->group_1);
+		$id_kind_work_fk = ckind_work($student->group_1);
+		insert_data($arr_data, $id_group_fk, $id_kind_work_fk);
 
 		echo json_encode($result);
         exit;
