@@ -32,7 +32,6 @@
 					data: file_blank,
 		        	success: function(response)
 		        	{
-		        		alert(response);
 		        		var result = JSON.parse(response);
 		        		out_toast(result);
 		        	},
