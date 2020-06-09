@@ -217,8 +217,8 @@
 		public function add_diploma()
 		{
 			require('blocks/connect.php');
-			$stmt = $conn->prepare('INSERT INTO diploma (topic, anti_plagiarism, id_kind_work_fk, id_teacher_fk, id_type_work_fk) VALUES(?,?,?,?,?)');
-			$stmt->bind_param('sdiii', $this->topic, $this->anti_plagiarism, $this->kind_work, $this->supervisor, $this->type_work);
+			$stmt = $conn->prepare('INSERT INTO diploma (topic, id_kind_work_fk, id_teacher_fk, id_type_work_fk) VALUES(?,?,?,?)');
+			$stmt->bind_param('siii', $this->topic, $this->kind_work, $this->supervisor, $this->type_work);
 			if($stmt->execute() != 1)
 			{
 				return 0;

@@ -32,12 +32,12 @@
 		        var group_1 = $("#group_1").val();
 		        var topic = $("#topic").val();
 		        var type_work = $("#type_work").val();
-		        var anti_plagiarism = $("#anti_plagiarism").val();
+
 		        var supervisor = $("#supervisor").val();
 		        $.ajax({
 		        	type: 'POST',
 		        	url: 'handler_student.php',
-		        	data: {nrb, last_name, first_name, patronymic, group_1, topic, type_work, anti_plagiarism, supervisor, mode_1},
+		        	data: {nrb, last_name, first_name, patronymic, group_1, topic, type_work, supervisor, mode_1},
 		        	async: false,
 		        	success: function(response)
 		        	{
@@ -169,14 +169,6 @@
 					}
 					if(c == 7)
 					{
-						if(arr['anti_plagiarism'] == 2)
-						{
-							toastr.error('Некорректное значение антиплагиата','Ошибка!');
-							flag = false;
-						}
-					}
-					if(c == 8)
-					{
 						if(arr['supervisor'] == 0)
 						{
 							toastr.error('Выберете научного руководителя','Ошибка!');
@@ -201,7 +193,6 @@
     			$("#group_1").val("");
     			$("#topic").val("");
     			$("#type_work").val("");
-    			$("#anti_plagiarism").val("");
     			$("#supervisor").val("");
     			$.removeCookie('nrb');
     			$.removeCookie('last_name');
@@ -210,7 +201,6 @@
     			$.removeCookie('group_1');
     			$.removeCookie('topic');
     			$.removeCookie('type_work');
-    			$.removeCookie('anti_plagiarism');
     			$.removeCookie('supervisor');
     		}
 		}
@@ -223,7 +213,6 @@
 			$.cookie('group_1', $("#group_1").val(), { expires: 1 });
 			$.cookie('topic', $("#topic").val(), { expires: 1 });
 			$.cookie('type_work', $("#type_work").val(), { expires: 1 });
-			$.cookie('anti_plagiarism', $("#anti_plagiarism").val(), { expires: 1 });
 			$.cookie('supervisor', $("#supervisor").val(), { expires: 1 });
 		};
 
@@ -255,10 +244,6 @@
 			if($.cookie('type_work') != null)
 			{
 				$("#type_work").val($.cookie("type_work"));
-			}
-			if($.cookie('anti_plagiarism') != null)
-			{
-				$("#anti_plagiarism").val($.cookie("anti_plagiarism"));
 			}
 			if($.cookie('supervisor') != null)
 			{
@@ -324,10 +309,6 @@
 						</select>
 					</div>
 					<div class="form-group">
-						<label for="anti_plagiarism">Антиплагиат:</label>
-						<input type="text" class="form-control" id="anti_plagiarism" name="anti_plagiarism" >
-					</div>
-					<div class="form-group">
 						<label for="supervisor">Преподаватель:</label>
 						<select class="form-control" id="supervisor" name="supervisor" >
 							<option value="" disabled selected></option>
@@ -339,7 +320,7 @@
 							?>
 						</select>
 					</div>
-					<button type="submit" class="btn btn-primary">Отправить</button>
+					<button type="submit" class="btn btn-primary">Добавить</button>
 				</form>
 			</div>
 		</div>
