@@ -143,6 +143,11 @@
 		public $review = 'NULL';
 		public $cipher_group = 'NULL';
 
+		public function get_id_student()
+		{
+			return $this->id;
+		}
+
 		public function get_old_nrb()
 		{
 			require('blocks/connect.php');

@@ -93,6 +93,12 @@
 		
 		$result_student = $student->update_student();
 		$result += ['student' => $result_student];
+		check_result($result);
+
+		$diploma->kind_work = choice_kind_work($student->group_1);
+		$c_id_student = $student->get_id_student();
+		$diploma->set_kind_work($c_id_student);
+
 		echo json_encode($result);
         exit;
 	}

@@ -154,6 +154,14 @@
 		public $kind_work = 'NULL';
 		public $supervisor = 'NULL';
 		public $type_work = 'NULL';
+
+		public function set_kind_work($student)
+		{
+			require('blocks/connect.php');
+			$stmt = $conn->prepare('UPDATE diploma SET id_kind_work_fk = ? WHERE id = (SELECT id_diploma_fk FROM student WHERE id = ?)');
+			$stmt->bind_param('ii', $this->kind_work, $student);
+			$stmt->execute();
+		}
 		
 		public function check_ap($data)
 		{
