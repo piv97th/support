@@ -1,18 +1,4 @@
 <?php require('check_login_general.php'); ?>
-<?php
-	require('blocks/connect.php');
-
-	function content_select($arr_1)
-	{
-		require('blocks/connect.php');
-
-			$result = $conn->query('SELECT id, number_meeting, date FROM timetable_meeting WHERE id_commission_fk = (SELECT id FROM commission WHERE id IN (SELECT id_commission_fk FROM curation_event WHERE role = 3 AND id = (SELECT id_curevent_fk FROM user WHERE id = '.$arr_1.')))');
-			while ($arr = $result->fetch_assoc())
-			{
-				echo'<option value='.$arr["id"].'>'.$arr["number_meeting"].' '.$arr["date"].'</option>';
-			}
-	}
-?>
 
 <!DOCTYPE html>
 <html>

@@ -183,7 +183,7 @@
     		if(flag == true)
     		{
     			toastr.success('Успешно! Данные сохранены');
-    			window.location.href = "choice_select.php?mode=4";
+    			history.back();
     		}
 		}
 
@@ -196,7 +196,6 @@
 
 	<?php
 	require_once('blocks/header.php');
-	require_once('blocks/navbar.php');
 	?>
 
 	<div class="container" id="content">    
