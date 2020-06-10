@@ -410,10 +410,19 @@
 			return $result;
 		}
 
+		private function search_commission()
+		{
+			require('blocks/connect.php');
+			$query = $conn->query('SELECT id_commission_fk FROM timetable_meeting WHERE id = (SELECT id_meeting_se_fk FROM group_1 WHERE id = '.$this->group_other.')');
+			$result = $query->fetch_assoc();
+			return $result['id_commission_fk'];
+		}
+
 		private function insert_number_protocol()
 		{
 			require('blocks/connect.php');
-			$query = $conn->query('SELECT number_protocol FROM se WHERE id IN(SELECT id_se_fk FROM student WHERE id_group_fk = '.$this->group_other.') AND number_protocol IS NOT NULL ORDER BY id DESC LIMIT 1 ') or die($conn->error);
+			$commission_fk = $this->search_commission();
+			$query = $conn->query('SELECT id, number_protocol FROM se WHERE id IN (SELECT id_se_fk FROM student WHERE id_group_fk IN (SELECT id FROM group_1 WHERE id_meeting_se_fk IN (SELECT id FROM timetable_meeting WHERE id_commission_fk = '.$commission_fk.'))) AND number_protocol IS NOT NULL ORDER BY number_protocol DESC LIMIT 1');
 			$result = $query->fetch_assoc();
 			if($result['number_protocol'] != 0)
 			{
@@ -429,8 +438,8 @@
 		{
 			require('blocks/connect.php');
 			$this->insert_number_protocol();
-			$stmt = $conn->prepare('INSERT INTO se (number_protocol, id_ticket_fk, id_mark_fk, id_meeting_fk) VALUES(?,?,?,?)');
-			$stmt->bind_param('iiii', $this->number_protocol, $this->ticket, $this->mark, $this->meeting);
+			$stmt = $conn->prepare('INSERT INTO se (number_protocol, id_ticket_fk, id_mark_fk) VALUES(?,?,?)');
+			$stmt->bind_param('iii', $this->number_protocol, $this->ticket, $this->mark);
 			if($stmt->execute() != 1)
 			{
 				return 0;

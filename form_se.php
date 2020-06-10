@@ -4,7 +4,7 @@
 
 	require_once('blocks/check_data.php');
 
-	function slc_meeting()
+	/*function slc_meeting()
 	{
 		require('blocks/connect.php');
 		$result = $conn->query('SELECT id, number_meeting, date FROM timetable_meeting');
@@ -13,7 +13,7 @@
 		{
 			echo '<option value='.$arr_meeting["id"].'>'.$arr_meeting["number_meeting"].' '.$arr_meeting["date"].'</option>';
 		}
-	}
+	}*/
 
 	function slc_ticket()
 	{
@@ -34,7 +34,7 @@
 	$result_student = $conn->query('SELECT id, number_record_book, last_name, first_name, patronymic, id_group_fk FROM student WHERE id = '.$arr_1);
 	
 	$arr_student = $result_student->fetch_assoc();
-	$result_member_ssk = $conn->query('SELECT * FROM member_ssk');
+	$result_member_ssk = $conn->query('SELECT member_ssk.id, member_ssk.last_name, member_ssk.first_name, member_ssk.patronymic, member_ssk.post FROM member_ssk INNER JOIN curation_event ON member_ssk.id=curation_event.id_member_ssk_fk JOIN commission ON curation_event.id_commission_fk = commission.id WHERE commission.id IN (SELECT id_commission_fk FROM timetable_meeting WHERE id IN (SELECT id_meeting_se_fk FROM group_1 WHERE id = '.$arr_student["id_group_fk"].')) AND curation_event.role <> 3 ');
 ?>
 
 <!DOCTYPE html>
@@ -89,41 +89,15 @@
 		});
 
 		$(function(){
-			$("#meeting").on('change',function(){
-				var arr_1_meeting = $('#meeting').val();
-				var mode_other = 1;
-				$.ajax({
-		        	type: 'POST',
-		        	url: 'handler_se.php',
-		        	data: {mode_other, arr_1_meeting},
-		        	async: false,
-		        	success: function(response)
-		        	{
-		        		var result = JSON.parse(response);
-		        		$('.member_ssk').find('option').remove();
-		        		$(result).each(function(index, item) {
-							$('.member_ssk').append('<option value='+item.arr_1+'>'+item.last_name+' '+item.first_name+' '+item.patronymic+' '+item.post+'</option>');
-						});
-		        	},
-		        	error: function(jqxhr, status, errorMsg)
-		        	{
-		        		toastr.error(errorMsg, status);
-		        	}
-	    		});
-
-			});
-		});
-
-		$(function(){
 			$("#btn_plus").on('click',function(){
 				if($('.slc_spr').length < 20)
 				{
-					var mode_other = 2;
-					var arr_1_meeting = $('#meeting').val();
+					var mode_other = 1;
+					var arr_1_group = $('#arr_1_group').val();
 					$.ajax({
 			        	type: 'POST',
 			        	url: 'handler_se.php',
-			        	data: {mode_other, arr_1_meeting},
+			        	data: {mode_other, arr_1_group},
 			        	async: false,
 			        	success: function(response)
 			        	{
@@ -166,16 +140,17 @@
 			{
 				if(arr[i] != 1)
 				{
+					
 					if(c == 0)
 					{
-						if(arr['arr_1_meeting'] == 0)
+						if(arr['ticket'] == 0)
 						{
-							toastr.error('Что-то не так','Ошибка!');
+							toastr.error('Введите номер билета','Ошибка!');
 							flag = false;
 						}
-						if(arr['arr_1_meeting'] == 2)
+						if(arr['ticket'] == 2)
 						{
-							toastr.error('Что-то не так','Ошибка!');
+							toastr.error('Некорректное значение номера билета','Ошибка!');
 							flag = false;
 						}
 						if(arr['se'] == 0)
@@ -196,19 +171,6 @@
 					}
 					if(c == 1)
 					{
-						if(arr['ticket'] == 0)
-						{
-							toastr.error('Введите номер билета','Ошибка!');
-							flag = false;
-						}
-						if(arr['ticket'] == 2)
-						{
-							toastr.error('Некорректное значение номера билета','Ошибка!');
-							flag = false;
-						}
-					}
-					if(c == 2)
-					{
 						if(arr['mark'] == 0)
 						{
 							toastr.error('Введите оценку','Ошибка!');
@@ -220,7 +182,7 @@
 							flag = false;
 						}
 					}
-					if(c == 3)
+					if(c == 2)
 					{
 						if(arr['arr_1_group'] == 0)
 						{
@@ -233,7 +195,7 @@
 							flag = false;
 						}
 					}
-					if(c == 4)
+					if(c == 3)
 					{
 						if(arr['member_ssk'] == 0)
 						{
@@ -246,7 +208,7 @@
 							flag = false;
 						}
 					}
-					if(c == 5)
+					if(c == 4)
 					{
 						if(arr['questions'] == 0)
 						{
@@ -259,7 +221,7 @@
 							flag = false;
 						}
 					}
-					if(c == 6)
+					if(c == 5)
 					{
 						if(arr['arr_1_student'] == 0)
 						{
@@ -278,6 +240,7 @@
     		if(flag == true)
     		{
     			toastr.success('Успешно! Данные сохранены');
+    			window.location.href = "choice_select.php?mode=3";
     		}
 		}
 
@@ -298,15 +261,7 @@
 			<div class="col-sm text-left"> 
 				<form method="POST" action="#">
 					<legend>Госэкзамен:</legend>
-					<div id="info_student"><h3><?php echo $arr_student["number_record_book"].' '.$arr_student["last_name"].' '.$arr_student["first_name"].' '.$arr_student["patronymic"]; ?></h3><input type="hidden" name="arr_1_meeting" id="arr_1_meeting" value=<?php echo $arr_diploma["id_meeting_fk"] ?>></div>
-					<div class="form-group">
-						<label>Заседание:</label>
-						<select class="form-control" name="meeting" id="meeting">
-							<?php
-								slc_meeting();
-							?>
-						</select>
-					</div> 
+					<div id="info_student"><h3><?php echo $arr_student["number_record_book"].' '.$arr_student["last_name"].' '.$arr_student["first_name"].' '.$arr_student["patronymic"]; ?></h3><input type="hidden" name="arr_1_group" id="arr_1_group" value=<?php echo $arr_student["id_group_fk"]; ?>></div>
 					<div class="form-group slc_spr">
 						<label>Билет:</label>
 						<select class="form-control ticket" id="ticket">
@@ -344,7 +299,7 @@
 							<option value="4">отлично</option>
 						</select>
 					</div>
-					<button type="submit" class="btn btn-primary">Submit</button>
+					<button type="submit" class="btn btn-primary">Отправить</button>
 				</form>
 			</div>
 		</div>
