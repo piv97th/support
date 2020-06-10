@@ -6,7 +6,6 @@
 	{
 		require('blocks/connect.php');
 		$result = $conn->query('SELECT id, cipher_group FROM group_1');
-		// WHERE id IN (SELECT id_group_fk FROM student WHERE id_diploma_fk IN (SELECT id FROM diploma WHERE id_mark_fk IS NOT NULL) AND id_se_fk IN (SELECT id FROM se WHERE id_mark_fk IS NOT NULL))
 		while ($arr = $result->fetch_assoc())
 		{
 			echo'<option value='.$arr["id"].'>'.$arr["cipher_group"].'</option>';
@@ -69,6 +68,7 @@
 					async: false,
 					success: function(response)
 					{
+						alert(response);
 						var obj = JSON.parse(response);
 						$('#slc').after('<div class="form-group"><label for="student">Студент:</label><select id="student" class="new_student form-control"><option value="" disabled selected></option></select></div>');
 						$(obj).each(function(index, item) {
@@ -84,6 +84,7 @@
 				$("#document").remove();
 				var mode_other = 2;
 				var arr_1 = $("#student").val();
+				$('#arr_1_student').val(arr_1);
 				//alert(arr_1);
 				$.ajax({
 					type: 'POST',
@@ -100,6 +101,7 @@
 						if(obj['reference'] == 1)
 						{
 							$('#document').append('<option value='+obj.reference+'>справка</option>');
+							$('#doc').val(1);
 						}
 						if(obj['conclusion'] == 2)
 						{
@@ -128,6 +130,31 @@
 			});
 		});
 
+		/*$(function(){
+			$("form").on('submit',function(){
+				//$("#slc").children().remove();
+				var mode_1 = 1;
+				var select = $("#document").val();
+				$.ajax({
+					type: 'POST',
+					url: 'handler_document_test.php',
+					data: {mode_1, select},
+					async: false,
+					success: function(response)
+					{
+						//alert(response);
+						
+						var obj = JSON.parse(response);
+						$('#slc').after('<div id="change_block"><select id="student"><option value="" disabled selected></option></select></div>');
+						$(obj).each(function(index, item) {
+							$('#student').append('<option value='+item.arr_1+'>'+item.number_record_book+' '+item.last_name+' '+item.first_name+'</option>');
+						});
+			        }
+			    });
+			    return false;
+			});
+		});*/
+
 		$(function(){
 			$("#btn_document").on('click',function(){
 				//$("#slc").children().remove();
@@ -138,15 +165,15 @@
 					url: 'handler_document.php',
 					data: {mode_other, select},
 					async: false,
-					success: function(response)
+					/*success: function(response)
 					{
 						//alert(response);
-						/*var obj = JSON.parse(response);
+						var obj = JSON.parse(response);
 						$('#slc').after('<div id="change_block"><select id="student"><option value="" disabled selected></option></select></div>');
 						$(obj).each(function(index, item) {
 							$('#student').append('<option value='+item.arr_1+'>'+item.number_record_book+' '+item.last_name+' '+item.first_name+'</option>');
-						});*/
-			        }
+						});
+			        }*/
 			    });
 			});
 		});
@@ -201,7 +228,7 @@
 	<div class="container" id="content">    
 		<div class="row content">
 			<div class="col-sm text-left"> 
-				<form>
+				<form action="handler_document.php" method="POST">
 					<legend>Сформировать документ</legend>
 					<div class="form-group">
 						<select class="form-control" id="slc" name="slc">
@@ -210,6 +237,8 @@
 								content_select();
 							?>
 						</select>
+					<input type="hidden" name="doc" id="doc">
+					<input type="hidden" name="arr_1_student" id="arr_1_student">
 					</div>
 				</form>
 			</div>
