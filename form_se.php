@@ -4,17 +4,6 @@
 
 	require_once('blocks/check_data.php');
 
-	/*function slc_meeting()
-	{
-		require('blocks/connect.php');
-		$result = $conn->query('SELECT id, number_meeting, date FROM timetable_meeting');
-		echo '<option value="" disabled selected></option>';
-		while($arr_meeting = $result->fetch_assoc())
-		{
-			echo '<option value='.$arr_meeting["id"].'>'.$arr_meeting["number_meeting"].' '.$arr_meeting["date"].'</option>';
-		}
-	}*/
-
 	function slc_ticket()
 	{
 		require('blocks/connect.php');
@@ -76,6 +65,7 @@
 		        	async: false,
 		        	success: function(response)
 		        	{
+		        		alert(response);
 		        		var result = JSON.parse(response);
 		        		outToast(result);
 		        	},
@@ -240,7 +230,7 @@
     		if(flag == true)
     		{
     			toastr.success('Успешно! Данные сохранены');
-    			window.location.href = "choice_select.php?mode=3";
+    			history.back();
     		}
 		}
 
@@ -253,7 +243,6 @@
 
 	<?php
 	require_once('blocks/header.php');
-	require_once('blocks/navbar.php');
 	?>
 
 	<div class="container" id="content">    

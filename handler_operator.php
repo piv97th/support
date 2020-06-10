@@ -15,7 +15,7 @@
 
 	if($mode_other == 2 && (0 < $select && $select < 100000))
 	{
-		$result = $conn->query('SELECT id, number_record_book, last_name, first_name FROM student WHERE id_se_fk IS NULL AND id_group_fk = '.$select) or die($conn->error);
+		$result = $conn->query('SELECT id, number_record_book, last_name, first_name FROM student WHERE id_group_fk = (SELECT id FROM group_1 WHERE id_meeting_se_fk = '.$select.') AND id_se_fk IS NULL') or die($conn->error);
 		while($arr = $result->fetch_assoc())
 		{
 			$arr_new[] = array('arr_1' => $arr['id'], 'number_record_book' => $arr['number_record_book'], 'last_name' => $arr['last_name'], 'first_name' => $arr['first_name']);
