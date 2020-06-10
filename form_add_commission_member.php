@@ -5,7 +5,7 @@
 	function slc_commision()
 	{
 		require('blocks/connect.php');
-		$result = $conn->query('SELECT id, number FROM commission');
+		$result = $conn->query('SELECT id, number FROM commission WHERE id NOT IN (SELECT id_commission_fk FROM curation_event)');
 		while($arr_commission = $result->fetch_assoc())
 		{
 			echo '<option value='.$arr_commission["id"].'>'.$arr_commission["number"].'</option>';
@@ -59,7 +59,6 @@
 		        	async: false,
 		        	success: function(response)
 		        	{
-		        		alert(response);
 		        		var result = JSON.parse(response);
 		        		outToast(result);
 		        	},

@@ -287,7 +287,7 @@
 		private function insert_number_protocol()
 		{
 			require('blocks/connect.php');
-			$query = $conn->query('SELECT number_protocol FROM diploma WHERE id IN(SELECT id_diploma_fk FROM student WHERE id_group_fk = (SELECT id_group_fk FROM student WHERE id_diploma_fk = '.$this->id.')) AND number_protocol IS NOT NULL ORDER BY id DESC LIMIT 1 ');
+			$query = $conn->query('SELECT id, number_protocol FROM diploma WHERE id IN (SELECT id_diploma_fk FROM student WHERE id_group_fk IN (SELECT id FROM group_1 WHERE id_meeting_diploma_fk IN (SELECT id FROM timetable_meeting WHERE id_commission_fk = 207))) AND number_protocol IS NOT NULL ORDER BY number_protocol DESC LIMIT 1');
 			$result = $query->fetch_assoc();
 			if($result['number_protocol'] != 0)
 			{

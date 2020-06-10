@@ -7,12 +7,12 @@
 	$arr_1 = $_GET['arr_1'];
 	check_get($arr_1);
 
-	$result_student = $conn->query('SELECT id, number_record_book, last_name, first_name, patronymic, id_diploma_fk FROM student WHERE id = '.$arr_1);
+	$result_student = $conn->query('SELECT id, number_record_book, last_name, first_name, patronymic, id_group_fk, id_diploma_fk FROM student WHERE id = '.$arr_1);
 	$arr_student = $result_student->fetch_assoc();
 
 	$result_diploma = $conn->query('SELECT * FROM diploma WHERE id = '.$arr_student['id_diploma_fk']);
 	$arr_diploma = $result_diploma->fetch_assoc();
-	$result_member_ssk = $conn->query('SELECT DISTINCT member_ssk.id as id, member_ssk.last_name as last_name, member_ssk.first_name as first_name, member_ssk.patronymic as patronymic, member_ssk.post as post FROM curation_event JOIN commission ON commission.id=curation_event.id_commission_fk JOIN member_ssk ON member_ssk.id=curation_event.id_member_ssk_fk WHERE curation_event.id_commission_fk = (SELECT id_commission_fk FROM timetable_meeting WHERE id = '.$arr_diploma['id_meeting_fk'].')');
+	$result_member_ssk = $conn->query('SELECT member_ssk.id, member_ssk.last_name, member_ssk.first_name, member_ssk.patronymic, member_ssk.post FROM member_ssk INNER JOIN curation_event ON member_ssk.id=curation_event.id_member_ssk_fk JOIN commission ON curation_event.id_commission_fk = commission.id WHERE commission.id IN (SELECT id_commission_fk FROM timetable_meeting WHERE id IN (SELECT id_meeting_diploma_fk FROM group_1 WHERE id = '.$arr_student["id_group_fk"].')) AND curation_event.role <> 3 ');
 ?>
 
 <!DOCTYPE html>
@@ -68,11 +68,11 @@
 				if($('.slc_spr').length < 20)
 				{
 					var mode_other = 1;
-					var arr_1_meeting = $('#arr_1_meeting').val();
+					var arr_1_group = $('#arr_1_group').val();
 					$.ajax({
 			        	type: 'POST',
 			        	url: 'handler_diploma.php',
-			        	data: {mode_other, arr_1_meeting},
+			        	data: {mode_other, arr_1_group},
 			        	async: false,
 			        	success: function(response)
 			        	{
@@ -183,6 +183,7 @@
     		if(flag == true)
     		{
     			toastr.success('Успешно! Данные сохранены');
+    			window.location.href = "choice_select.php?mode=4";
     		}
 		}
 
@@ -203,7 +204,7 @@
 			<div class="col-sm text-left"> 
 				<form method="POST" action="#">
 					<legend>ВКР:</legend>
-					<div id="info_student"><h3><?php echo $arr_student["number_record_book"].' '.$arr_student["last_name"].' '.$arr_student["first_name"].' '.$arr_student["patronymic"]; ?></h3><input type="hidden" name="arr_1_meeting" id="arr_1_meeting" value=<?php echo $arr_diploma["id_meeting_fk"] ?>></div>
+					<div id="info_student"><h3><?php echo $arr_student["number_record_book"].' '.$arr_student["last_name"].' '.$arr_student["first_name"].' '.$arr_student["patronymic"]; ?></h3><input type="hidden" name="arr_1_group" id="arr_1_group" value=<?php echo $arr_student["id_group_fk"] ?>></div>
 					<legend>Вопросы:</legend>
 					<div class="form-group slc_spr">
 						<label>Член комиссии:</label>
@@ -233,7 +234,7 @@
 							<option value="4">отлично</option>
 						</select>
 					</div>
-					<button type="submit" class="btn btn-primary">Submit</button>
+					<button type="submit" class="btn btn-primary">Отправить</button>
 				</form>
 			</div>
 		</div>

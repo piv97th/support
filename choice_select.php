@@ -31,10 +31,10 @@
 		}
 		elseif($mode == 4)
 		{
-			$result = $conn->query('SELECT id, cipher_group FROM group_1');
+			$result = $conn->query('SELECT timetable_meeting.*, group_1.id as `id_group`, group_1.cipher_group FROM timetable_meeting INNER JOIN group_1 ON timetable_meeting.id = group_1.id_meeting_diploma_fk ');
 			while ($arr = $result->fetch_assoc())
 			{
-				echo'<option value='.$arr["id"].'>'.$arr["cipher_group"].'</option>';
+				echo'<option value='.$arr["id"].'>'.$arr["number_meeting"].' '.$arr["date"].' '.$arr["cipher_group"].'</option>';
 			}
 		}
 	}
@@ -53,15 +53,15 @@
 	}
 	elseif($mode == 3)
 	{
-		$title = 'Выбор группы';
-		$legend = 'Проведение ГЭ у группы';
-		$name_choice = 'Группа';
+		$title = 'Выбор заседания';
+		$legend = 'Проведение ГЭ';
+		$name_choice = 'Заседание';
 	}
 	elseif($mode == 4)
 	{
-		$title = 'Выбор группы';
-		$legend = 'Защита ВКР у группы';
-		$name_choice = 'Группа';
+		$title = 'Выбор заседания';
+		$legend = 'Защита ВКР';
+		$name_choice = 'Заседание';
 	}
 ?>
 
