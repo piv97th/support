@@ -34,7 +34,7 @@
 			$result = $conn->query('SELECT timetable_meeting.*, group_1.id as `id_group`, group_1.cipher_group FROM timetable_meeting INNER JOIN group_1 ON timetable_meeting.id = group_1.id_meeting_diploma_fk ');
 			while ($arr = $result->fetch_assoc())
 			{
-				echo'<option value='.$arr["id"].'>'.$arr["number_meeting"].' '.$arr["date"].' '.$arr["cipher_group"].'</option>';
+				echo'<option value='.$arr["id"].'>Номер заседания: '.$arr["number_meeting"].' Дата: '.$arr["date"].' Группа: '.$arr["cipher_group"].'</option>';
 			}
 		}
 	}
