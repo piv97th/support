@@ -32,6 +32,7 @@
 			$("#slc").on('change',function(){
 				$("#student").remove();
 				$("#document").remove();
+				$("#honours").remove();
 				var mode_other = 1;
 				var select = $("#slc").val();
 				$.ajax({
@@ -55,6 +56,7 @@
 		$(function(){
 			$("body").on('change','.new_student',function(){
 				$("#document").remove();
+				$("#honours").remove();
 				var mode_other = 2;
 				var arr_1 = $("#student").val();
 				$('#arr_1_student').val(arr_1);
@@ -93,7 +95,7 @@
 						{
 							$('#document').append('<option value='+obj.private_file+'>личное дело</option>');
 						}
-						$('#document').after('<br/><button type="submit" class="btn btn-primary">Сформировать</button>');
+						$('#document').after('<br/><button type="submit" class="btn btn-primary sub">Сформировать</button>');
 
 			        }
 				});
@@ -103,6 +105,10 @@
 		$(function(){
 			$("body").on('change','.new_doc',function(){
 				$("#doc").val( $("#document").val());
+				if($("#doc").val() == 5)
+				{
+					$('.sub').before('<div class="form-group"><label for="honours">С отличием:</label><input type="checkbox" class="form-control honours" name="honours" value=1></option></select></div>');
+				}
 			});
 		});
 
@@ -167,6 +173,7 @@
 						</select>
 					<input type="hidden" name="doc" id="doc">
 					<input type="hidden" name="arr_1_student" id="arr_1_student">
+					<!-- <input type="hidden" name="honours" id="honours"> -->
 					</div>
 				</form>
 			</div>
