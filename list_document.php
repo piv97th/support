@@ -68,7 +68,6 @@
 					async: false,
 					success: function(response)
 					{
-						alert(response);
 						var obj = JSON.parse(response);
 						$('#slc').after('<div class="form-group"><label for="student">Студент:</label><select id="student" class="new_student form-control"><option value="" disabled selected></option></select></div>');
 						$(obj).each(function(index, item) {

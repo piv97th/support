@@ -49,10 +49,10 @@
 		$res_diploma = $conn->query('SELECT topic FROM diploma WHERE id = '.$arr_student["id_diploma_fk"]);
 		$arr_diploma = $res_diploma->fetch_assoc();
 
-		$res_group = $conn->query('SELECT cathedra.name, cathedra.last_name, cathedra.first_name, cathedra.patronymic, cathedra.abbreviation, direction.cipher_direction, group_1.id FROM group_1 INNER JOIN cathedra ON group_1.id_cathedra_fk = cathedra.id INNER JOIN direction ON group_1.id_direction_fk = direction.id WHERE group_1.id = (SELECT id_group_fk FROM student WHERE id = '.$student.')');
+		$res_group = $conn->query('SELECT cathedra.name, cathedra.last_name, LEFT(cathedra.first_name, 1) as `first_name`, LEFT(cathedra.patronymic, 1) as `patronymic`, cathedra.abbreviation, direction.cipher_direction, group_1.id FROM group_1 INNER JOIN cathedra ON group_1.id_cathedra_fk = cathedra.id INNER JOIN direction ON group_1.id_direction_fk = direction.id WHERE group_1.id = (SELECT id_group_fk FROM student WHERE id = '.$student.')');
 		$arr_group = $res_group->fetch_assoc();
 
-		$result_member_ssk = $conn->query('SELECT last_name, first_name, patronymic FROM member_ssk WHERE id IN (SELECT id_member_ssk_fk FROM curation_event WHERE role = 1 AND id_commission_fk IN(SELECT id FROM commission WHERE id IN(SELECT id_commission_fk FROM timetable_meeting WHERE id IN(SELECT id_meeting_diploma_fk FROM group_1 WHERE id = '.$arr_group["id"].'))))');
+		$result_member_ssk = $conn->query('SELECT last_name, LEFT(first_name, 1) as `first_name`, LEFT(patronymic, 1) as `patronymic` FROM member_ssk WHERE id IN (SELECT id_member_ssk_fk FROM curation_event WHERE role = 1 AND id_commission_fk IN(SELECT id FROM commission WHERE id IN(SELECT id_commission_fk FROM timetable_meeting WHERE id IN(SELECT id_meeting_diploma_fk FROM group_1 WHERE id = '.$arr_group["id"].'))))');
 		$arr_member_ssk = $result_member_ssk->fetch_assoc();
 
 		require 'vendor/autoload.php';
@@ -71,6 +71,7 @@
 		$section->addText("МИНОБРНАУКИ РОССИИ", $arr_style_text, $arr_paragraph_center);
 		$section->addText("Федеральное государственное бюджетное образовательное учреждение", $arr_style_text, $arr_paragraph_center);
 		$section->addText("«МИРЭА - Российский технологический университет»", $arr_style_text, $arr_paragraph_center);
+		$section->addText("Институт комплексной безопасности и специального приборостроения", $arr_style_text, $arr_paragraph_center);
 		$section->addText("Кафедра $arr_group[name]", $arr_style_text, $arr_paragraph_center);
 		
 		$table = $section->addTable(array('align' => 'center', 'valign' => 'center'));
@@ -81,31 +82,28 @@
 		$section->addText("ПРЕДСЕДАТЕЛЮ ЭКЗАМЕНАЦИОННОЙ КОМИССИИ", $arr_style_text, $arr_paragraph_center);
 
 		$nc = new NCLNameCaseRu();
-		//echo $nc->qFatherName("Николаевич", NCL::$DATELN)."\n";
-		$last_name_cm = $nc->qFirstName($arr_member_ssk['last_name'], NCL::$DATELN);
-		$first_name_cm = mb_strtoupper($arr_member_ssk['first_name']);
-		$patronymic_cm = mb_strtoupper($arr_member_ssk['patronymic']);
+		$last_name_cm = $arr_member_ssk['last_name'];
+		$first_name_cm = $arr_member_ssk['first_name'];
+		$patronymic_cm = $arr_member_ssk['patronymic'];
 
-//mb_substr($word,0,1,'UTF-8');
-		$section->addText($arr_member_ssk['last_name'].' '.$first_name_cm.'.'.$patronymic_cm.'.', array('name' => 'Arial', 'size' => 16, 'bold' => 'true'), $arr_paragraph_center);
-		$section->addText("«МИРЭА - Российский технологический университет»", $arr_style_text, $arr_paragraph_center);
+		$section->addText($nc->qSecondName($last_name_cm, NCL::$DATELN).' '.$first_name_cm.'.'.$patronymic_cm.'.', array('name' => 'Arial', 'size' => 16, 'bold' => true), $arr_paragraph_center);
 		
 		$table = $section->addTable(array('align' => 'center', 'valign' => 'center'));
 		$table->addRow(200);
-		$table->addCell(5000, array('valign' => 'center'))->addText('Студент', array('size' => 16), array('align'=>'center'));
-		$table->addCell(5000, array('valign' => 'center'))->addText($arr_student["last_name"].' '.$arr_student["first_name"].' '.$arr_student["patronymic"], array('size' => 16, 'bold' => 'true'), array('align'=>'center'));
+		$table->addCell(4000, array('valign' => 'center'))->addText('Студент', array('size' => 16), array('align'=>'center'));
+		$table->addCell(8000, array('valign' => 'center'))->addText($arr_student["last_name"].' '.$arr_student["first_name"].' '.$arr_student["patronymic"], array('size' => 16, 'bold' => true), array('align'=>'center'));
 
 
 		$section->addText("Выполнил выпускную квалификационную работу на тему:", $arr_style_text, $arr_paragraph_center);
 		//enter
-		$section->addText($arr_diploma["topic"], $arr_style_text, $arr_paragraph_center);
+		$section->addText($arr_diploma["topic"], array('name' => 'Arial', 'size' => 16, 'bold' => true), $arr_paragraph_center);
 		//enter
-		$section->addText("к защите выпускной квалификационной работы в Государственной экзаменационнойкомиссии           ДОПУЩЕН", $arr_style_text, $arr_paragraph_center);
+		$section->addText("к защите выпускной квалификационной работы в Государственной экзаменационнойкомиссии ДОПУЩЕН", $arr_style_text, $arr_paragraph_center);
 
 		$table = $section->addTable(array('align' => 'center', 'valign' => 'center'));
 		$table->addRow(200);
-		$table->addCell(5000, array('valign' => 'center'))->addText('Зав. кафедрой'.$arr_group["abbreviation"], array('size' => 16), array('align'=>'center'));
-		$table->addCell(5000, array('valign' => 'center'))->addText($arr_group["last_name"].' '.$arr_group["first_name"].' '.$arr_group["patronymic"], array('size' => 16, 'bold' => 'true'), array('align'=>'center'));
+		$table->addCell(5000, array('valign' => 'center'))->addText('Зав. кафедрой '.$arr_group["abbreviation"], array('size' => 16), array('align'=>'center'));
+		$table->addCell(5000, array('valign' => 'center'))->addText($arr_group["last_name"].'.'.$arr_group["first_name"].'.'.$arr_group["patronymic"], array('size' => 16), array('align'=>'center'));
 		//enter
 		//todo zav
 
