@@ -28,33 +28,6 @@
 
 	<script type="text/javascript">
 
-		function a_dell()
-		{
-			$(".nolink").on("click", function(e){
-				var mode_1 = 3;
-				var link = e.target;
-				link = String(link);
-				var arr_1 = link.substr(50,8);
-				$.ajax({
-					type: 'POST',
-					url: 'handler_student.php',
-					data: {arr_1, mode_1},
-					async: false,
-					success: function(response)
-					{
-		        		var result = JSON.parse(response);
-		        		outToast(result);
-		        		$("#btn_choice").trigger("click");
-					},
-					error: function(jqxhr, status, errorMsg)
-		        	{
-		        		toastr.error(errorMsg, status);
-		        	}
-				});
-				return false;
-			});
-		}
-
 		$(function(){
 			$("#slc").on('change',function(){
 				$("#student").remove();
@@ -84,7 +57,6 @@
 				var mode_other = 2;
 				var arr_1 = $("#student").val();
 				$('#arr_1_student').val(arr_1);
-				//alert(arr_1);
 				$.ajax({
 					type: 'POST',
 					url: 'handler_document.php',
@@ -92,19 +64,17 @@
 					async: false,
 					success: function(response)
 					{
-						//alert(response);
 						var obj = JSON.parse(response);
-						$('#student').after('<div class="form-group"><label for="document">Документ:</label><select id="document" class="form-control" ><option value="" disabled selected></option></select></div>');
+						$('#student').after('<div class="form-group"><label for="document">Документ:</label><select id="document" class="form-control new_doc" ><option value="" disabled selected></option></select></div>');
 						/*for(var i in obj)
 						{*/
 						if(obj['reference'] == 1)
 						{
 							$('#document').append('<option value='+obj.reference+'>справка</option>');
-							$('#doc').val(1);
 						}
 						if(obj['conclusion'] == 2)
 						{
-							$('#document').append('<option value='+obj.conclusion+'>Заключение</option>');
+							$('#document').append('<option value='+obj.conclusion+'>заключение</option>');
 						}
 						if(obj['protocol_se'] == 3)
 						{
@@ -129,51 +99,9 @@
 			});
 		});
 
-		/*$(function(){
-			$("form").on('submit',function(){
-				//$("#slc").children().remove();
-				var mode_1 = 1;
-				var select = $("#document").val();
-				$.ajax({
-					type: 'POST',
-					url: 'handler_document_test.php',
-					data: {mode_1, select},
-					async: false,
-					success: function(response)
-					{
-						//alert(response);
-						
-						var obj = JSON.parse(response);
-						$('#slc').after('<div id="change_block"><select id="student"><option value="" disabled selected></option></select></div>');
-						$(obj).each(function(index, item) {
-							$('#student').append('<option value='+item.arr_1+'>'+item.number_record_book+' '+item.last_name+' '+item.first_name+'</option>');
-						});
-			        }
-			    });
-			    return false;
-			});
-		});*/
-
 		$(function(){
-			$("#btn_document").on('click',function(){
-				//$("#slc").children().remove();
-				var mode_1 = 1;
-				var select = $("#document").val();
-				$.ajax({
-					type: 'POST',
-					url: 'handler_document.php',
-					data: {mode_other, select},
-					async: false,
-					/*success: function(response)
-					{
-						//alert(response);
-						var obj = JSON.parse(response);
-						$('#slc').after('<div id="change_block"><select id="student"><option value="" disabled selected></option></select></div>');
-						$(obj).each(function(index, item) {
-							$('#student').append('<option value='+item.arr_1+'>'+item.number_record_book+' '+item.last_name+' '+item.first_name+'</option>');
-						});
-			        }*/
-			    });
+			$("body").on('change','.new_doc',function(){
+				$("#doc").val( $("#document").val());
 			});
 		});
 
