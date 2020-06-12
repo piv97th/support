@@ -57,28 +57,6 @@
 
 	<script type="text/javascript">
 
-		function get_meeting_se()
-		{
-			var meeting_se = 1;
-			$.ajax({
-	        	type: 'POST',
-	        	url: 'handler_updstudent.php',
-	        	data: {meeting_se},
-	        	async: false,
-	        	success: function(response)
-	        	{
-	        		var obj = JSON.parse(response);
-					$(obj).each(function(index, item) {
-						$('#m_se').append("<option value="+item.arr_1_meeting+">"+item.nm+" "+item.date_se+"</option>");
-					});
-	        	},
-	        	error: function(jqxhr, status, errorMsg)
-	        	{
-	        		toastr.error(errorMsg, status);
-	        	}
-		    });
-		}
-
 		function get_ticket_se()
 		{
 			var ticket_se = 1;
@@ -126,6 +104,7 @@
 		function get_mark_diploma()
 		{
 			var mark_diploma = 1;
+			alert(100);
 			$.ajax({
 	        	type: 'POST',
 	        	url: 'handler_updstudent.php',
@@ -133,6 +112,7 @@
 	        	async: false,
 	        	success: function(response)
 	        	{
+	        		alert(response);
 	        		var obj = JSON.parse(response);
 					$(obj).each(function(index, item) {
 						$('#mark_diploma').append("<option value="+item.arr_1_mark+">"+item.mark+"</option>");
@@ -151,35 +131,17 @@
 			if(exsist_np != 0)
 			{
 				$('#np_diploma').val(<?php echo $arr_diploma['number_protocol']; ?>);
-				var meeting_diploma = 1;
-				$.ajax({
-			        	type: 'POST',
-			        	url: 'handler_updstudent.php',
-			        	data: {meeting_diploma},
-			        	async: false,
-			        	success: function(response)
-			        	{
-			        		var obj = JSON.parse(response);
-			        		$(obj).each(function(index, item) {
-							$('#m_diploma').append("<option value="+item.arr_1_meeting+">"+item.nm+" "+item.date_diploma+"</option>");
-							});
-							$('#m_diploma option[value=<?php echo $arr_diploma["id_meeting_fk"]; ?>]').attr('selected', 'selected');
-							var diploma_mark = <?php echo check_var($arr_diploma['id_mark_fk']); ?>;
-							if(diploma_mark != 0)
-							{
-								get_mark_diploma();
-								$('#mark_diploma option[value=<?php echo $arr_diploma["id_mark_fk"]; ?>]').attr('selected', 'selected');
-							}
-							else
-							{
-								$('#diploma_second').remove();
-							}
-				        },
-				        error: function(jqxhr, status, errorMsg)
-			        	{
-			        		toastr.error(errorMsg, status);
-			        	}
-			    });
+				
+				var diploma_mark = <?php echo check_var($arr_diploma['id_mark_fk']); ?>;
+				if(diploma_mark != 0)
+				{
+					get_mark_diploma();
+					$('#mark_diploma option[value=<?php echo $arr_diploma["id_mark_fk"]; ?>]').attr('selected', 'selected');
+				}
+				else
+				{
+					$('#diploma_second').remove();
+				}
 			}
 			else
 			{
@@ -196,42 +158,41 @@
 			{
 				var se = 1;
 				$.ajax({
-			        	type: 'POST',
-			        	url: 'handler_updstudent.php',
-			        	data: {se, arr_1_se},
-			        	async: false,
-			        	success: function(response)
-			        	{
-			        		var obj = JSON.parse(response);
-							$("#np_se").val(obj.np_se);
-							get_meeting_se();
-							var se_ticket = <?php echo check_var($arr_se['id_ticket_fk']); ?>;
-							if(se_ticket != 0)
-							{
-								get_ticket_se();
-								$('#ticket_se option[value=<?php echo $arr_se["id_ticket_fk"]; ?>]').attr('selected', 'selected');
-							}
-							else
-							{
-								$('#se_second').remove();
-							}
+		        	type: 'POST',
+		        	url: 'handler_updstudent.php',
+		        	data: {se, arr_1_se},
+		        	async: false,
+		        	success: function(response)
+		        	{
+		        		var obj = JSON.parse(response);
+						$("#np_se").val(obj.np_se);
+						var se_ticket = <?php echo check_var($arr_se['id_ticket_fk']); ?>;
+						if(se_ticket != 0)
+						{
+							get_ticket_se();
+							$('#ticket_se option[value=<?php echo $arr_se["id_ticket_fk"]; ?>]').attr('selected', 'selected');
+						}
+						else
+						{
+							$('#se_second').remove();
+						}
 
-							var se_mark = <?php echo check_var($arr_se['id_mark_fk']); ?>;
-							if(se_mark != 0)
-							{
-								get_mark_se();
-								$('#mark_se option[value=<?php echo $arr_se["id_mark_fk"]; ?>]').attr('selected', 'selected');
-							}
-							else
-							{
-								$('#se_third').remove();
-							}
-							$('#m_se option[value='+obj.arr_1_meeting+']').attr('selected', 'selected');
-			        	},
-			        	error: function(jqxhr, status, errorMsg)
-			        	{
-			        		toastr.error(errorMsg, status);
-			        	}
+						var se_mark = <?php echo check_var($arr_se['id_mark_fk']); ?>;
+						if(se_mark != 0)
+						{
+							get_mark_se();
+							$('#mark_se option[value=<?php echo $arr_se["id_mark_fk"]; ?>]').attr('selected', 'selected');
+						}
+						else
+						{
+							$('#se_third').remove();
+						}
+						$('#m_se option[value='+obj.arr_1_meeting+']').attr('selected', 'selected');
+		        	},
+		        	error: function(jqxhr, status, errorMsg)
+		        	{
+		        		toastr.error(errorMsg, status);
+		        	}
 			    });
 			}
 			else
@@ -259,23 +220,24 @@
 		        var supervisor = $("#supervisor").val();
 
 		        var protocol_se = $("#np_se").val();
-		        var meeting_se = $("#m_se").val();
+		        //var meeting_se = $("#m_se").val();
 
 		        var ticket_se = $("#ticket_se").val();
 
 		        var mark_se = $("#mark_se").val();
 
 		        var protocol_diploma = $("#np_diploma").val();
-		        var meeting_diploma = $("#m_diploma").val();
+		        //var meeting_diploma = $("#m_diploma").val();
 
 		        var mark_diploma = $("#mark_diploma").val();
 		    	$.ajax({
 		        	type: 'POST',
 		        	url: 'handler_student.php',
-		        	data: {nrb, last_name, first_name, patronymic, group_1, topic, type_work, anti_plagiarism, supervisor, mode_1, arr_1, protocol_se, meeting_se, ticket_se, mark_se, protocol_diploma, meeting_diploma, mark_diploma},
+		        	data: {nrb, last_name, first_name, patronymic, group_1, topic, type_work, anti_plagiarism, supervisor, mode_1, arr_1, protocol_se, ticket_se, mark_se, protocol_diploma, mark_diploma},
 		        	async: false,
 		        	success: function(response)
 		        	{
+		        		alert(response);
 		        		var result = JSON.parse(response);
 						out_toast(result);
 		        	},
@@ -453,21 +415,13 @@
 							toastr.error('Некорректный номер протокола ВКР','Ошибка!');
 							flag = false;
 						}
+						if(arr['protocol_diploma'] == 3)
+						{
+							toastr.error('Такой номер протокола ВКР есть','Ошибка!');
+							flag = false;
+						}
 					}
 					if(c == 11)
-					{
-						if(arr['meeting_diploma'] == 0)
-						{
-							toastr.error('Выберете номер заседания по ВКР','Ошибка!');
-							flag = false;
-						}
-						if(arr['meeting_diploma'] == 2)
-						{
-							toastr.error('Некорректные данные номера заседания по ВКР','Ошибка!');
-							flag = false;
-						}
-					}
-					if(c == 12)
 					{
 						if(arr['mark_diploma'] == 0)
 						{
@@ -480,7 +434,7 @@
 							flag = false;
 						}
 					}
-					if(c == 13)
+					if(c == 12)
 					{
 						if(arr['protocol_se'] == 0)
 						{
@@ -492,21 +446,13 @@
 							toastr.error('Некорректный номер протокола госэкзамена','Ошибка!');
 							flag = false;
 						}
-					}
-					if(c == 14)
-					{
-						if(arr['meeting_se'] == 0)
+						if(arr['protocol_se'] == 3)
 						{
-							toastr.error('Выберете номер заседания по госэкзамену','Ошибка!');
-							flag = false;
-						}
-						if(arr['meeting_se'] == 2)
-						{
-							toastr.error('Некорректные данные номера заседания по госэкзамену','Ошибка!');
+							toastr.error('Такой номер протокола госэкзамена есть','Ошибка!');
 							flag = false;
 						}
 					}
-					if(c == 15)
+					if(c == 13)
 					{
 						if(arr['ticket_se'] == 0)
 						{
@@ -519,7 +465,7 @@
 							flag = false;
 						}
 					}
-					if(c == 16)
+					if(c == 14)
 					{
 						if(arr['mark_se'] == 0)
 						{
@@ -631,11 +577,6 @@
 							<label for="np_se">Номер протокола ГЭ:</label>
 							<input type="text" class="form-control" id="np_se" name="np_se" >
 						</div>
-						<div class="form-group">
-							<label for="m_se">Номер встречи ГЭ:</label>
-							<select class="form-control" name="m_se" id="m_se">
-							</select>
-						</div>
 					</div>
 					<div id="se_second">
 							<div class="form-group">
@@ -655,11 +596,6 @@
 						<div class="form-group">
 							<label for="np_diploma">Номер протокола ВКР:</label>
 							<input class="form-control" type="text" class="form-control" id="np_diploma" name="np_diploma" >
-						</div>
-						<div class="form-group">
-							<label for="m_diploma">Номер встречи ВКР:</label>
-							<select class="form-control" name="m_diploma" id="m_diploma">
-							</select>
 						</div>
 					</div>
 					<div id="diploma_second">

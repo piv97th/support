@@ -162,6 +162,55 @@
 			$stmt->bind_param('ii', $this->kind_work, $student);
 			$stmt->execute();
 		}
+
+		private function get_old_protocol()
+		{
+			require('blocks/connect.php');
+			$result = $conn->query('SELECT number_protocol FROM diploma WHERE id ='.$this->id) or die($conn->error);
+			$arr = $result->fetch_assoc();
+			return $arr['number_protocol'];
+		}
+
+
+		private function exsist_protocol($data)
+		{
+			require('blocks/connect.php');
+			$sql = "SELECT COUNT(number_protocol) as `count` FROM diploma WHERE number_protocol = '$data'";
+			$result = $conn->query($sql) or die($conn->error);
+			$row = $result->fetch_assoc();
+			if($row['count'] > 0)
+			{
+				return TRUE;
+			}
+			else
+			{
+				return FALSE;
+			}
+		}
+
+		public function check_protocol_u($data)
+		{
+			if($this->check_empty($data) == 0)
+			{
+				return 0;
+			}
+			else
+			{
+				if($this->check_num($data) == 2)
+				{
+					return 2;
+				}
+				elseif(($this->exsist_protocol($data) == TRUE) && ($data != $this->get_old_protocol()))
+				{
+					return 3;
+				}
+				else
+				{
+					$this->number_protocol = $data;
+					return 1;
+				}
+			}
+		}
 		
 		public function check_ap($data)
 		{
@@ -244,8 +293,8 @@
 			{
 				if($this->mark != 'NULL')
 				{
-					$stmt = $conn->prepare('UPDATE diploma SET number_protocol = ?, topic = ?, anti_plagiarism = ?, id_kind_work_fk = ?, id_teacher_fk = ?, id_meeting_fk = ?, id_mark_fk = ?, id_type_work_fk = ? WHERE id = ?');
-					$stmt->bind_param('isdiiiiii', $this->number_protocol, $this->topic, $this->anti_plagiarism, $this->kind_work, $this->supervisor, $this->meeting, $this->mark, $this->type_work, $this->id);
+					$stmt = $conn->prepare('UPDATE diploma SET number_protocol = ?, topic = ?, anti_plagiarism = ?, id_kind_work_fk = ?, id_teacher_fk = ?, id_mark_fk = ?, id_type_work_fk = ? WHERE id = ?');
+					$stmt->bind_param('isdiiiii', $this->number_protocol, $this->topic, $this->anti_plagiarism, $this->kind_work, $this->supervisor, $this->mark, $this->type_work, $this->id);
 					if($stmt->execute() != 1)
 					{
 						return 0;
@@ -257,8 +306,8 @@
 				}
 				else
 				{
-					$stmt = $conn->prepare('UPDATE diploma SET number_protocol = ?, topic = ?, anti_plagiarism = ?, id_kind_work_fk = ?, id_teacher_fk = ?, id_meeting_fk = ?, id_type_work_fk = ? WHERE id = ?');
-					$stmt->bind_param('isdiiiii', $this->number_protocol, $this->topic, $this->anti_plagiarism, $this->kind_work, $this->supervisor, $this->meeting, $this->type_work, $this->id);
+					$stmt = $conn->prepare('UPDATE diploma SET number_protocol = ?, topic = ?, anti_plagiarism = ?, id_kind_work_fk = ?, id_teacher_fk = ?, id_type_work_fk = ? WHERE id = ?');
+					$stmt->bind_param('isdiiii', $this->number_protocol, $this->topic, $this->anti_plagiarism, $this->kind_work, $this->supervisor, $this->type_work, $this->id);
 					if($stmt->execute() != 1)
 					{
 						return 0;
@@ -348,6 +397,55 @@
 	{
 		public $ticket = 'NULL';
 		public $group_other = 'NULL';
+
+		private function get_old_protocol()
+		{
+			require('blocks/connect.php');
+			$result = $conn->query('SELECT number_protocol FROM se WHERE id ='.$this->id) or die($conn->error);
+			$arr = $result->fetch_assoc();
+			return $arr['number_protocol'];
+		}
+
+
+		private function exsist_protocol($data)
+		{
+			require('blocks/connect.php');
+			$sql = "SELECT COUNT(number_protocol) as `count` FROM se WHERE number_protocol = '$data'";
+			$result = $conn->query($sql) or die($conn->error);
+			$row = $result->fetch_assoc();
+			if($row['count'] > 0)
+			{
+				return TRUE;
+			}
+			else
+			{
+				return FALSE;
+			}
+		}
+
+		public function check_protocol_u($data)
+		{
+			if($this->check_empty($data) == 0)
+			{
+				return 0;
+			}
+			else
+			{
+				if($this->check_num($data) == 2)
+				{
+					return 2;
+				}
+				elseif(($this->exsist_protocol($data) == TRUE) && ($data != $this->get_old_protocol()))
+				{
+					return 3;
+				}
+				else
+				{
+					$this->number_protocol = $data;
+					return 1;
+				}
+			}
+		}
 
 		public function check_group_other($data)
 		{
@@ -458,8 +556,8 @@
 			{
 				if($this->mark != 'NULL')
 				{
-					$stmt = $conn->prepare('UPDATE se SET number_protocol = ?, id_ticket_fk = ?, id_mark_fk = ?, id_meeting_fk = ? WHERE id = ?');
-					$stmt->bind_param('iiiii', $this->number_protocol, $this->ticket, $this->mark, $this->meeting, $this->id);
+					$stmt = $conn->prepare('UPDATE se SET number_protocol = ?, id_ticket_fk = ?, id_mark_fk = ? WHERE id = ?');
+					$stmt->bind_param('iiii', $this->number_protocol, $this->ticket, $this->mark, $this->id);
 					if($stmt->execute() != 1)
 					{
 						return 0;
@@ -471,8 +569,8 @@
 				}
 				else
 				{
-					$stmt = $conn->prepare('UPDATE se SET number_protocol = ?, id_ticket_fk = ? id_meeting_fk = ? WHERE id = ?');
-					$stmt->bind_param('iiii', $this->number_protocol, $this->ticket, $this->meeting, $this->id);
+					$stmt = $conn->prepare('UPDATE se SET number_protocol = ?, id_ticket_fk = ? WHERE id = ?');
+					$stmt->bind_param('iii', $this->number_protocol, $this->ticket, $this->id);
 					if($stmt->execute() != 1)
 					{
 						return 0;
@@ -485,8 +583,8 @@
 			}
 			else
 			{
-				$stmt = $conn->prepare('UPDATE se SET number_protocol = ?, id_meeting_fk = ? WHERE id = ?');
-				$stmt->bind_param('iii', $this->number_protocol, $this->meeting, $this->id);
+				$stmt = $conn->prepare('UPDATE se SET number_protocol = ? WHERE id = ?');
+				$stmt->bind_param('ii', $this->number_protocol, $this->id);
 				if($stmt->execute() != 1)
 				{
 					return 0;

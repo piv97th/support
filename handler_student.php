@@ -52,14 +52,15 @@
 		{
 			if(isset($_POST['mark_diploma']))
 			{
-				$result += ['protocol_diploma' => $diploma->check_protocol($_POST['protocol_diploma']), 'meeting_diploma' => $diploma->check_meeting($_POST['meeting_diploma']), 'mark_diploma' => $diploma->check_mark($_POST['mark_diploma'])];
+				$result += ['protocol_diploma' => $diploma->check_protocol_u($_POST['protocol_diploma']), 'mark_diploma' => $diploma->check_mark($_POST['mark_diploma'])];
 			}
 			else
 			{
-				$result += ['protocol_diploma' => $diploma->check_protocol($_POST['protocol_diploma']), 'meeting_diploma' => $diploma->check_meeting($_POST['meeting_diploma'])];
+				$result += ['protocol_diploma' => $diploma->check_protocol_u($_POST['protocol_diploma'])];
 			}
 
 		}
+		check_result($result);
 
 		$diploma->kind_work = choice_kind_work($student->group_1);
 
@@ -71,17 +72,19 @@
 			{
 				if(isset($_POST['mark_se']))
 				{
-					$result += ['protocol_se' => $se->check_protocol($_POST['protocol_se']), 'meeting_se' => $se->check_meeting($_POST['meeting_se']), 'ticket_se' => $se->check_ticket($_POST['ticket_se']), 'mark_se' => $se->check_mark($_POST['mark_se'])];
+					$result += ['protocol_se' => $se->check_protocol_u($_POST['protocol_se']), 'ticket_se' => $se->check_ticket($_POST['ticket_se']), 'mark_se' => $se->check_mark($_POST['mark_se'])];
 				}
 				else
 				{
-					$result += ['protocol_se' => $se->check_protocol($_POST['protocol_se']), 'meeting_se' => $se->check_meeting($_POST['meeting_se']), 'ticket_se' => $se->check_ticket($_POST['ticket_se'])];
+					$result += ['protocol_se' => $se->check_protocol_u($_POST['protocol_se']), 'ticket_se' => $se->check_ticket($_POST['ticket_se'])];
 				}
 			}
 			else
 			{
-				$result += ['protocol_se' => $se->check_protocol($_POST['protocol_se']), 'meeting_se' => $se->check_meeting($_POST['meeting_se'])];
+				$result += ['protocol_se' => $se->check_protocol($_POST['protocol_se'])];
 			}
+			check_result($result);
+			
 			$result_se = $se->update_se();
 			$result = array('se' => $result_se);
 			check_result($result);
