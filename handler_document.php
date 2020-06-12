@@ -604,9 +604,6 @@
 		$res_se = $conn->query('SELECT id, number_protocol FROM se WHERE id = '.$arr_student["id_se_fk"]);
 		$arr_se = $res_se->fetch_assoc();
 
-		/*$res_supervisor = $conn->query('SELECT last_name, LEFT(first_name, 1) as `first_name`, LEFT(patronymic, 1) as `patronymic`, degree, rank FROM teacher WHERE id = '.$arr_diploma["id_teacher_fk"]);
-		$arr_supervisor = $res_supervisor->fetch_assoc();*/
-
 		$res_group = $conn->query('SELECT cathedra.name as `name_cathedra`, cathedra.last_name, LEFT(cathedra.first_name, 1) as `first_name`, LEFT(cathedra.patronymic, 1) as `patronymic`, cathedra.abbreviation, direction.cipher_direction, direction.name, group_1.id FROM group_1 INNER JOIN cathedra ON group_1.id_cathedra_fk = cathedra.id INNER JOIN direction ON group_1.id_direction_fk = direction.id WHERE group_1.id = (SELECT id_group_fk FROM student WHERE id = '.$student.')');
 		$arr_group = $res_group->fetch_assoc();
 
@@ -615,9 +612,6 @@
 
 		$res_meeting_diploma = $conn->query('SELECT date, SUBSTRING(date, 3, 2) as `year2` FROM timetable_meeting WHERE id IN (SELECT id_meeting_diploma_fk FROM group_1 WHERE id = '.$arr_group["id"].')');
 		$arr_meeting_diploma = $res_meeting_diploma->fetch_assoc();
-
-		/*$res_review = $conn->query('SELECT * FROM review WHERE id IN (SELECT id_review_fk FROM diploma WHERE id = '.$arr_diploma["id"].')');
-		$arr_review = $res_review->fetch_assoc();*/
 
 		$result_chairman = $conn->query('SELECT last_name, first_name, patronymic, LEFT(first_name, 1) as `f`, LEFT(patronymic, 1) as `p` FROM member_ssk WHERE id IN (SELECT id_member_ssk_fk FROM curation_event WHERE role = 1 AND id_commission_fk IN(SELECT id FROM commission WHERE id IN(SELECT id_commission_fk FROM timetable_meeting WHERE id IN(SELECT id_meeting_diploma_fk FROM group_1 WHERE id = '.$arr_group["id"].'))))');
 		$arr_chairman = $result_chairman->fetch_assoc();
@@ -629,11 +623,6 @@
 
 		$res_qualification = $conn->query('SELECT name FROM qualification WHERE id IN (SELECT id_qualification_fk FROM direction WHERE id IN (SELECT id_direction_fk FROM group_1 WHERE id = '.$arr_group["id"].'))');
 		$arr_qualification = $res_qualification->fetch_assoc();
-		
-		/*$res_ticket = $conn->query('SELECT * FROM ticket WHERE id IN (SELECT id_ticket_fk FROM se WHERE id = '.$arr_se["id"].')');
-		$arr_ticket = $res_ticket->fetch_assoc();*/
-
-		/*$res_question_diploma = $conn->query('SELECT question_diploma.question, member_ssk.last_name, LEFT(member_ssk.first_name, 1) as `first_name`, LEFT(member_ssk.patronymic, 1) as `patronymic` FROM question_diploma INNER JOIN diploma ON question_diploma.id_diploma_fk = diploma.id INNER JOIN member_ssk ON question_diploma.id_member_fk = member_ssk.id WHERE diploma.id = '.$arr_diploma["id"].'');*/
 
 		$res_mark_se = $conn->query('SELECT * FROM mark WHERE id IN (SELECT id_mark_fk FROM se WHERE id = '.$arr_se["id"].')');
 		$arr_mark_se = $res_mark_se->fetch_assoc();
@@ -772,10 +761,77 @@
 		header('Expires: 0');
 		$xmlWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
 		$xmlWriter->save("php://output");
+}
 
+	if($_POST['doc'] == 6)
+	{
+		$student = $_POST['arr_1_student'];
 
+		$res_student = $conn->query('SELECT * FROM student WHERE id = '.$student);
+		$arr_student = $res_student->fetch_assoc();
+
+		$res_diploma = $conn->query('SELECT id, number_protocol, topic, anti_plagiarism, id_kind_work_fk, id_teacher_fk FROM diploma WHERE id = '.$arr_student["id_diploma_fk"]);
+		$arr_diploma = $res_diploma->fetch_assoc();
+
+		$res_group = $conn->query('SELECT cathedra.abbreviation, form_studying.form, direction.cipher_direction, group_1.id, group_1.cipher_group FROM group_1 INNER JOIN cathedra ON group_1.id_cathedra_fk = cathedra.id INNER JOIN form_studying ON group_1.id_form_studying_fk = form_studying.id INNER JOIN direction ON group_1.id_direction_fk = direction.id WHERE group_1.id = '.$arr_student["id_group_fk"].' ');
+		$arr_group = $res_group->fetch_assoc();
+
+		$res_meeting_diploma = $conn->query('SELECT date, SUBSTRING(date, 3, 2) as `year2`, SUBSTRING(date, 1, 4) as `year` FROM timetable_meeting WHERE id IN (SELECT id_meeting_diploma_fk FROM group_1 WHERE id = '.$arr_group["id"].')');
+		$arr_meeting_diploma = $res_meeting_diploma->fetch_assoc();
+
+		$res_qualification = $conn->query('SELECT name FROM qualification WHERE id IN (SELECT id_qualification_fk FROM direction WHERE id IN (SELECT id_direction_fk FROM group_1 WHERE id = '.$arr_group["id"].'))');
+		$arr_qualification = $res_qualification->fetch_assoc();
+
+		$res_mark_diploma = $conn->query('SELECT * FROM mark WHERE id IN (SELECT id_mark_fk FROM diploma WHERE id = '.$arr_diploma["id"].')');
+		$arr_mark_diploma = $res_mark_diploma->fetch_assoc();
+
+		require 'vendor/autoload.php';
+		require 'ncl_lib/NCLNameCaseRu.php';
+
+		$phpWord = new \PhpOffice\PhpWord\PhpWord();
+
+		$section = $phpWord->createSection();
 		
+		$arr_style_text = array('name' => 'Arial', 'size' => 18);
+		$arr_paragraph_center = array('align' => 'center', 'lineHeight' => 1.5);
+		$arr_paragraph_left = array('align' => 'left', 'lineHeight' => 1.5);
+		
+		$section->addText("Институт комплексной безопасности и специального приборостроения", array('name' => 'Arial', 'size' => 18), array('align' => 'center'));
+		$section->addText("ИКБСП", $arr_style_text, $arr_paragraph_center);
+		$section->addText($arr_group["form"], $arr_style_text, $arr_paragraph_center);
+		$section->addText($arr_student["last_name"].' '.$arr_student["first_name"].' '.$arr_student["patronymic"], array('name' => 'Arial', 'size' => 18), array('align' => 'center', 'lineHeight' => 1.5));
+		$section->addText($arr_student["number_record_book"], array('name' => 'Arial', 'size' => 18), array('align' => 'center', 'lineHeight' => 1.5));
+		$section->addText($arr_group["cipher_direction"], array('name' => 'Arial', 'size' => 18), array('align' => 'center', 'lineHeight' => 1.5));
+		$section->addText($arr_group["cipher_group"], array('name' => 'Arial', 'size' => 18), array('align' => 'center', 'lineHeight' => 1.5));
+		$section->addTextBreak();
+		$section->addText('Оценка: '.$arr_mark_diploma["mark"], $arr_style_text, $arr_paragraph_left);
+		$section->addText('Дата: '.date('d.m.Y', strtotime($arr_meeting_diploma["date"])), array('name' => 'Arial', 'size' => 18), array('align' => 'left', 'lineHeight' => 1.5));
 
+		if(strlen($arr_diploma["number_protocol"]) == 1)
+		{
+			$protocol = '0'.$arr_diploma["number_protocol"];
+		}
+		else
+		{
+			$protocol = $arr_diploma["number_protocol"];
+		}
+
+		$section->addText('Протокол: '.$protocol.'/'.$arr_meeting_diploma["year2"], array('name' => 'Arial', 'size' => 18), array('align' => 'left', 'lineHeight' => 1.5));
+		
+		$footer = $section->addFooter();
+		$footer->addText($arr_meeting_diploma["year"], array('name' => 'Arial', 'size' => 18, 'color' => '000000'), array('align' => 'center'));
+		
+		$file = 'Личное_дело_'.$arr_student["number_record_book"].'_'.$arr_student["last_name"].'_'.$arr_student["first_name"].'.docx';
+		header("Content-Description: File Transfer");
+		header('Content-Disposition: attachment; filename="' . $file . '"');
+		header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+		header('Content-Transfer-Encoding: binary');
+		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+		header('Expires: 0');
+		$xmlWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
+		$xmlWriter->save("php://output");
+	
+	
 	}
 
 	if($_POST['mode_other'] == 1)
