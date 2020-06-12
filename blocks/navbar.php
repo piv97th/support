@@ -29,11 +29,7 @@
 				<a class="dropdown-item" href="form_add_commission.php">Добавить</a>
 				<a class="dropdown-item" href="choice_str_upd.php?mode=3">Редактировать</a>
 				<a class="dropdown-item" href="choice_str_del.php?mode=3">Удалить</a>
-				<div class="dropdown-header">Назначить заседание группе</div>
-				<a class="dropdown-item" href="form_add_meeting_group.php">Назначить</a>
-				<a class="dropdown-item" href="form_update_meeting_group.php">Редактировать</a>
-				<a class="dropdown-item" href="form_del_meeting_group.php">Удалить</a>
-				<div class="dropdown-header">Назначить члена ГЭК на комиссию</div>
+				<div class="dropdown-header">Назначить членов ГЭК на комиссию</div>
 				<a class="dropdown-item" href="form_add_commission_member.php">Назначить</a>
 				<a class="dropdown-item" href="form_del_commission_member.php">Удалить</a>
 			</div>
@@ -58,7 +54,7 @@
 				ВКР
 			</a>
 			<div class="dropdown-menu">
-				<a class="dropdown-item" href="choice_select.php?mode=4">Проведение</a>
+				<a class="dropdown-item" href="choice_select.php?mode=4">Проведение ВКР</a>
 			</div>
 		</li>
 
