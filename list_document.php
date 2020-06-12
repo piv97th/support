@@ -30,9 +30,10 @@
 
 		$(function(){
 			$("#slc").on('change',function(){
-				$("#student").remove();
-				$("#document").remove();
-				$("#honours").remove();
+				$("#block_student").remove();
+				$("#block_document").remove();
+				$(".sub").remove();
+				$("#block_honours").remove();
 				var mode_other = 1;
 				var select = $("#slc").val();
 				$.ajax({
@@ -44,7 +45,7 @@
 					{
 						alert(response);
 						var obj = JSON.parse(response);
-						$('#slc').after('<div class="form-group"><label for="student">Студент:</label><select id="student" class="new_student form-control"><option value="" disabled selected></option></select></div>');
+						$('#slc').after('<div class="form-group" id="block_student"><label for="student">Студент:</label><select id="student" class="new_student form-control"><option value="" disabled selected></option></select></div>');
 						$(obj).each(function(index, item) {
 							$('#student').append('<option value='+item.arr_1+'>'+item.number_record_book+' '+item.last_name+' '+item.first_name+'</option>');
 						});
@@ -55,8 +56,8 @@
 
 		$(function(){
 			$("body").on('change','.new_student',function(){
-				$("#document").remove();
-				$("#honours").remove();
+				$("#block_document").remove();
+				$("#block_honours").remove();
 				var mode_other = 2;
 				var arr_1 = $("#student").val();
 				$('#arr_1_student').val(arr_1);
@@ -68,9 +69,7 @@
 					success: function(response)
 					{
 						var obj = JSON.parse(response);
-						$('#student').after('<div class="form-group"><label for="document">Документ:</label><select id="document" class="form-control new_doc" ><option value="" disabled selected></option></select></div>');
-						/*for(var i in obj)
-						{*/
+						$('#student').after('<div class="form-group" id="block_document"><label for="document">Документ:</label><select id="document" class="form-control new_doc" ><option value="" disabled selected></option></select></div>');
 						if(obj['reference'] == 1)
 						{
 							$('#document').append('<option value='+obj.reference+'>справка</option>');
@@ -107,45 +106,24 @@
 				$("#doc").val( $("#document").val());
 				if($("#doc").val() == 5)
 				{
-					$('.sub').before('<div class="form-group"><label for="honours">С отличием:</label><input type="checkbox" class="form-control honours" name="honours" value=1></option></select></div>');
+					$('.sub').before('<div class="form-group" id="block_honours"><label for="honours">С отличием:</label><input type="checkbox" class="form-control honours" name="honours" value=1></option></select></div>');
 				}
 			});
 		});
 
-		function outToast(arr)
-		{
-			var flag = true;
-			var c = 0;
-			for(var i in arr)
-			{
-				if(arr[i] != 1)
+		$(function(){
+			$("form").on('submit',function(){
+				if(1 <= $("#doc").val() && $("#doc").val() <= 6)
 				{
-					if(c == 0)
-					{
-						if(arr['arr_1'] == 0)
-						{
-							toastr.error('Ошибка','Ошибка!');
-							flag = false;
-						}
-						if(arr['arr_1'] == 2)
-						{
-							toastr.error('Ошибка','Ошибка!');
-							flag = false;
-						}
-						if(arr['student'] == 0)
-						{
-							toastr.error('При удалении','Ошибка!');
-							flag = false;
-						}
-					}
-		        }
-		        c = c+1;
-		    }
-    		if(flag == true)
-    		{
-    			toastr.success('Успешно! Удалено');
-    		}
-		}
+					return true;
+				}
+				else
+				{
+					toastr.error('Выберете документ','Ошибка!');
+					return false;
+				}
+			});
+		});
 
 	</script>
 
@@ -173,7 +151,6 @@
 						</select>
 					<input type="hidden" name="doc" id="doc">
 					<input type="hidden" name="arr_1_student" id="arr_1_student">
-					<!-- <input type="hidden" name="honours" id="honours"> -->
 					</div>
 				</form>
 			</div>
