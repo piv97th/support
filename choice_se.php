@@ -22,8 +22,17 @@
 
 	<title>Выбор студента</title>
 
+	<style>
+		footer
+		{
+		    bottom: 0;
+			position: fixed;
+		}
+	</style>
+
 	<link href="scripts/toastr.css" rel="stylesheet">
 	<script type="text/javascript" src="scripts/disabled_link.js"></script>
+	<script type="text/javascript" src="scripts/logout.js"></script>
 	<script type="text/javascript" src="scripts/toastr.js"></script>
 
 	<script type="text/javascript">
@@ -58,6 +67,7 @@
 
 	<?php
 	require_once('blocks/header.php');
+	require_once('blocks/navbar_operator.php');
 	?>
 
 	<div class="container" id="content">    
