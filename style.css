@@ -29,6 +29,7 @@ footer
 #content
 {
     padding: 20px;
+    min-height: calc(71vh - 80px);
 }
 /* On small screens, set height to 'auto' for sidenav and grid */
 @media screen and (max-width: 767px)
@@ -51,7 +52,7 @@ footer
 
 footer
 {
-    bottom: 0;
+    //bottom: 0;
 
     //position: fixed;
 }
