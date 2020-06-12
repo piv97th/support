@@ -23,6 +23,7 @@
 		        	async: false,
 		        	success: function(response)
 		        	{
+		        		alert(response);
 		        		var result = JSON.parse(response);
 		        		outToast(result);
 		        		if(result['user'] == 1)
@@ -41,6 +42,10 @@
 		        		toastr.error(errorMsg, status);
 		        	}
 		    	});
+		    	if($('form').attr('action') == "#")
+		    	{
+		    		return false;
+		    	}
 		    });
 		});
 
