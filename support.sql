@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Май 06 2020 г., 22:33
+-- Время создания: Мар 29 2021 г., 10:14
 -- Версия сервера: 10.3.13-MariaDB-log
 -- Версия PHP: 7.1.32
 
@@ -655,7 +655,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `login`, `password`, `uid`, `hash`) VALUES
-(1, 'admin', 'c7ad44cbad762a5da0a452f9e854fdc1e0e7a52a38015f23f3eab1d80b931dd472634dfac71cd34ebc35d16ab7fb8a90c81f975113d6c7538dc69dd8de9077ec', 127, 'ddd76fe4c0b9aea5f8b607c2c4f160365e1aae2a78c0a89c07411a04272c1e6672fbc5072e2bcab952165a096df134f1d3ee3e8049b20bff558224cbe349320e'),
+(1, 'admin', '8450eca01665516d9aeb5317764902b78495502637c96192c81b1683d32d691a0965cf037feca8b9ed9ee6fc6ab8f27fce8f77c4fd9b4a442a00fc317b8237e6', 20, '8c04e7a2dd504f96016721a1fa02c5a37d1a7ad088db940e45204e0664e1fae8f0427fef0a34bc0d0336d751969da7029a6d2d093dcade3adfc8a4d245d8b5f8'),
 (9, 'sssssssss', '5c3718fd2b374d6254176036bca81f8a3de678484bad7a88fffd0910080aba1a6a066f6a519b72bd7f1ca8e77a9f95d376b8b4edd5119e03f0a7d738017b4cc0', NULL, NULL);
 
 --
